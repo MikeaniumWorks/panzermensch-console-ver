@@ -1,7 +1,6 @@
 // Professional coders beware. From this point on is the land of Chaos, where cursed abominations of randomly strung together columns of letters lacking
 // both skill and meaning inhabit, This is the point of no return. You have been warned.
 // 
-// ConsoleApplication2.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 
@@ -24,7 +23,7 @@ using namespace rapidjson;
 
 // TIME TO LEARN CLASSES.
 
-string mechanized_gun_support_infantry[2] = { "PZMGW-54 Battlebearer","PZMGW-22 Stormwind" };
+string mechanized_gun_support_infantry[2] = { "PZMGW-54 Battlebearer","PZMGW-22 Stormwind" }; //just for later use.
 
 // Randomization Seed (for distance and beyond.)
 void randomizer() {

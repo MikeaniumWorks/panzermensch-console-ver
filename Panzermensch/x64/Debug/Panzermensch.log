@@ -1,0 +1,6 @@
+﻿  Panzermensch.cpp
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(162,34): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(163,29): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\Panzermensch\x64\Debug\Panzermensch.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

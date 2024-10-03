@@ -107,7 +107,7 @@ public:
         getline(cin, user_input);
 
         if (user_input == "Fire") {
-            combat_damage(is_player_attacking = true);
+            player_combat_damage(is_player_attacking = true);
             end_turn();
         }
         else if (user_input == "Repair") {
@@ -125,7 +125,7 @@ public:
     void enemy_turn() {
         if (pilot_health > 0) {
             cout << "Enemy Mech Turn! They Fire at us!" << endl;
-            combat_damage(is_player_attacking = false);
+            enemy_combat_damage(is_player_attacking = false);
             end_turn();
         }
         else {
@@ -136,23 +136,43 @@ public:
 
 
     void repair_action() {
+        if (is_player_turn) 
+        {
+            if (player_pilot_health < 350) {
+                player_pilot_health += 400;
+                end_turn();
+            }
+            else if (side_armor_health < 100) {
+                side_armor_health += 20;
+                end_turn();
+            }
+            else if (rear_armor_health < 75) {
+                rear_armor_health += 15;
+                end_turn();
+            }
+        }
+        else if (!is_player_turn)
+        {
+            if (pilot_health < 350) {
+                pilot_health += 100;
+                end_turn();
+            }
+            else if (side_armor_health < 100) {
+                side_armor_health += 20;
+                end_turn();
+            }
+            else if (rear_armor_health < 75) {
+                rear_armor_health += 15;
+                end_turn();
+            }
+        }
+    }
 
-        if (front_armor_health < 100) {
-            front_armor_health += 20;
-            end_turn();
-        }
-        else if (side_armor_health < 100) {
-            side_armor_health += 20;
-            end_turn();
-        }
-        else if (rear_armor_health < 75) {
-            rear_armor_health += 15;
-            end_turn();
-        }
+    void fortify_action() {
 
     }
 
-    void combat_damage(bool is_player_attacking) {          // What happens when the guns fire.
+    void player_combat_damage(bool is_player_attacking) {          // What happens when the guns fire.
 
         //const int min_distance = 100;
         //const int max_distance = 12000;
@@ -185,28 +205,40 @@ public:
                 };
             }
         }
-        else if (!is_player_attacking)
+    }
+
+    void enemy_combat_damage(bool is_player_attacking) 
+    {
+
+        int actual_damage = 500;
+        int damage_multiplier = (gun_penetration - front_armor) * 0.05;
+
+        if (!is_player_attacking)
         {
             if (player_front_armor >= 350) {
                 if (gun_penetration > player_front_armor) {
                     actual_damage* damage_multiplier;
-                    pilot_health -= actual_damage;
-                    cout << "Target hit in Front armor! Damaged for: " << actual_damage << endl;
+                    player_pilot_health -= actual_damage;
+                    cout << "We are Hit in Front armor! Damaged for: " << actual_damage << endl;
                 }
                 else if (gun_penetration = front_armor)
                 {
                     actual_damage / 2;
-                    pilot_health -= actual_damage;
-                    cout << "Target hit! Front Armor is too thick! Damaged for: " << actual_damage << endl;
+                    player_pilot_health -= actual_damage;
+                    cout << "We are Hit! But Front Armor Held! Damaged for: " << actual_damage << endl;
                 }
                 else if (gun_penetration < front_armor)
                 {
                     actual_damage / 4;
-                    pilot_health -= actual_damage;
+                    player_pilot_health -= actual_damage;
+                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << actual_damage << endl;
                 }
             }
         }
     }
+        
+        
+    
 
 
 

@@ -1,11 +1,12 @@
 ﻿  Panzermensch.cpp
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(161,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(167,34): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(173,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(179,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(192,34): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(198,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(204,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(181,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(187,34): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(193,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(199,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(214,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(220,34): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(226,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(232,35): warning C4552: '/': result of expression not used
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\Panzermensch\x64\Debug\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

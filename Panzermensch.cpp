@@ -40,7 +40,7 @@ class Panzermensch {
     // This is basically the precursor or demo version of a much more ambitious yet achievable project that i have, of an actual Videogame with full on 3D graphics.
     // Said Videogame Will have multiplayer, easy modificability and campaigns. Its styled to be a horde shooter where you go do missions CO-OP.
 
-private:
+public:
 
 
     // Player Stats
@@ -81,8 +81,12 @@ private:
     string terrain;               // Unused for now.
     string user_input;            // obvious.
 
-public:
-    Panzermensch() : primary_gun_damage(500), gun_penetration(300), player_front_armor(350), player_front_armor_health(100), player_side_armor(280), player_side_armor_health(100), player_rear_armor(160), player_rear_armor_health(75), player_pilot_health(100), player_veterancy(0), front_armor(240), front_armor_health(100), side_armor(180), side_armor_health(100), rear_armor(100), rear_armor_health(75), pilot_health(100), veterancy(0) {}
+    Panzermensch() : primary_gun_damage(500), gun_penetration(300), player_front_armor(350),
+        player_front_armor_health(100), player_side_armor(280), player_side_armor_health(100),
+        player_rear_armor(160), player_rear_armor_health(75), player_pilot_health(100),
+        player_veterancy(0), front_armor(240), front_armor_health(100), side_armor(180),
+        side_armor_health(100), rear_armor(100), rear_armor_health(75),
+        pilot_health(600), veterancy(0) {}
 
     void end_turn() {
 
@@ -103,7 +107,7 @@ public:
         getline(cin, user_input);
 
         if (user_input == "Fire") {
-            combat_damage(primary_gun_damage, is_player_attacking=true);
+            combat_damage(is_player_attacking = true);
             end_turn();
         }
         else if (user_input == "Repair") {
@@ -121,11 +125,7 @@ public:
     void enemy_turn() {
         if (pilot_health > 0) {
             cout << "Enemy Mech Turn! They Fire at us!" << endl;
-            combat_damage(primary_gun_damage, false);
-            cout << "Our Front Armor Health: " << player_front_armor_health << " Damaged for: " << done_damage << endl;
-            cout << "Our Side Armor Health: " << player_side_armor_health << " Damaged for: " << done_damage << endl;
-            cout << "Our Rear Armor Health: " << player_rear_armor_health << " Damaged for: " << done_damage << endl;
-            cout << "Our Pilot Health: " << player_pilot_health << " Damaged for: " << done_damage << endl;
+            combat_damage(is_player_attacking = false);
             end_turn();
         }
         else {
@@ -152,138 +152,57 @@ public:
 
     }
 
-    void combat_damage(int primary_gun_damage, bool is_player_attacking) {          // What happens when the guns fire.
+    void combat_damage(bool is_player_attacking) {          // What happens when the guns fire.
 
         //const int min_distance = 100;
         //const int max_distance = 12000;
 
-        float damage_reduction_by_distance = static_cast<float>(distance) / 12000;
-        float actual_penetration = gun_penetration * 1;
-        float actual_damage = static_cast<float>((primary_gun_damage + actual_penetration)) * (1.0 - damage_reduction_by_distance);
+        int actual_damage = 500;
+        int damage_multiplier = (gun_penetration - front_armor) * 0.05;
 
-        int combat_damage = 0; //= (distance > 500) ? rand() % 2 : rand() % 3;
-        int done_damage = static_cast<int>(actual_damage);
-
-        if (!is_player_attacking) {
-            switch (combat_damage) {
-
-            case(0): // Front armor area
-
-                if (front_armor >= 350) {
-                    if (damage_reduction_by_distance >= front_armor) {
-
-                        front_armor_health -= done_damage /= 2;
-                        pilot_health /= 2;
-                        cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
-                    }
-                    else if (front_armor_health <= 100)
-                    {
-
-                        pilot_health -= done_damage;
-                        cout << "Target hit the pilot directly. Damaged for: " << done_damage << endl;
-                    }
+        if (is_player_attacking) {
+            if (front_armor >= 350) {
+                if (gun_penetration > front_armor)
+                {
+                    actual_damage* damage_multiplier;
+                    pilot_health -= actual_damage;
+                    cout << "Target hit in Front armor! Damaged for: " << actual_damage << endl;
                 }
-                break;
-
-            case(1): // Side armor area
-
-                if (side_armor >= 280) {
-                    if (damage_reduction_by_distance >= side_armor) {
-
-                        side_armor_health -= done_damage /= 2;
-                        pilot_health /= 2;
-                        cout << "Target Hit! Damaged for: " << done_damage << endl;
-                    }
-                    else if (side_armor_health <= 100)
-                    {
-
-                        pilot_health -= done_damage;
-                        cout << "Target hit the pilot directly. Damaged for: " << done_damage << endl;
-                    }
+                else if (gun_penetration = front_armor)
+                {
+                    actual_damage / 2;
+                    pilot_health -= actual_damage;
+                    cout << "Target hit! Front Armor is too thick! Damaged for: " << actual_damage << endl;
                 }
-                break;
-
-            case(2): // Rear armor area
-
-                if (rear_armor >= 150) {
-                    if (damage_reduction_by_distance >= front_armor) {
-
-                        front_armor_health -= done_damage /= 2;
-                        pilot_health /= 2;
-                        cout << "Target hit in the rear. Damaged for: " << done_damage << endl;
-                    }
-                    else if (rear_armor_health <= 100)
-                    {
-
-                        pilot_health -= done_damage;
-                        cout << "Target hit the pilot directly. Damaged for: " << done_damage << endl;
-                    }
+                else if (gun_penetration < front_armor)
+                {
+                    actual_damage / 4;
+                    pilot_health -= actual_damage;
                 }
-
-                break;
-
+                else
+                {
+                    cout << "Something's wrong with the Front Armor Value" << endl;
+                };
             }
         }
-
-        else if (is_player_attacking)
+        else if (!is_player_attacking)
         {
-            switch (combat_damage) {
+            if (player_front_armor >= 350) {
+                if (gun_penetration > player_front_armor) {
+                    actual_damage* damage_multiplier;
+                    pilot_health -= actual_damage;
+                    cout << "Target hit in Front armor! Damaged for: " << actual_damage << endl;
+                }
+                else if (gun_penetration = front_armor)
                 {
-            case(0): // Front armor area
-
-                if (player_front_armor > 350) {
-                    if (damage_reduction_by_distance >= player_front_armor) {
-                        int current_player_front_armor_health = player_front_armor_health - done_damage;
-
-                        player_front_armor_health -= done_damage /= 2;
-                        player_pilot_health /= 2;
-                        cout << "Enemy hit our front armor. Damaged for: " << done_damage << "Our Front armor health is " << current_player_front_armor_health << endl;
-                    }
-                    else if (player_front_armor_health <= 100)
-                    {
-
-                        player_pilot_health -= done_damage;
-                        cout << "Enemy hit our pilot directly. Damaged for: " << done_damage << endl;
-                    }
+                    actual_damage / 2;
+                    pilot_health -= actual_damage;
+                    cout << "Target hit! Front Armor is too thick! Damaged for: " << actual_damage << endl;
                 }
-                break;
-
-            case(1): // Side armor area
-
-                if (player_side_armor > 280) {
-                    if (damage_reduction_by_distance >= player_side_armor) {
-
-                        player_side_armor_health -= done_damage /= 2;
-                        pilot_health /= 2;
-                        cout << "Enemy hit our side armor. Damaged for: " << done_damage << endl;
-                    }
-                    else if (player_side_armor_health <= 100)
-                    {
-
-                        player_pilot_health -= done_damage;
-                        cout << "Enemy hit our pilot directly. Damaged for: " << done_damage << endl;
-                    }
-                }
-                break;
-
-            case(2): // Rear armor area
-
-                if (player_rear_armor > 150) {
-                    if (damage_reduction_by_distance >= player_rear_armor) {
-
-                        player_rear_armor_health -= done_damage /= 2;
-                        player_pilot_health /= 2;
-                        cout << "Enemy hit our rear armor. Damaged for: " << done_damage << endl;
-                    }
-                    else if (player_rear_armor_health <= 100)
-                    {
-
-                        player_pilot_health -= done_damage;
-                        cout << "Enemy hit the pilot directly. Damaged for: " << done_damage << endl;
-                    }
-                }
-
-                break;
+                else if (gun_penetration < front_armor)
+                {
+                    actual_damage / 4;
+                    pilot_health -= actual_damage;
                 }
             }
         }

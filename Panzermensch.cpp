@@ -23,13 +23,59 @@ using namespace rapidjson;
 
 // TIME TO LEARN CLASSES.
 
-string mechanized_gun_support_infantry[2] = { "PZMGW-54 Battlebearer","PZMGW-22 Stormwind" }; //just for later use.
+// string mechanized_gun_support_infantry[2] = { "PZMGW-54 Battlebearer","PZMGW-22 Stormwind" }; //just for later use.
 
 // Randomization Seed (for distance and beyond.)
 void randomizer() {
 
     auto randomization_seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     srand(static_cast<unsigned>(randomization_seed));
+}
+
+void ascii_art_portrait()
+{
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".........................................................................................................................................." << endl;
+    cout << ".................@@......................................................................................................................." << endl;
+    cout << "................@@@@......................................................................................................................" << endl;
+    cout << "...............@@..@@....................................................................................................................." << endl;
+    cout << "..............@@...@@@@@@............................................................................................@@@@@................" << endl;
+    cout << ".............@@@....@@@@@@@...@@@..............................................................................@@@@@@@@@@@@@@@@@.........." << endl;
+    cout << "...........@@@...........@@@@@@@@@@...........................................................................@@@@@@@.....@@@@@@@........." << endl;
+    cout << "..........@@@..............@@@@..@@@.........................................................................@@................@@........." << endl;
+    cout << ".........@@@......................@@@........................................................................@@.....@..........@@........." << endl;
+    cout << "........@@@........................@@@...........@@@@@@@@@@@@................................................@@.................@@........" << endl;
+    cout << ".....@@@@@...........................@@......@@@@@@@@@@@@@@@@@@@@@...........................................@@@@@@@@.@@..@@@@@@@........." << endl;
+    cout << "...@@@@@..............................@@.@@@@@@@@............@@@@@@@@@..............................................@....................." << endl;
+    cout << ".@@@@..................................@@@@@......................@@@@@@@@@@@@@....................@@@@@@@@@@@@@@@@@@.....@@@@@@@........." << endl;
+    cout << " .@@...................................................................@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@...............@@@@@@@@@@." << endl;
+    cout << ".@...............................................................................@@@@@@@@@@@@@@@@@.................@@@@@@@@....@@@@@@@@@@." << endl;
+    cout << "............@@.........@@@@@@@@@@@........@@@@@@@@............................................................@@...@......@@...@.........." << endl;
+    cout << "......@@............................@@@@............@@@.......................................................@@..@@......@...@@.........." << endl;
+    cout << "..................@@@@@@@@@...............@@@@@@@@........@@@.................................................@@..@@......@@..@@.........." << endl;
+    cout << ".........................@@@@@......................@@@.........@@@............................................@..@........@..@@.........." << endl;
+    cout << ".@@@...@@@@@................@@@@@@@@@....................@@@@........@.........................................@@.@@.......@..@@.........." << endl;
+    cout << ".@@@@@@@@@@@@@@@@@@@@@@@..........@@@@@@@@@@@...................@@@....@@......................................@.............@@@.........." << endl;
+    cout << "........................@@@@..............@@@@@@@...................@@....@@.....................................@@@.......@@@@..........." << endl;
+    cout << "..........@@@@@@@@@@@@.......@@@...............@@@@@@@................@@@.....@@@@.............................@@@@......................." << endl;
+    cout << ".......@@@@@....@@@@@@@@@@@@...@@@@@@.@@...........@@@@@@@@@..............@@............@@................................................" << endl;
+    cout << "....@@@@@..................@@@@.....@@@@@@..@@.........@@@@@@@@@@@@@.........@@@@@.........@@............................................." << endl;
+    cout << "....@@@.......................@@@........@@@@@@@@.@@@........@@@@@@@@@@@@@..............@@........@@@@@@@................................." << endl;
+    cout << "...@@..........................@@@@@............@@@..................@@@@@@@@@.............@@@...............@@..........................." << endl;
+    cout << "...@..............................@@@...............@@....@@@@..............@@@@@@@@.............@@@@@@@@@.......@........................" << endl;
+    cout << "...@@...............................@@@........@@@@@....@@@@@@@@@................@@@@@@@....................@@@.....@....................." << endl;
+    cout << "....@@.....@@@@.......................@@@..@@@@@....@@@@........@@@@..................@@@@......................@@.....@@@................" << endl;
+    cout << "....@@..................................@@@@....@@@@@..............@@@@..................@@@@......................@@.......@@@..........." << endl;
+    cout << ".....@@.........................@@...........@@@@.....................@@@...................@@@@.......................@@@..........@@...." << endl;
+    cout << "......@@@.@@.................@@@........@@@@@...........................@@....................@@@@.........................@@@@@.......@@." << endl;
+    cout << ".......@@@@@@@....@@........@@..@@....@@@@................................@@@....................@@@@@..............................@@...." << endl;
+    cout << ".........................................................................................................................................." << endl;
 }
 
 class Panzermensch {
@@ -52,6 +98,7 @@ public:
     int player_rear_armor_health;
     int player_rear_armor;
     int player_pilot_health;
+    int player_gun_penetration;
     int player_veterancy;
 
     // Enemy Stats
@@ -70,7 +117,7 @@ public:
 
     int primary_gun_damage;
     int gun_penetration;
-    int done_damage;
+    //int done_damage;
 
     // World Stats that may or may not be used.
     bool is_player_turn = true;
@@ -78,13 +125,13 @@ public:
     bool is_player_moving = true; // Unused for now.
     //int angle;                    // Unused for now... I plan on detailing this game A LOT.
     int distance;
-    string terrain;               // Unused for now.
+    //string terrain;               // Unused for now.
     string user_input;            // obvious.
 
-    Panzermensch() : primary_gun_damage(500), gun_penetration(300), player_front_armor(350),
+    Panzermensch() : primary_gun_damage(500), player_gun_penetration(300), gun_penetration(300), player_front_armor(350),
         player_front_armor_health(100), player_side_armor(280), player_side_armor_health(100),
-        player_rear_armor(160), player_rear_armor_health(75), player_pilot_health(100),
-        player_veterancy(0), front_armor(240), front_armor_health(100), side_armor(180),
+        player_rear_armor(160), player_rear_armor_health(75), player_pilot_health(600),
+        player_veterancy(0), front_armor(350), front_armor_health(100), side_armor(180),
         side_armor_health(100), rear_armor(100), rear_armor_health(75),
         pilot_health(600), veterancy(0) {}
 
@@ -106,12 +153,24 @@ public:
         string user_input;
         getline(cin, user_input);
 
-        if (user_input == "Fire") {
+        if (user_input == "Fire") 
+        {
             player_combat_damage(is_player_attacking = true);
             end_turn();
         }
-        else if (user_input == "Repair") {
+        else if (user_input == "Repair") 
+        {
             repair_action();
+            end_turn();
+        }
+        else if (user_input == "Fortify") 
+        {
+            fortify_action();
+            end_turn();
+        }
+        else if (user_input == "Overcharge")
+        {
+            overcharge_action();
             end_turn();
         }
         else
@@ -140,14 +199,17 @@ public:
         {
             if (player_pilot_health < 350) {
                 player_pilot_health += 400;
+                cout << "Pilot Healed!" << endl;
                 end_turn();
             }
             else if (side_armor_health < 100) {
                 side_armor_health += 20;
+                cout << "Pilot Healed!" << endl;
                 end_turn();
             }
             else if (rear_armor_health < 75) {
                 rear_armor_health += 15;
+                cout << "Pilot Healed!" << endl;
                 end_turn();
             }
         }
@@ -155,21 +217,54 @@ public:
         {
             if (pilot_health < 350) {
                 pilot_health += 100;
+                cout << "Enemy Pilot Healed!" << endl;
                 end_turn();
             }
             else if (side_armor_health < 100) {
                 side_armor_health += 20;
+                cout << "Enemy Pilot Healed!" << endl;
                 end_turn();
             }
             else if (rear_armor_health < 75) {
                 rear_armor_health += 15;
+                cout << "Enemy Pilot Healed!" << endl;
                 end_turn();
             }
         }
     }
 
     void fortify_action() {
+        if (is_player_turn)
+        {
+            player_front_armor + 150;
+            player_side_armor + 150;
+            player_rear_armor + 75;
+            cout << "Armor Fortified!" << endl;
+        }
+        else if (!is_player_turn)
+        {
+            front_armor += 50;
+            side_armor += 50;
+            rear_armor += 25;
+            cout << "Enemy Armor Fortified!" << endl;
+        }
+    }
+    void overcharge_action() {
+        if (is_player_turn)
+        {
+            primary_gun_damage *= 2;
+            player_gun_penetration *= 1.5;
+            cout << "Main Gun Overcharged!" << endl;
+        }
+    }
 
+    void enemy_overcharge_action() {
+        if (!is_player_turn)
+        {
+            primary_gun_damage * 2;
+            gun_penetration * 1.5;
+            cout << "Enemy Main Gun Overcharged!" << endl;
+        }
     }
 
     void player_combat_damage(bool is_player_attacking) {          // What happens when the guns fire.
@@ -178,26 +273,31 @@ public:
         //const int max_distance = 12000;
 
         int actual_damage = 500;
-        int damage_multiplier = (gun_penetration - front_armor) * 0.05;
+        int done_damage = 0;
+        int damage_multiplier = (player_gun_penetration - front_armor) * 0.05;
 
         if (is_player_attacking) {
-            if (front_armor >= 350) {
-                if (gun_penetration > front_armor)
+            if (front_armor > 349) {
+                if (player_gun_penetration > front_armor)
                 {
                     actual_damage* damage_multiplier;
                     pilot_health -= actual_damage;
-                    cout << "Target hit in Front armor! Damaged for: " << actual_damage << endl;
+                    done_damage += (actual_damage * damage_multiplier);
+                    cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
                 }
-                else if (gun_penetration = front_armor)
+                else if (player_gun_penetration = front_armor)
                 {
-                    actual_damage / 2;
+                    actual_damage /2;
                     pilot_health -= actual_damage;
-                    cout << "Target hit! Front Armor is too thick! Damaged for: " << actual_damage << endl;
+                    done_damage += (actual_damage / 2);
+                    cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
                 }
-                else if (gun_penetration < front_armor)
+                else if (player_gun_penetration < front_armor)
                 {
-                    actual_damage / 4;
+                    actual_damage /4;
                     pilot_health -= actual_damage;
+                    done_damage += (actual_damage / 4);
+                    cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
                 }
                 else
                 {
@@ -211,34 +311,35 @@ public:
     {
 
         int actual_damage = 500;
+        int done_damage = 0;
         int damage_multiplier = (gun_penetration - front_armor) * 0.05;
 
         if (!is_player_attacking)
         {
-            if (player_front_armor >= 350) {
+            if (player_front_armor > 349) {
                 if (gun_penetration > player_front_armor) {
-                    actual_damage* damage_multiplier;
-                    player_pilot_health -= actual_damage;
-                    cout << "We are Hit in Front armor! Damaged for: " << actual_damage << endl;
+                    player_pilot_health -= (actual_damage * damage_multiplier);
+                    done_damage += (actual_damage * damage_multiplier);
+                    cout << "We are Hit in Front armor! Damaged for: " << done_damage << endl;
                 }
                 else if (gun_penetration = front_armor)
                 {
-                    actual_damage / 2;
-                    player_pilot_health -= actual_damage;
-                    cout << "We are Hit! But Front Armor Held! Damaged for: " << actual_damage << endl;
+                    player_pilot_health -= (actual_damage / 2);
+                    done_damage += (actual_damage / 2);
+                    cout << "We are Hit! But Front Armor Held! Damaged for: " << done_damage << endl;
                 }
                 else if (gun_penetration < front_armor)
                 {
-                    actual_damage / 4;
-                    player_pilot_health -= actual_damage;
-                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << actual_damage << endl;
+                    player_pilot_health -= (actual_damage / 4);
+                    done_damage += (actual_damage / 4);
+                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << done_damage << endl;
                 }
             }
         }
     }
         
         
-    
+
 
 
 
@@ -275,6 +376,7 @@ public:
 
 int main()
 {
+    //ascii_art_portrait();
     cout << "STATUS: Radio On." << endl;
     randomizer();
     Panzermensch game;

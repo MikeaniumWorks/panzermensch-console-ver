@@ -1,16 +1,1 @@
-﻿  Panzermensch.cpp
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(239,32): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(240,31): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(241,31): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(255,32): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(256,36): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(264,32): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(265,29): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(277,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(283,34): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(290,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(297,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(315,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\Panzermensch\x64\Debug\Panzermensch.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : Access to the path 'c:\users\ltmik\source\repos\panzermensch\x64\debug\panzermensch.exe' is denied.

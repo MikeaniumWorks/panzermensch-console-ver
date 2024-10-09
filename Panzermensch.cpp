@@ -118,13 +118,20 @@ public:
     int primary_gun_damage;
     int gun_penetration;
     //int done_damage;
+    int turn_counter = 0;
+    int fortify_function_counter = 0;
+    int overcharge_function_counter = 0;
+    int battleshock_function_counter = 0;
 
     // World Stats that may or may not be used.
     bool is_player_turn = true;
     bool is_player_attacking = true;
-    bool is_player_moving = true; // Unused for now.
+    //bool is_player_moving = true; // Unused for now.
+    bool is_overcharged = false;
+    bool is_fortified = false;
+    bool is_battleshocked = false;
     //int angle;                    // Unused for now... I plan on detailing this game A LOT.
-    int distance;
+    int distance = 0;
     //string terrain;               // Unused for now.
     string user_input;            // obvious.
 
@@ -139,12 +146,22 @@ public:
 
         // gonna add a turn function here, just putting this so it doesn't fuck up my code, i hate seeing "X Errors" being more than 0.
         is_player_turn = !is_player_turn;
+        if (is_fortified = true)
+        {
+            is_fortified = false;
+        }
+        else if (is_overcharged = true)
+        {
+            is_overcharged = false;
+        }
     }
 
     void randomize_distance() {
         const int min_distance = 100;
         const int max_distance = 12000;
-        distance = rand() % (max_distance - min_distance + 1) + min_distance;
+        int randomized_distance;
+        randomized_distance = rand() % (max_distance - min_distance + 1) + min_distance;
+        distance += randomized_distance;
     }
 
     void player_turn() {
@@ -152,6 +169,7 @@ public:
         cout << "Your Turn!" << endl;
         string user_input;
         getline(cin, user_input);
+        //fortify_function_checker();
 
         if (user_input == "Fire") 
         {
@@ -184,7 +202,7 @@ public:
     void enemy_turn() {
         if (pilot_health > 0) {
             cout << "Enemy Mech Turn! They Fire at us!" << endl;
-            enemy_combat_damage(is_player_attacking = false);
+            enemy_combat_damage(!is_player_attacking);
             end_turn();
         }
         else {
@@ -197,49 +215,25 @@ public:
     void repair_action() {
         if (is_player_turn) 
         {
-            if (player_pilot_health < 350) {
+            if (player_pilot_health < 600) {
                 player_pilot_health += 400;
                 cout << "Pilot Healed!" << endl;
-                end_turn();
             }
-            else if (side_armor_health < 100) {
-                side_armor_health += 20;
-                cout << "Pilot Healed!" << endl;
-                end_turn();
-            }
-            else if (rear_armor_health < 75) {
-                rear_armor_health += 15;
-                cout << "Pilot Healed!" << endl;
-                end_turn();
-            }
-        }
-        else if (!is_player_turn)
-        {
-            if (pilot_health < 350) {
-                pilot_health += 100;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
-            }
-            else if (side_armor_health < 100) {
-                side_armor_health += 20;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
-            }
-            else if (rear_armor_health < 75) {
-                rear_armor_health += 15;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
+            else if (player_pilot_health > 599) {
+                cout << "Health Full! Time Wasted!" << endl;
             }
         }
     }
 
     void fortify_action() {
-        if (is_player_turn)
+        if (is_player_turn && !is_fortified)
         {
-            player_front_armor + 150;
-            player_side_armor + 150;
-            player_rear_armor + 75;
+            player_front_armor *= 2;
+            player_side_armor *= 2;
+            player_rear_armor *= 2;
             cout << "Armor Fortified!" << endl;
+            fortify_function_counter += 1;
+            is_fortified = true;
         }
         else if (!is_player_turn)
         {
@@ -250,20 +244,27 @@ public:
         }
     }
     void overcharge_action() {
-        if (is_player_turn)
+        if (is_player_turn && !is_overcharged)
         {
-            primary_gun_damage *= 2;
-            player_gun_penetration *= 1.5;
+            primary_gun_damage * 1.5;
+            player_gun_penetration * 1.5;
             cout << "Main Gun Overcharged!" << endl;
+            is_overcharged = true;
         }
     }
 
-    void enemy_overcharge_action() {
-        if (!is_player_turn)
+
+    void turn_checker() {
+        if (turn_counter % 2==0) 
         {
-            primary_gun_damage * 2;
-            gun_penetration * 1.5;
-            cout << "Enemy Main Gun Overcharged!" << endl;
+            player_front_armor /= 2;
+            player_side_armor /= 2;
+            player_rear_armor /= 2;
+            //fortify_function_counter += 1;
+        }
+        else 
+        {
+            // do nothing
         }
     }
 
@@ -274,29 +275,21 @@ public:
 
         int actual_damage = 500;
         int done_damage = 0;
-        int damage_multiplier = (player_gun_penetration - front_armor) * 0.05;
+        int damage_multiplier = static_cast<int>(player_gun_penetration - front_armor) * 0.05f;
+        int damage_falloff = 0.6915;//distance * 0.0001;
 
         if (is_player_attacking) {
             if (front_armor > 349) {
                 if (player_gun_penetration > front_armor)
                 {
-                    actual_damage* damage_multiplier;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage * damage_multiplier);
+                    pilot_health -= ((actual_damage * damage_multiplier));
+                    done_damage += ((actual_damage * damage_multiplier));
                     cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
-                }
-                else if (player_gun_penetration = front_armor)
-                {
-                    actual_damage /2;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage / 2);
-                    cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
                 }
                 else if (player_gun_penetration < front_armor)
                 {
-                    actual_damage /4;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage / 4);
+                    pilot_health -= static_cast<int>((actual_damage) / 4);
+                    done_damage += static_cast<int>((actual_damage) / 4);
                     cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
                 }
                 else
@@ -322,17 +315,11 @@ public:
                     done_damage += (actual_damage * damage_multiplier);
                     cout << "We are Hit in Front armor! Damaged for: " << done_damage << endl;
                 }
-                else if (gun_penetration = front_armor)
-                {
-                    player_pilot_health -= (actual_damage / 2);
-                    done_damage += (actual_damage / 2);
-                    cout << "We are Hit! But Front Armor Held! Damaged for: " << done_damage << endl;
-                }
-                else if (gun_penetration < front_armor)
+                else if (gun_penetration < player_front_armor)
                 {
                     player_pilot_health -= (actual_damage / 4);
                     done_damage += (actual_damage / 4);
-                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << done_damage << endl;
+                    cout << "We are Hit! But Their Shot could not Penetrate! Damaged for: " << done_damage << endl;
                 }
             }
         }
@@ -348,6 +335,8 @@ public:
         cout << "Enemy Mech Encountered!" << endl;
         randomize_distance();
         cout << "Rangefinder reported Distance: " << distance << " Meters." << endl;
+        cout << "You have Four Actions, What do you Choose?" << endl;
+        cout << "Fire | Repair | Overcharge | Fortify" << endl;
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {

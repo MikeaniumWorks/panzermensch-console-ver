@@ -1,0 +1,14 @@
+﻿  Panzermensch.cpp
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(249,32): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(250,36): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(278,31): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(279,28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.cpp(308,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating code
+  4 of 115 functions ( 3.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\Panzermensch\x64\Release\Panzermensch.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

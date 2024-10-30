@@ -127,7 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="mechs.cpp" />
     <ClCompile Include="Panzermensch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mechs.hpp" />
+    <ClInclude Include="limbo.h" />
+    <ClInclude Include="vehicles.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

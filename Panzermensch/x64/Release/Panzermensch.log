@@ -1,8 +1,56 @@
-﻿  Panzermensch.cpp
-  mechs.cpp
-C:\Users\ltmik\source\repos\Panzermensch\panzermensch.hpp(1,10): error C1014: too many include files: depth = 1024
+﻿  mechs.cpp
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C2143: syntax error: missing ';' before 'Mech::generic_mech'
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,5): error C2512: 'Mech': no appropriate default constructor available
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(24,7):
+      see declaration of 'Mech'
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C2371: 'generic_mech': redefinition; different basic types
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(54,17):
+      see declaration of 'generic_mech'
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(117,1): error C2059: syntax error: '}'
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(117,1): error C2143: syntax error: missing ';' before '}'
+  Panzermensch.cpp
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C2143: syntax error: missing ';' before 'Mech::generic_mech'
   (compiling source file 'Panzermensch.cpp')
   
-C:\Users\ltmik\source\repos\Panzermensch\Panzermensch.hpp(1,10): error C1014: too many include files: depth = 1024
-  (compiling source file 'mechs.cpp')
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,5): error C2512: 'Mech': no appropriate default constructor available
+  (compiling source file 'Panzermensch.cpp')
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(24,7):
+      see declaration of 'Mech'
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+  (compiling source file 'Panzermensch.cpp')
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(61,16): error C2371: 'generic_mech': redefinition; different basic types
+  (compiling source file 'Panzermensch.cpp')
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(54,17):
+      see declaration of 'generic_mech'
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(117,1): error C2059: syntax error: '}'
+  (compiling source file 'Panzermensch.cpp')
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(117,1): error C2143: syntax error: missing ';' before '}'
+  (compiling source file 'Panzermensch.cpp')
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(42,7): error C2011: 'Vehicle': 'class' type redefinition
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\vehicles.hpp(7,7):
+      see declaration of 'Vehicle'
+  
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(243,32): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(244,31): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(245,31): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(259,35): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(260,39): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(268,32): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(269,29): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(281,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(287,34): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(294,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(301,35): warning C4552: '/': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(319,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(382,5): error C2084: function 'int main(void)' already has a body
+      C:\Users\ltmik\source\repos\panzermensch-console-ver\mechs.cpp(119,5):
+      see previous definition of 'main'
   

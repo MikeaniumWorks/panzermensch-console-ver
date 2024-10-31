@@ -23,6 +23,9 @@
 
 using namespace std;
 using namespace rapidjson;
+namespace lightwind {
+    string ironman = "if you see this, it worked";
+}
 
 
 
@@ -133,7 +136,7 @@ public:
             player_front_armor += front_armor;
                 if (bool secondary_gun = true)
                 {
-                    player_secondary_gun_damage += Mech_Types::generic_mech.secondary_gun_damage;
+                    //player_secondary_gun_damage += Mech_Types::generic_mech.secondary_gun_damage;
                     //player_secondary_gun_penetration += Mech::secondary_gun_penetration;
                 }
                 else if (bool tertiary_gun = true)
@@ -378,7 +381,7 @@ public:
 
 int main()
 {
-    //ascii_art_portrait();
+    cout << lightwind::ironman << endl;
     cout << "STATUS: Radio On." << endl;
     randomizer();
     Panzermensch game;

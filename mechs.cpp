@@ -10,28 +10,55 @@
 
 using namespace std;
 
-class Mechs {
+    /*
+     Tier 1: Hellking, Warmaster, Artemis, Panzer, Emperor
+     Tier 2: Custodian, Sentinel, Deathguard, Dreadnought
+     Tier 3: Krieg, Battlebearer, Ironfire, Blitzkrieg
+     Tier 4: Steelmaster, Stormwind, Bloodlord
+     Tier 5: Diligent, Lineholder, Steelspirit
+     Tier 6: Peacebreaker, Armaedon, Irosticain, Generic
+    */
 
-    // Tier 1: Hellking, Warmaster, Artemis, Panzer, Custodian, Emperor
-    // Tier 2: Golden Guard, Sentinel, Deathguard, Dreadnought
-    // Tier 3: Krieg, Battlebearer, Ironfire, Blitzkrieg
-    // Tier 4: Steelbreaker, Stormwind, Bloodlord
-    // Tier 5: Diligent, Ironhorse, Steelspirit
-    // Tier 6: Peacebreaker, Armistice, Ironmensch
+class Vehicle;
 
-};
+class Mech : public Vehicle {
+public:
+    int pilot_health;
+    int front_armor;
+    bool primary_gun_capable;
+    int primary_gun_damage;
+    int primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    int secondary_gun_damage;
+    int secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    int tertiary_gun_damage;
+    int tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    int melee_damage;
+    int melee_sharpness; // Basically Melee Penetration, It is added JUST IN CASE.
 
-      Mechs::Mech(int health, int armor, bool prim_gun, int prim_dmg, int prim_pen, string prim,
-      bool sec_gun, int sec_dmg, int sec_pen, string sec,
-      bool tert_gun, int tert_dmg, int tert_pen, string tert,
-      bool melee, int melee_dmg, int melee_sharp, string name, int id, int mech_tier)
-      : pilot_health(health), front_armor(armor), primary_gun_capable(prim_gun), primary_gun_damage(prim_dmg),
-      primary_gun_penetration(prim_pen), primary_gun(prim), secondary_gun_capable(sec_gun), secondary_gun_damage(sec_dmg),
-      secondary_gun_penetration(sec_pen), secondary_gun(sec), tertiary_gun_capable(tert_gun), tertiary_gun_damage(tert_dmg),
-      tertiary_gun_penetration(tert_pen), tertiary_gun(tert), melee_capable(melee), melee_damage(melee_damage),
-      melee_sharpness(melee_sharp), mech_name(name), mech_id(id), tier(mech_tier) {}
+    string mech_name;
+    int mech_id;
+    int tier;
 
-    Mechs Mechs::generic_mech = Mechs(
+    Mech(int health, int armor, bool prim_gun, int prim_dmg, int prim_pen, string prim_name,
+        bool sec_gun, int sec_dmg, int sec_pen, string sec,
+        bool tert_gun, int tert_dmg, int tert_pen, string tert,
+        bool melee, int melee_dmg, int melee_sharp, string name, int id, int mech_tier);
+
+
+    static Mech generic_mech;
+    static Mech emperor_mech;
+
+
+}
+
+
+    Mech Mech::generic_mech = Mech(
         100,
         100,
         true,
@@ -54,7 +81,7 @@ class Mechs {
         100,
         "Vanilla Mech",
         0,
-        5
+        6
         );
     
     //     _______                                                     
@@ -87,10 +114,10 @@ class Mechs {
 
     }
 
-
 };
-
 
 int main() {
 
 }
+
+

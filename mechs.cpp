@@ -55,10 +55,10 @@ public:
     static Mech emperor_mech;
 
 
-}
 
 
-    Mech Mech::generic_mech = Mech(
+
+    Mech::generic_mech = Mech(
         100,
         100,
         true,

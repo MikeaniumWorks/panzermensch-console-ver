@@ -381,7 +381,7 @@ public:
 
 int main()
 {
-    cout << lightwind::ironman << endl;
+    //cout << lightwind::ironman << endl;  This is a comment because it was just namespace testing.
     cout << "STATUS: Radio On." << endl;
     randomizer();
     Panzermensch game;

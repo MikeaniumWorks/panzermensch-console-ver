@@ -5,22 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\limbo.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:limbo.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\vehicles.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:vehicles.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -48,61 +32,9 @@
               "RelativeDocumentMoniker": "Panzermensch.cpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
               "RelativeToolTip": "Panzermensch.cpp",
-              "ViewState": "AgIAAGgBAAAAAAAAAAAAAH8BAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAE0BAAAAAAAAAAAAAGsBAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-31T11:01:22.423Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "mechs.cpp",
-              "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp",
-              "RelativeDocumentMoniker": "mechs.cpp",
-              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp",
-              "RelativeToolTip": "mechs.cpp",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAhwHQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-13T17:11:58.991Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "mechs.hpp",
-              "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
-              "RelativeDocumentMoniker": "mechs.hpp",
-              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
-              "RelativeToolTip": "mechs.hpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-13T20:49:16.173Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "vehicles.hpp",
-              "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\vehicles.hpp",
-              "RelativeDocumentMoniker": "vehicles.hpp",
-              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\vehicles.hpp",
-              "RelativeToolTip": "vehicles.hpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-13T20:39:46.607Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "limbo.h",
-              "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\limbo.h",
-              "RelativeDocumentMoniker": "limbo.h",
-              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\limbo.h",
-              "RelativeToolTip": "limbo.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-20T17:19:48.703Z",
+              "WhenOpened": "2024-10-31T11:06:07.179Z",
               "EditorCaption": ""
             }
           ]

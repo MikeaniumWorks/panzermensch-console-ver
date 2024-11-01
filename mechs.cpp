@@ -1,4 +1,4 @@
-    
+/*
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -9,7 +9,7 @@
 #include "vehicles.hpp"
 
 using namespace std;
-
+*/
     /*
      Tier 1: Hellking, Warmaster, Artemis, Panzer, Emperor
      Tier 2: Custodian, Sentinel, Deathguard, Dreadnought
@@ -18,7 +18,7 @@ using namespace std;
      Tier 5: Diligent, Lineholder, Steelspirit
      Tier 6: Peacebreaker, Armaedon, Irosticain, Generic
     */
-
+/*
 class Vehicle;
 
 class Mech : public Vehicle {
@@ -115,9 +115,11 @@ public:
     }
 
 };
+*/
+/*
 
 int main() {
 
 }
 
-
+*/

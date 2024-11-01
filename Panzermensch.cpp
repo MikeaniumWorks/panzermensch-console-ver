@@ -4,6 +4,7 @@
 //
 
 #include <cstdlib>
+#include <cmath>
 #include <chrono>
 #include <rapidjson/document.h>
 #include <rapidjson/filereadstream.h>
@@ -16,8 +17,8 @@
 //#include <sqltypes.h>
 //#include <sql.h>
 //#include <json/value.h>
-#include "mechs.cpp"
-#include "mechs.hpp"
+//#include "mechs.cpp"
+//#include "mechs.hpp"
 //#include "vehicles.hpp"
 
 
@@ -60,42 +61,42 @@ public:
 
 
     // Player Stats
-    string player_mech;
-    int player_primary_gun_damage;
-    int player_primary_gun_penetration;
-    int player_secondary_gun_damage;
-    int player_secondary_gun_penetration;
-    int player_tertiary_gun_damage;
-    int player_tertiary_gun_penetration;
-    int player_melee_damage;
-    int player_front_armor_health;
-    int player_front_armor;
-    int player_side_armor_health;
-    int player_side_armor;
-    int player_rear_armor_health;
-    int player_rear_armor;
-    int player_pilot_health;
-    int player_gun_penetration;
-    int player_veterancy;
+    string player_mech = "Player";
+    int player_primary_gun_damage = 0;
+    int player_primary_gun_penetration = 0;
+    int player_secondary_gun_damage = 0;
+    int player_secondary_gun_penetration = 0;
+    int player_tertiary_gun_damage = 0;
+    int player_tertiary_gun_penetration = 0;
+    int player_melee_damage = 0;
+    int player_front_armor_health = 0;
+    int player_front_armor = 0;
+    int player_side_armor_health = 0;
+    int player_side_armor = 0;
+    int player_rear_armor_health = 0;
+    int player_rear_armor = 0;
+    int player_pilot_health = 0;
+    int player_gun_penetration = 0;
+    int player_veterancy = 0;
 
     // Enemy Stats
-    int front_armor_health;       // Basically Armor Integrity, for front, side and rear.
-    int front_armor;              // The Armor itself, the more hits it takes, the lesser it gets (by a small magnitude), and the more its 'Health' or Integrity Decreases.
-    int side_armor_health;
-    int side_armor;
-    int rear_armor_health;
-    int rear_armor;
-    int pilot_health;             // When Armor Integrity breaks, The Pilot is technically exposed, however if Said Shot penetrates armor, then it does infact damage the pilot + armor integrity.
-    int veterancy;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
+    int front_armor_health = 0;       // Basically Armor Integrity, for front, side and rear.
+    int front_armor = 0;              // The Armor itself, the more hits it takes, the lesser it gets (by a small magnitude), and the more its 'Health' or Integrity Decreases.
+    int side_armor_health = 0;
+    int side_armor = 0;
+    int rear_armor_health = 0;
+    int rear_armor = 0;
+    int pilot_health = 0;             // When Armor Integrity breaks, The Pilot is technically exposed, however if Said Shot penetrates armor, then it does infact damage the pilot + armor integrity.
+    int veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
 
     // also, all this comments are just for me to explain things to myself more so i understand better.
 
     // General Stats
 
-    int primary_gun_damage;
-    int gun_penetration;
-    int secondary_gun_damage;
-    int tertiary_gun_damage;
+    int primary_gun_damage = 0;
+    int gun_penetration = 0;
+    int secondary_gun_damage = 0;
+    int tertiary_gun_damage = 0;
     //int done_damage;
 
     // World Stats that may or may not be used.
@@ -103,9 +104,9 @@ public:
     bool is_player_attacking = true;
     bool is_player_moving = true; // Unused for now.
     //int angle;                    // Unused for now... I plan on detailing this game A LOT.
-    int distance;
+    int distance = 0;
     //string terrain;               // Unused for now.
-    string user_input;            // obvious.
+    string user_input = "Input";            // obvious.
 
     Panzermensch() : primary_gun_damage(500), player_gun_penetration(300), gun_penetration(300), player_front_armor(350),
         player_front_armor_health(100), player_side_armor(280), player_side_armor_health(100),
@@ -347,7 +348,7 @@ public:
 
 
 
-    void mech_encounter() {                // this is supposed to be what happens first, but i lack the knowledge to know.
+    void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
 
         cout << "Enemy Mech Encountered!" << endl;
         randomize_distance();
@@ -355,12 +356,12 @@ public:
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {
-                //player_turn();
-                player_selecting_mech();
+                player_turn();
+                //player_selecting_mech();
             }
             else if (!is_player_turn) {
-                //enemy_turn();
-              //  cout << "" << endl;
+                enemy_turn();
+                cout << "" << endl;
             }
         }
 
@@ -376,12 +377,34 @@ public:
 
 };
 
+void random_mathematical_nonsense_i_made() {
+    float rvim = 12;
+    float rvim_2 = 9;
+    float rvim_3 = 5.38218;
+    float rvim_4 = 0;
+
+    //rvim_4 = max(rvim, rvim_2);
+    //rvim_4 = min(rvim, rvim_2);
+    //rvim_4 = pow(3, 3);
+    //rvim_4 = sqrt(16);
+    //rvim_4 = cbrt(27);
+    //rvim_4 = abs(-12589072103971231);
+
+    system("Color 3F");
+    cout << "Requested Value Is: " << rvim_4 << endl;  // just some mathematical shit i wanted to test.
+}
+
 // SURPRISE STORMWAFFLE
 
 
 int main()
 {
     //cout << lightwind::ironman << endl;  This is a comment because it was just namespace testing.
+    //cout << panzer_t << endl; This is a comment because it was just typedef testing.
+    //cin >> random_input;
+    //cout << "Copied Input: " << random_input << endl;                     They are Tests.
+    //random_mathematical_nonsense_i_made();
+
     cout << "STATUS: Radio On." << endl;
     randomizer();
     Panzermensch game;

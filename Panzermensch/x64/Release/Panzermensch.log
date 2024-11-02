@@ -1,22 +1,5 @@
-﻿  Panzermensch.cpp
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(244,32): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(245,31): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(246,31): warning C4552: '+': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(260,35): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(261,39): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(269,32): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(270,29): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(282,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(288,34): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(295,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(302,35): warning C4552: '/': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(320,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(383,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  Generating code
-  95 of 122 functions (77.9%) were compiled, the rest were copied from previous compilation.
-    33 functions were new in current compilation
-    4 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+﻿  mechs.cpp
+Panzermensch.obj : error LNK2005: "int __cdecl stats(void)" (?stats@@YAHXZ) already defined in mechs.obj
+Panzermensch.obj : error LNK2001: unresolved external symbol "public: static class Mech Mech::emperor_mech" (?emperor_mech@Mech@@2V1@A)
+Panzermensch.obj : error LNK2001: unresolved external symbol "public: static class Mech Mech::generic_mech" (?generic_mech@Mech@@2V1@A)
+C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe : fatal error LNK1120: 2 unresolved externals

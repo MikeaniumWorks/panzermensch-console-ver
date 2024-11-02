@@ -17,7 +17,7 @@
 //#include <sqltypes.h>
 //#include <sql.h>
 //#include <json/value.h>
-//#include "mechs.cpp"
+#include "mechs.cpp"
 //#include "mechs.hpp"
 //#include "vehicles.hpp"
 
@@ -138,7 +138,8 @@ public:
                 if (bool secondary_gun = true)
                 {
                     //player_secondary_gun_damage += Mech_Types::generic_mech.secondary_gun_damage;
-                    //player_secondary_gun_penetration += Mech::secondary_gun_penetration;
+                    //player_secondary_gun_penetration += Mech::generic_mech.secondary_gun_penetration;
+                    //cout << "This actually works. Proof: " << generic_mech.secondary_gun_penetration << endl;
                 }
                 else if (bool tertiary_gun = true)
                 {
@@ -266,8 +267,8 @@ public:
     void enemy_overcharge_action() {
         if (!is_player_turn)
         {
-            primary_gun_damage * 1.5;
-            gun_penetration * 1.5;
+            primary_gun_damage *= 1.5;
+            gun_penetration *= 1.5;
             cout << "Enemy Main Gun Overcharged!" << endl;
         }
     }
@@ -285,21 +286,21 @@ public:
             if (front_armor > 349) {
                 if (player_gun_penetration > front_armor)
                 {
-                    actual_damage* damage_multiplier;
+                    actual_damage*=damage_multiplier;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage * damage_multiplier);
                     cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
                 }
                 else if (player_gun_penetration = front_armor)
                 {
-                    actual_damage /2;
+                    actual_damage/=2;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage / 2);
                     cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
                 }
                 else if (player_gun_penetration < front_armor)
                 {
-                    actual_damage /4;
+                    actual_damage/=4;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage / 4);
                     cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
@@ -356,12 +357,12 @@ public:
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {
-                player_turn();
-                //player_selecting_mech();
+                //player_turn();
+                player_selecting_mech();
             }
             else if (!is_player_turn) {
-                enemy_turn();
-                cout << "" << endl;
+                //enemy_turn();
+                //cout << "" << endl;
             }
         }
 

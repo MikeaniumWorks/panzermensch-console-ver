@@ -96,7 +96,7 @@ public:
     int primary_gun_damage = 0;
     int gun_penetration = 0;
     int secondary_gun_damage = 0;
-    int tertiary_gun_damage = 0;
+    //int tertiary_gun_damage = 0;
     //int done_damage;
 
     // World Stats that may or may not be used.
@@ -130,6 +130,7 @@ public:
     void player_selecting_mech() {
         cout << "Choose your Mech:" << endl;
         cout << "EMPEROR" << " | " << "Generic" << endl;
+        getline(cin, user_input);
         if (user_input == "Generic")
         {
 
@@ -137,9 +138,9 @@ public:
             player_front_armor += front_armor;
                 if (bool secondary_gun = true)
                 {
-                    //player_secondary_gun_damage += secondary_gun_damage;
+                    player_secondary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
                     //player_secondary_gun_penetration += Mech::generic_mech.secondary_gun_penetration;
-                    //cout << "This actually works. Proof: " << generic_mech.secondary_gun_penetration << endl;
+                    cout << "This actually works. Proof: " << mech_generic::mech_generic().secondary_gun_penetration << endl;
                 }
                 else if (bool tertiary_gun = true)
                 {
@@ -150,6 +151,10 @@ public:
                 {
                     //player_melee_damage += Mech::melee_damage;
                 }
+        }
+        else 
+        {
+            cout << "Try again." << endl;
         }
     }
 

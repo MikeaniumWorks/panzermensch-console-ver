@@ -6,7 +6,7 @@
 #include <string>
 
 using std::string;
-
+/*
 class Mech {
 public:
     int pilot_health;
@@ -33,8 +33,8 @@ public:
 
 
 };
-
-class mech_generic : Mech {
+*/
+class mech_generic{
 public:
     int pilot_health;
     int front_armor;
@@ -58,12 +58,14 @@ public:
     int mech_id;
     int tier;
 
-    mech_generic(int = 100, int = 100, bool = true, int = 100, int = 100, string = "Primary", bool = false, int = 100, int = 100, string = "Secondary",
-        bool = false, int = 100, int = 100, string = "Tertiary", bool = false, int = 100, int = 100, string, int, int) {};
+    mech_generic() : pilot_health(100), front_armor(100), primary_gun_capable(true), primary_gun_damage(100), primary_gun_penetration(100), primary_gun("Primary"),
+        secondary_gun_capable(false), secondary_gun_damage(100), secondary_gun_penetration(100), secondary_gun("Secondary"), tertiary_gun_capable(false),
+        tertiary_gun_damage(100), tertiary_gun_penetration(100), tertiary_gun("Tertiary"), melee_capable(false), melee_damage(100), melee_sharpness(100), 
+        mech_name("Generic"), mech_id(0), tier(6) {};
 
 };
 
-class emperor_mech : Mech {
+class emperor_mech {
 
     //     _______                                                     
     //    |_   __ \                                                     

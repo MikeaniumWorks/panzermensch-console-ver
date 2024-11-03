@@ -1,5 +1,19 @@
-﻿  mechs.cpp
-Panzermensch.obj : error LNK2005: "int __cdecl stats(void)" (?stats@@YAHXZ) already defined in mechs.obj
-Panzermensch.obj : error LNK2001: unresolved external symbol "public: static class Mech Mech::emperor_mech" (?emperor_mech@Mech@@2V1@A)
-Panzermensch.obj : error LNK2001: unresolved external symbol "public: static class Mech Mech::generic_mech" (?generic_mech@Mech@@2V1@A)
-C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe : fatal error LNK1120: 2 unresolved externals
+﻿  Panzermensch.cpp
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(250,32): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(251,31): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(252,31): warning C4552: '+': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(266,35): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(267,39): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(275,35): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(276,32): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(288,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(326,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(389,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating code
+  32 of 113 functions (28.3%) were compiled, the rest were copied from previous compilation.
+    21 functions were new in current compilation
+    9 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

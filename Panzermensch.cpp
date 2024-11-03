@@ -17,8 +17,8 @@
 //#include <sqltypes.h>
 //#include <sql.h>
 //#include <json/value.h>
-#include "mechs.cpp"
-//#include "mechs.hpp"
+//#include "mechs.cpp"
+#include "mechs.hpp"
 //#include "vehicles.hpp"
 
 
@@ -137,7 +137,7 @@ public:
             player_front_armor += front_armor;
                 if (bool secondary_gun = true)
                 {
-                    //player_secondary_gun_damage += Mech_Types::generic_mech.secondary_gun_damage;
+                    //player_secondary_gun_damage += secondary_gun_damage;
                     //player_secondary_gun_penetration += Mech::generic_mech.secondary_gun_penetration;
                     //cout << "This actually works. Proof: " << generic_mech.secondary_gun_penetration << endl;
                 }

@@ -86,7 +86,7 @@ public:
     int side_armor = 0;
     int rear_armor_health = 0;
     int rear_armor = 0;
-    int pilot_health = 0;             // When Armor Integrity breaks, The Pilot is technically exposed, however if Said Shot penetrates armor, then it does infact damage the pilot + armor integrity.
+    int pilot_health = 0;             
     int veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
 
     // also, all this comments are just for me to explain things to myself more so i understand better.
@@ -102,23 +102,28 @@ public:
     // World Stats that may or may not be used.
     bool is_player_turn = true;
     bool is_player_attacking = true;
-    bool is_player_moving = true; // Unused for now.
+    bool is_player_moving = true; // Unused for now
+    bool has_selected_mech = true;
     //int angle;                    // Unused for now... I plan on detailing this game A LOT.
     int distance = 0;
     //string terrain;               // Unused for now.
     string user_input = "Input";            // obvious.
 
-    Panzermensch() : primary_gun_damage(500), player_gun_penetration(300), gun_penetration(300), player_front_armor(350),
-        player_front_armor_health(100), player_side_armor(280), player_side_armor_health(100),
-        player_rear_armor(160), player_rear_armor_health(75), player_pilot_health(600),
-        player_veterancy(0), front_armor(350), front_armor_health(100), side_armor(180),
-        side_armor_health(100), rear_armor(100), rear_armor_health(75),
+    Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(500), player_gun_penetration(0), gun_penetration(0), player_front_armor(0),
+        player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0),
+        player_rear_armor(0), player_rear_armor_health(0), player_pilot_health(1),
+        player_veterancy(0), front_armor(350), front_armor_health(0), side_armor(0),
+        side_armor_health(0), rear_armor(0), rear_armor_health(0),
         pilot_health(600), veterancy(0) {}
 
     void end_turn() {
 
         // gonna add a turn function here, just putting this so it doesn't fuck up my code, i hate seeing "X Errors" being more than 0.
         is_player_turn = !is_player_turn;
+    }
+
+    void end_mech_selection() {
+        has_selected_mech = !has_selected_mech;
     }
 
     void randomize_distance() {
@@ -133,29 +138,24 @@ public:
         getline(cin, user_input);
         if (user_input == "Generic")
         {
-
-            player_pilot_health += pilot_health;
-            player_front_armor += front_armor;
-                if (bool secondary_gun = true)
-                {
-                    player_secondary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
-                    //player_secondary_gun_penetration += Mech::generic_mech.secondary_gun_penetration;
-                    cout << "This actually works. Proof: " << mech_generic::mech_generic().secondary_gun_penetration << endl;
-                }
-                else if (bool tertiary_gun = true)
-                {
-                    //player_tertiary_gun_damage += Mech_Types::tertiary_gun_damage;
-                    //player_tertiary_gun_penetration += Mech::tertiary_gun_penetration;
-                }
-                else if (bool melee_capable = true)
-                {
-                    //player_melee_damage += Mech::melee_damage;
-                }
+            player_pilot_health += mech_generic::mech_generic().pilot_health;
+            player_front_armor += mech_generic::mech_generic().front_armor;
+            player_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
+            player_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
+            player_secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_generic::mech_generic().secondary_gun_penetration;
+            player_tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
+            player_melee_damage += mech_generic::mech_generic().melee_damage;
+            player_front_armor += mech_generic::mech_generic().front_armor;
+            end_mech_selection();
+            cout << "Mech Chosen!" << endl;
         }
         else 
         {
             cout << "Try again." << endl;
         }
+        
     }
 
     void player_turn() {
@@ -362,11 +362,18 @@ public:
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {
-                //player_turn();
-                player_selecting_mech();
+                if (has_selected_mech) 
+                {
+                    player_selecting_mech();
+                    //end_mech_selection();
+                }
+                else if (!has_selected_mech){
+                    player_turn();
+                    //cout << "It says selected mech = true." << endl;
+                }
             }
             else if (!is_player_turn) {
-                //enemy_turn();
+                enemy_turn();
                 //cout << "" << endl;
             }
         }
@@ -383,34 +390,12 @@ public:
 
 };
 
-void random_mathematical_nonsense_i_made() {
-    float rvim = 12;
-    float rvim_2 = 9;
-    float rvim_3 = 5.38218;
-    float rvim_4 = 0;
-
-    //rvim_4 = max(rvim, rvim_2);
-    //rvim_4 = min(rvim, rvim_2);
-    //rvim_4 = pow(3, 3);
-    //rvim_4 = sqrt(16);
-    //rvim_4 = cbrt(27);
-    //rvim_4 = abs(-12589072103971231);
-
-    system("Color 3F");
-    cout << "Requested Value Is: " << rvim_4 << endl;  // just some mathematical shit i wanted to test.
-}
 
 // SURPRISE STORMWAFFLE
 
 
 int main()
 {
-    //cout << lightwind::ironman << endl;  This is a comment because it was just namespace testing.
-    //cout << panzer_t << endl; This is a comment because it was just typedef testing.
-    //cin >> random_input;
-    //cout << "Copied Input: " << random_input << endl;                     They are Tests.
-    //random_mathematical_nonsense_i_made();
-
     cout << "STATUS: Radio On." << endl;
     randomizer();
     Panzermensch game;

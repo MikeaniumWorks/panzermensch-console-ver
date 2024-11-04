@@ -8,11 +8,10 @@ C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(275,35): w
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(276,32): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(288,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(326,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(389,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating code
-  32 of 113 functions (28.3%) were compiled, the rest were copied from previous compilation.
-    21 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+  42 of 126 functions (33.3%) were compiled, the rest were copied from previous compilation.
+    9 functions were new in current compilation
+    19 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,

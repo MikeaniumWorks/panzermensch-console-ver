@@ -12,12 +12,12 @@ using std::string;
 
 
     /*
-     Tier 1: Hellking, Warmaster, Artemis, Panzer, Emperor
-     Tier 2: Custodian, Sentinel, Deathguard, Dreadnought
-     Tier 3: Krieg, Battlebearer, Ironfire, Blitzkrieg
-     Tier 4: Steelmaster, Stormwind, Bloodlord
-     Tier 5: Diligent, Lineholder, Steelspirit
-     Tier 6: Peacebreaker, Armaedon, Irosticain, Generic
+    Tier 1: Aegis, Artemis, Panzer, Emperor
+    Tier 2: Custodian, Sentinel, Deathguard, Dreadnought, Hellking, Warmaster
+    Tier 3: Krieg, Battlebearer, Ironfire, Blitzkrieg, Hellforge
+    Tier 4: Ironmaiden, Stormwind, Bloodlord, Grey Tempest, Thundermaster
+    Tier 5: Diligent, Lineholder, Steelspirit, Nightwarden, Wrathrite
+    Tier 6: Peacebreaker, Warmage, Voidwalker, Lightdweller, Generic
     */
 
 
@@ -109,58 +109,13 @@ public:
     int melee_damage = 700;
     int melee_sharpness = 2000;
 
-    string mech_name = "EMPEROR";
+    string mech_name = "Emperor";
     int mech_id = 1;
     int tier = 1;
 };
 
 int stats() {
-    //mech_generic generic(100, 100, true, 100, 100, "Primary", false, 100, 100, "Secondary", false, 100, 100, "Tertiary", false, 100, 100, "Generic", 0, 6);
-    /*
-    generic_mech generic;
-    emperor_mech EMPEROR;
-    generic.pilot_health = 100;
-    generic.front_armor = 100; 
-    generic.primary_gun_capable = true; 
-    generic_mech.primary_gun_damage = 100; 
-    generic_mech.primary_gun_penetration = 100; 
-    generic_mech.primary_gun = "Primary"; 
-    generic_mech.secondary_gun_capable = true; 
-    generic.secondary_gun_damage = 100; 
-    generic_mech.secondary_gun_penetration = 100; 
-    generic_mech.secondary_gun = "Secondary"; 
-    generic_mech.tertiary_gun_capable = true; 
-    generic_mech.tertiary_gun_damage = 100; 
-    generic_mech.tertiary_gun_penetration = 100; 
-    generic_mech.tertiary_gun = "Tertiary"; 
-    generic_mech.melee_capable = true; 
-    generic_mech.melee_damage = 100; 
-    generic_mech.melee_sharpness = 100; 
-    generic_mech.mech_name = "Generic";
-    generic_mech.mech_id = 0;
-    generic_mech.tier = 6;
-    */
-    //
-    /*
-    Mech emperor_mech; 
-    emperor_mech.pilot_health = 1000; 
-    emperor_mech.front_armor = 780; 
-    emperor_mech.primary_gun_damage = 1260; 
-    emperor_mech.primary_gun_penetration = 1200; 
-    emperor_mech.primary_gun = "Godbreaker"; 
-    emperor_mech.secondary_gun_damage = 750; 
-    emperor_mech.secondary_gun_penetration = 800; 
-    emperor_mech.secondary_gun = "Aetheric Blaster"; 
-    emperor_mech.tertiary_gun_damage = 21; 
-    emperor_mech.tertiary_gun_penetration = 2000; 
-    emperor_mech.tertiary_gun = "Godfire";
-    emperor_mech.melee_capable = true; 
-    emperor_mech.melee_damage = 700; 
-    emperor_mech.melee_sharpness = 2000; 
-    emperor_mech.mech_name = "EMPEROR";
-    emperor_mech.mech_id = 1;
-    emperor_mech.tier = 1;
-    */
+
 }
 
 

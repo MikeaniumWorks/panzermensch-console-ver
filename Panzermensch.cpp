@@ -22,8 +22,11 @@
 //#include "vehicles.hpp"
 
 
-using namespace std;
 using namespace rapidjson;
+using std::string;
+using std::endl;
+using std::cout;
+using std::cin;
 namespace lightwind {
     string ironman = "if you see this, it worked";
 }
@@ -51,7 +54,7 @@ public:
 
 class Panzermensch {
 
-    // I have decided to make a rudimentary game, In which there are player and enemy mechs, the two fight in turns with each having their own option.
+    // This a rudimentary game, In which there are player and enemy mechs, the two fight in turns with each having their own options Like Fortify, Overcharge etc.
     // In this mech game that i shall name Panzermensch, you as a player mech must kill the enemy and have to fight a Boss at the end.
 
     // This is basically the precursor or demo version of a much more ambitious yet achievable project that i have, of an actual Videogame with full on 3D graphics.
@@ -80,8 +83,8 @@ public:
     int player_veterancy = 0;
 
     // Enemy Stats
-    int front_armor_health = 0;       // Basically Armor Integrity, for front, side and rear.
-    int front_armor = 0;              // The Armor itself, the more hits it takes, the lesser it gets (by a small magnitude), and the more its 'Health' or Integrity Decreases.
+    int front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
+    int front_armor = 0;              
     int side_armor_health = 0;
     int side_armor = 0;
     int rear_armor_health = 0;
@@ -89,7 +92,6 @@ public:
     int pilot_health = 0;             
     int veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
 
-    // also, all this comments are just for me to explain things to myself more so i understand better.
 
     // General Stats
 
@@ -99,15 +101,15 @@ public:
     //int tertiary_gun_damage = 0;
     //int done_damage;
 
-    // World Stats that may or may not be used.
+    // World Stats.
     bool is_player_turn = true;
     bool is_player_attacking = true;
     bool is_player_moving = true; // Unused for now
     bool has_selected_mech = true;
-    //int angle;                    // Unused for now... I plan on detailing this game A LOT.
+    //int angle;                    // Unused for now.
     int distance = 0;
     //string terrain;               // Unused for now.
-    string user_input = "Input";            // obvious.
+    string user_input = "Input";            
 
     Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(500), player_gun_penetration(0), gun_penetration(0), player_front_armor(0),
         player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0),
@@ -118,9 +120,10 @@ public:
 
     void end_turn() {
 
-        // gonna add a turn function here, just putting this so it doesn't fuck up my code, i hate seeing "X Errors" being more than 0.
         is_player_turn = !is_player_turn;
     }
+
+
 
     void end_mech_selection() {
         has_selected_mech = !has_selected_mech;
@@ -134,11 +137,11 @@ public:
 
     void player_selecting_mech() {
         cout << "Choose your Mech:" << endl;
-        cout << "EMPEROR" << " | " << "Generic" << endl;
+        cout << "Emperor" << " | " << "Panzer" << " | " << "Artemis" << " | " << "Aegis" << " | " << "Generic" << endl;
         getline(cin, user_input);
         if (user_input == "Generic")
         {
-            player_pilot_health += mech_generic::mech_generic().pilot_health;
+            player_pilot_health += (mech_generic::mech_generic().pilot_health - 1);
             player_front_armor += mech_generic::mech_generic().front_armor;
             player_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
             player_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
@@ -149,7 +152,62 @@ public:
             player_melee_damage += mech_generic::mech_generic().melee_damage;
             player_front_armor += mech_generic::mech_generic().front_armor;
             end_mech_selection();
-            cout << "Mech Chosen!" << endl;
+        }
+        else if (user_input == "Emperor")
+        {
+            player_pilot_health += (mech_emperor::mech_emperor().pilot_health - 1);
+            player_front_armor += mech_emperor::mech_emperor().front_armor;
+            player_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
+            player_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
+            player_secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_emperor::mech_emperor().secondary_gun_penetration;
+            player_tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
+            player_melee_damage += mech_emperor::mech_emperor().melee_damage;
+            player_front_armor += mech_emperor::mech_emperor().front_armor;
+            end_mech_selection();
+        }
+        else if (user_input == "Panzer")
+        {
+            player_pilot_health += (mech_panzer::mech_panzer().pilot_health - 1);
+            player_front_armor += mech_panzer::mech_panzer().front_armor;
+            player_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
+            player_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
+            player_secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_panzer::mech_panzer().secondary_gun_penetration;
+            player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
+            player_melee_damage += mech_panzer::mech_panzer().melee_damage;
+            player_front_armor += mech_panzer::mech_panzer().front_armor;
+            end_mech_selection();
+        }
+        else if (user_input == "Artemis")
+        {
+            player_pilot_health += (mech_artemis::mech_artemis().pilot_health - 1);
+            player_front_armor += mech_artemis::mech_artemis().front_armor;
+            player_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
+            player_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
+            player_secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_artemis::mech_artemis().secondary_gun_penetration;
+            player_tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
+            player_melee_damage += mech_artemis::mech_artemis().melee_damage;
+            player_front_armor += mech_artemis::mech_artemis().front_armor;
+            end_mech_selection();
+        }
+        else if (user_input == "Aegis")
+        {
+            player_pilot_health += (mech_aegis::mech_aegis().pilot_health - 1);
+            player_front_armor += mech_aegis::mech_aegis().front_armor;
+            player_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
+            player_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
+            player_secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_aegis::mech_aegis().secondary_gun_penetration;
+            player_tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
+            player_melee_damage += mech_aegis::mech_aegis().melee_damage;
+            player_front_armor += mech_aegis::mech_aegis().front_armor;
+            end_mech_selection();
         }
         else 
         {
@@ -166,7 +224,7 @@ public:
 
         if (user_input == "Fire") 
         {
-            player_combat_damage(is_player_attacking = true);
+            player_combat_damage();
             end_turn();
         }
         else if (user_input == "Repair") 
@@ -195,7 +253,8 @@ public:
     void enemy_turn() {
         if (pilot_health > 0) {
             cout << "Enemy Mech Turn! They Fire at us!" << endl;
-            enemy_combat_damage(is_player_attacking = false);
+            enemy_combat_damage();
+            cout << "If you see this, Enemy_Turn works." << endl;
             end_turn();
         }
         else {
@@ -278,37 +337,37 @@ public:
         }
     }
 
-    void player_combat_damage(bool is_player_attacking) {          // What happens when the guns fire.
+    void player_combat_damage() {          // What happens when the guns fire.
 
-        //const int min_distance = 100;
-        //const int max_distance = 12000;
-
-        int actual_damage = 500;
+        int actual_damage = player_primary_gun_damage;
         int done_damage = 0;
-        int damage_multiplier = (player_gun_penetration - front_armor) * 0.05;
+        int damage_multiplier = (player_primary_gun_penetration - front_armor) * 0.05;
 
-        if (is_player_attacking) {
-            if (front_armor > 349) {
-                if (player_gun_penetration > front_armor)
+        if (is_player_attacking=true) {
+            if (front_armor > 0) {
+                if (player_primary_gun_penetration > front_armor)
                 {
                     actual_damage*=damage_multiplier;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage * damage_multiplier);
                     cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
+                    end_combat_turn();
                 }
-                else if (player_gun_penetration = front_armor)
+                else if (player_primary_gun_penetration = front_armor)
                 {
                     actual_damage/=2;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage / 2);
                     cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
+                    end_combat_turn();
                 }
-                else if (player_gun_penetration < front_armor)
+                else if (player_primary_gun_penetration < front_armor)
                 {
                     actual_damage/=4;
                     pilot_health -= actual_damage;
                     done_damage += (actual_damage / 4);
                     cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
+                    end_combat_turn();
                 }
                 else
                 {
@@ -318,39 +377,45 @@ public:
         }
     }
 
-    void enemy_combat_damage(bool is_player_attacking) 
+    void enemy_combat_damage() 
     {
+        int enemy_actual_damage = 500;
+        int enemy_done_damage = 0;
+        int damage_multiplier = (gun_penetration - player_front_armor) * 0.05;
 
-        int actual_damage = 500;
-        int done_damage = 0;
-        int damage_multiplier = (gun_penetration - front_armor) * 0.05;
-
-        if (!is_player_attacking)
+        if (is_player_attacking=true)
         {
-            if (player_front_armor > 349) {
+            cout << "--The Combat Function is Accessed." << endl;
+            if (player_front_armor > 0) {
                 if (gun_penetration > player_front_armor) {
-                    player_pilot_health -= (actual_damage * damage_multiplier);
-                    done_damage += (actual_damage * damage_multiplier);
-                    cout << "We are Hit in Front armor! Damaged for: " << done_damage << endl;
+                    player_pilot_health -= (enemy_actual_damage * damage_multiplier);
+                    enemy_done_damage += (enemy_actual_damage * damage_multiplier);
+                    cout << "We are Hit in Front armor! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (gun_penetration = front_armor)
+                else if (gun_penetration = player_front_armor)
                 {
-                    player_pilot_health -= (actual_damage / 2);
-                    done_damage += (actual_damage / 2);
-                    cout << "We are Hit! But Front Armor Held! Damaged for: " << done_damage << endl;
+                    player_pilot_health -= (enemy_actual_damage / 2);
+                    enemy_done_damage += (enemy_actual_damage / 2);
+                    cout << "We are Hit! But Front Armor Held! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (gun_penetration < front_armor)
+                else if (gun_penetration < player_front_armor)
                 {
-                    player_pilot_health -= (actual_damage / 4);
-                    done_damage += (actual_damage / 4);
-                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << done_damage << endl;
+                    player_pilot_health -= (enemy_actual_damage / 4);
+                    enemy_done_damage += (enemy_actual_damage / 4);
+                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << enemy_done_damage << endl;
                 }
             }
+        }
+        else
+        {
+            cout << "This means that Combat Function is NOT accessed." << endl;
         }
     }
         
         
-
+    void end_combat_turn() {
+        is_player_attacking = !is_player_attacking;
+    }
 
 
 
@@ -365,16 +430,13 @@ public:
                 if (has_selected_mech) 
                 {
                     player_selecting_mech();
-                    //end_mech_selection();
                 }
                 else if (!has_selected_mech){
                     player_turn();
-                    //cout << "It says selected mech = true." << endl;
                 }
             }
             else if (!is_player_turn) {
                 enemy_turn();
-                //cout << "" << endl;
             }
         }
 

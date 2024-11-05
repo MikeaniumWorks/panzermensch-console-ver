@@ -381,24 +381,24 @@ public:
     {
         int enemy_actual_damage = 500;
         int enemy_done_damage = 0;
-        int damage_multiplier = (gun_penetration - player_front_armor) * 0.05;
+        int enemy_gun_penetration = 300;
+        int damage_multiplier = (enemy_gun_penetration - player_front_armor) * 0.05;
 
         if (is_player_attacking=true)
         {
-            cout << "--The Combat Function is Accessed." << endl;
             if (player_front_armor > 0) {
-                if (gun_penetration > player_front_armor) {
+                if (enemy_gun_penetration > player_front_armor) {
                     player_pilot_health -= (enemy_actual_damage * damage_multiplier);
                     enemy_done_damage += (enemy_actual_damage * damage_multiplier);
                     cout << "We are Hit in Front armor! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (gun_penetration = player_front_armor)
+                else if (enemy_gun_penetration = player_front_armor)
                 {
                     player_pilot_health -= (enemy_actual_damage / 2);
                     enemy_done_damage += (enemy_actual_damage / 2);
                     cout << "We are Hit! But Front Armor Held! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (gun_penetration < player_front_armor)
+                else if (enemy_gun_penetration < player_front_armor)
                 {
                     player_pilot_health -= (enemy_actual_damage / 4);
                     enemy_done_damage += (enemy_actual_damage / 4);

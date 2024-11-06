@@ -21,12 +21,8 @@
 #include "mechs.hpp"
 //#include "vehicles.hpp"
 
-
+using namespace std;
 using namespace rapidjson;
-using std::string;
-using std::endl;
-using std::cout;
-using std::cin;
 namespace lightwind {
     string ironman = "if you see this, it worked";
 }
@@ -100,6 +96,8 @@ public:
     float secondary_gun_damage = 0;
     float tertiary_gun_damage = 0;
     int turn_count = 0;
+    int dice = 6;
+    int dice_result = 0;
 
     // World Stats.
     bool is_player_turn = true;
@@ -108,6 +106,7 @@ public:
     bool has_selected_mech = true;
     bool is_fortified = false;
     bool is_overcharged = false; // Equal False by default.
+    //bool is_effect_on = true;
     int distance = 0;
     string terrain;               // Unused for now.
     string user_input = "Input";            
@@ -144,10 +143,17 @@ public:
     }
 
     void unfortify() {
-        is_fortified = !is_fortified;
-        player_front_armor -= 150;
-        player_side_armor -= 150;
-        player_rear_armor -= 75;
+        if (is_fortified)
+        {
+            player_front_armor -= 150;
+            player_side_armor -= 150;
+            player_rear_armor -= 75;
+            fortify_switch_off();
+        }
+        else
+        {
+            //cout << "Fortified is False!" << endl;
+        }
     }
 
     void unovercharge() {
@@ -159,7 +165,44 @@ public:
         }
         else
         {
-            cout << "Overcharge is False!" << endl;
+            //cout << "Overcharge is False!" << endl;
+        }
+    }
+
+    void diceroll() {
+        dice_result = (rand() % dice) + 1;
+    }
+
+    void random_effects() {
+
+        int effect_roll = dice_result;
+
+        switch (effect_roll)
+        {
+        case (1):
+            cout << "Terrain Unstable!" << endl;
+            //Accuracy Reduced. But I don't have an accuracy value YET.
+            break;
+        case (2):
+            cout << "Humid Weather" << endl;
+            player_primary_gun_damage - (player_primary_gun_damage * (1 - 0.12));
+            break;
+        case (3):
+            cout << "Night of a Bad Omen!" << endl;
+            front_armor - (front_armor * (1 - 0.6));
+            player_front_armor - (front_armor * (1 - 0.8));
+            break;
+        case (4):
+            // out of ideas.
+            cout << "Case 4 Hit." << endl;
+            break;
+        case (5):
+            // out of ideas.
+            cout << "Case 5 Hit." << endl;
+            break;
+        default:
+            cout << "Everything seems Fine today." << endl;
+            break;
         }
     }
 
@@ -252,6 +295,7 @@ public:
 
     void player_turn() {
 
+        unfortify();
         cout << "Your Turn!" << endl;
         cout << "Player Front Armor: " << player_front_armor << endl;
         string user_input;
@@ -271,7 +315,6 @@ public:
         else if (user_input == "Fortify") 
         {
             fortify_action();
-            end_fortify_effect();
             end_turn();
         }
         else if (user_input == "Overcharge")
@@ -347,17 +390,14 @@ public:
                 player_rear_armor += 75;
                 cout << "Armor Fortified!" << endl;
                 fortify_switch_on();
-                cout << "Front Armor: " << player_front_armor << endl;
         }
     }
     void overcharge_action() {
         if (is_player_turn && !is_overcharged)
         {
-                cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
                 player_primary_gun_damage *= 1.5;
                 player_primary_gun_penetration *= 1.1;
                 cout << "Main Gun Overcharged!" << endl;
-                cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
                 overcharge_switch_on();
         }
     }
@@ -454,8 +494,9 @@ public:
 
 
     void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
-
+        diceroll();
         cout << "Enemy Mech Encountered!" << endl;
+        random_effects();
         randomize_distance();
         cout << "Rangefinder reported Distance: " << distance << " Meters." << endl;
 
@@ -464,7 +505,6 @@ public:
                 if (has_selected_mech) 
                 {
                     player_selecting_mech();
-                    cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
                 }
                 else if (!has_selected_mech){
                     player_turn();

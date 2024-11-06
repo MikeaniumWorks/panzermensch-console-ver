@@ -7,9 +7,9 @@ C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(486,51): w
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(505,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(546,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Generating code
-  3 of 149 functions ( 2.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  33 of 149 functions (22.1%) were compiled, the rest were copied from previous compilation.
+    6 functions were new in current compilation
+    10 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,

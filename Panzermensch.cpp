@@ -65,50 +65,51 @@ public:
 
     // Player Stats
     string player_mech = "Player";
-    int player_primary_gun_damage = 0;
-    int player_primary_gun_penetration = 0;
-    int player_secondary_gun_damage = 0;
-    int player_secondary_gun_penetration = 0;
-    int player_tertiary_gun_damage = 0;
-    int player_tertiary_gun_penetration = 0;
-    int player_melee_damage = 0;
-    int player_front_armor_health = 0;
-    int player_front_armor = 0;
-    int player_side_armor_health = 0;
-    int player_side_armor = 0;
-    int player_rear_armor_health = 0;
-    int player_rear_armor = 0;
-    int player_pilot_health = 0;
-    int player_gun_penetration = 0;
-    int player_veterancy = 0;
+    float player_primary_gun_damage = 0;
+    float player_primary_gun_penetration = 0;
+    float player_secondary_gun_damage = 0;
+    float player_secondary_gun_penetration = 0;
+    float player_tertiary_gun_damage = 0;
+    float player_tertiary_gun_penetration = 0;
+    float player_melee_damage = 0;
+    float player_front_armor_health = 0;
+    float player_front_armor = 0;
+    float player_side_armor_health = 0;
+    float player_side_armor = 0;
+    float player_rear_armor_health = 0;
+    float player_rear_armor = 0;
+    float player_pilot_health = 0;
+    float player_gun_penetration = 0;
+    float player_veterancy = 0;
 
     // Enemy Stats
-    int front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
-    int front_armor = 0;              
-    int side_armor_health = 0;
-    int side_armor = 0;
-    int rear_armor_health = 0;
-    int rear_armor = 0;
-    int pilot_health = 0;             
-    int veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
+    float front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
+    float front_armor = 0;              
+    float side_armor_health = 0;
+    float side_armor = 0;
+    float rear_armor_health = 0;
+    float rear_armor = 0;
+    float pilot_health = 0;             
+    float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
 
 
     // General Stats
 
-    int primary_gun_damage = 0;
-    int gun_penetration = 0;
-    int secondary_gun_damage = 0;
-    //int tertiary_gun_damage = 0;
-    //int done_damage;
+    float primary_gun_damage = 0;
+    float gun_penetration = 0;
+    float secondary_gun_damage = 0;
+    float tertiary_gun_damage = 0;
+    int turn_count = 0;
 
     // World Stats.
     bool is_player_turn = true;
     bool is_player_attacking = true;
     bool is_player_moving = true; // Unused for now
     bool has_selected_mech = true;
-    //int angle;                    // Unused for now.
+    bool is_fortified = false;
+    bool is_overcharged = false; // Equal False by default.
     int distance = 0;
-    //string terrain;               // Unused for now.
+    string terrain;               // Unused for now.
     string user_input = "Input";            
 
     Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(500), player_gun_penetration(0), gun_penetration(0), player_front_armor(0),
@@ -119,14 +120,47 @@ public:
         pilot_health(600), veterancy(0) {}
 
     void end_turn() {
-
         is_player_turn = !is_player_turn;
     }
 
-
-
     void end_mech_selection() {
         has_selected_mech = !has_selected_mech;
+    }
+
+    void fortify_switch_on() {
+        is_fortified = true;
+    }
+
+    void fortify_switch_off() {
+        is_fortified = false;
+    }
+    
+    void overcharge_switch_on() {
+        is_overcharged = true;
+    }
+    
+    void overcharge_switch_off() {
+        is_overcharged = false;
+    }
+
+    void unfortify() {
+        is_fortified = !is_fortified;
+        player_front_armor -= 150;
+        player_side_armor -= 150;
+        player_rear_armor -= 75;
+    }
+
+    void unovercharge() {
+        if (is_overcharged)
+        {
+            player_primary_gun_damage /= 1.5;
+            player_primary_gun_penetration /= 1.1;
+            overcharge_switch_off();
+        }
+        else
+        {
+            cout << "Overcharge is False!" << endl;
+        }
     }
 
     void randomize_distance() {
@@ -219,12 +253,14 @@ public:
     void player_turn() {
 
         cout << "Your Turn!" << endl;
+        cout << "Player Front Armor: " << player_front_armor << endl;
         string user_input;
         getline(cin, user_input);
 
         if (user_input == "Fire") 
         {
             player_combat_damage();
+            unovercharge();
             end_turn();
         }
         else if (user_input == "Repair") 
@@ -235,6 +271,7 @@ public:
         else if (user_input == "Fortify") 
         {
             fortify_action();
+            end_fortify_effect();
             end_turn();
         }
         else if (user_input == "Overcharge")
@@ -254,7 +291,6 @@ public:
         if (pilot_health > 0) {
             cout << "Enemy Mech Turn! They Fire at us!" << endl;
             enemy_combat_damage();
-            cout << "If you see this, Enemy_Turn works." << endl;
             end_turn();
         }
         else {
@@ -304,27 +340,25 @@ public:
     }
 
     void fortify_action() {
-        if (is_player_turn)
+        if (is_player_turn && !is_fortified)
         {
-            player_front_armor + 150;
-            player_side_armor + 150;
-            player_rear_armor + 75;
-            cout << "Armor Fortified!" << endl;
-        }
-        else if (!is_player_turn)
-        {
-            front_armor += 50;
-            side_armor += 50;
-            rear_armor += 25;
-            cout << "Enemy Armor Fortified!" << endl;
+                player_front_armor += 150;
+                player_side_armor += 150;
+                player_rear_armor += 75;
+                cout << "Armor Fortified!" << endl;
+                fortify_switch_on();
+                cout << "Front Armor: " << player_front_armor << endl;
         }
     }
     void overcharge_action() {
-        if (is_player_turn)
+        if (is_player_turn && !is_overcharged)
         {
-            primary_gun_damage *= 1.5;
-            player_gun_penetration *= 1.1;
-            cout << "Main Gun Overcharged!" << endl;
+                cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
+                player_primary_gun_damage *= 1.5;
+                player_primary_gun_penetration *= 1.1;
+                cout << "Main Gun Overcharged!" << endl;
+                cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
+                overcharge_switch_on();
         }
     }
 
@@ -339,9 +373,9 @@ public:
 
     void player_combat_damage() {          // What happens when the guns fire.
 
-        int actual_damage = player_primary_gun_damage;
-        int done_damage = 0;
-        int damage_multiplier = (player_primary_gun_penetration - front_armor) * 0.05;
+        float actual_damage = player_primary_gun_damage;
+        float done_damage = 0;
+        float damage_multiplier = (player_primary_gun_penetration - front_armor) * 0.05;
 
         if (is_player_attacking=true) {
             if (front_armor > 0) {
@@ -379,10 +413,10 @@ public:
 
     void enemy_combat_damage() 
     {
-        int enemy_actual_damage = 500;
-        int enemy_done_damage = 0;
-        int enemy_gun_penetration = 300;
-        int damage_multiplier = (enemy_gun_penetration - player_front_armor) * 0.05;
+        float enemy_actual_damage = 500;
+        float enemy_done_damage = 0;
+        float enemy_gun_penetration = 300;
+        float damage_multiplier = (enemy_gun_penetration - player_front_armor) * 0.05;
 
         if (is_player_attacking=true)
         {
@@ -394,14 +428,14 @@ public:
                 }
                 else if (enemy_gun_penetration = player_front_armor)
                 {
-                    player_pilot_health -= (enemy_actual_damage / 2);
-                    enemy_done_damage += (enemy_actual_damage / 2);
+                    player_pilot_health -= (enemy_actual_damage / 4);
+                    enemy_done_damage += (enemy_actual_damage / 4);
                     cout << "We are Hit! But Front Armor Held! Damaged for: " << enemy_done_damage << endl;
                 }
                 else if (enemy_gun_penetration < player_front_armor)
                 {
-                    player_pilot_health -= (enemy_actual_damage / 4);
-                    enemy_done_damage += (enemy_actual_damage / 4);
+                    player_pilot_health -= (enemy_actual_damage / 8);
+                    enemy_done_damage += (enemy_actual_damage / 8);
                     cout << "We are Hit! Their Shot Penetrated! Damaged for: " << enemy_done_damage << endl;
                 }
             }
@@ -430,6 +464,7 @@ public:
                 if (has_selected_mech) 
                 {
                     player_selecting_mech();
+                    cout << "Damage: " << player_primary_gun_damage << " Penetration: " << player_primary_gun_penetration << endl;
                 }
                 else if (!has_selected_mech){
                     player_turn();

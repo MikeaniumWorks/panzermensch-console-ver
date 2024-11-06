@@ -79,6 +79,13 @@ public:
     float player_veterancy = 0;
 
     // Enemy Stats
+    float primary_gun_damage = 0;
+    float primary_gun_penetration = 0;
+    float secondary_gun_damage = 0;
+    float secondary_gun_penetration = 0;
+    float tertiary_gun_damage = 0;
+    float tertiary_gun_penetration = 0;
+    float melee_damage = 0;
     float front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
     float front_armor = 0;              
     float side_armor_health = 0;
@@ -90,33 +97,31 @@ public:
 
 
     // General Stats
-
-    float primary_gun_damage = 0;
-    float gun_penetration = 0;
-    float secondary_gun_damage = 0;
-    float tertiary_gun_damage = 0;
     int turn_count = 0;
     int dice = 6;
     int dice_result = 0;
+    int ai_mech_dice = 4;
 
     // World Stats.
     bool is_player_turn = true;
     bool is_player_attacking = true;
     bool is_player_moving = true; // Unused for now
     bool has_selected_mech = true;
+    bool ai_has_selected_mech = true;
     bool is_fortified = false;
     bool is_overcharged = false; // Equal False by default.
     //bool is_effect_on = true;
+    int ai_mech_roll = 1;
     int distance = 0;
     string terrain;               // Unused for now.
     string user_input = "Input";            
 
-    Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(500), player_gun_penetration(0), gun_penetration(0), player_front_armor(0),
-        player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0),
-        player_rear_armor(0), player_rear_armor_health(0), player_pilot_health(1),
+    Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(0), player_gun_penetration(0), primary_gun_penetration(0), player_front_armor(0),
+        player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0), secondary_gun_damage(0), secondary_gun_penetration(0),
+        tertiary_gun_damage(0), tertiary_gun_penetration(0), melee_damage(0), player_rear_armor(0), player_rear_armor_health(0), player_pilot_health(1),
         player_veterancy(0), front_armor(350), front_armor_health(0), side_armor(0),
         side_armor_health(0), rear_armor(0), rear_armor_health(0),
-        pilot_health(600), veterancy(0) {}
+        pilot_health(1), veterancy(0) {}
 
     void end_turn() {
         is_player_turn = !is_player_turn;
@@ -124,6 +129,10 @@ public:
 
     void end_mech_selection() {
         has_selected_mech = !has_selected_mech;
+    }
+
+    void end_ai_mech_selection() {
+        ai_has_selected_mech = !ai_has_selected_mech;
     }
 
     void fortify_switch_on() {
@@ -171,6 +180,10 @@ public:
 
     void diceroll() {
         dice_result = (rand() % dice) + 1;
+    }
+
+    void ai_mech_dice_roll() {
+        ai_mech_roll = (rand() % ai_mech_dice) + 0;
     }
 
     void random_effects() {
@@ -290,14 +303,88 @@ public:
         {
             cout << "Try again." << endl;
         }
-        
+    }
+
+    void ai_mech_selection() {
+        switch (ai_mech_roll)
+        {
+        case(1):
+            pilot_health += (mech_emperor::mech_emperor().pilot_health - 1);
+            front_armor += mech_emperor::mech_emperor().front_armor;
+            primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
+            primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
+            secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
+            secondary_gun_penetration += mech_emperor::mech_emperor().secondary_gun_penetration;
+            tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
+            melee_damage += mech_emperor::mech_emperor().melee_damage;
+            front_armor += mech_emperor::mech_emperor().front_armor;
+            cout << "You Fight an " << mech_emperor::mech_emperor().mech_name << endl;
+            end_ai_mech_selection();
+            break;
+        case(2):
+            pilot_health += (mech_panzer::mech_panzer().pilot_health - 1);
+            front_armor += mech_panzer::mech_panzer().front_armor;
+            primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
+            primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
+            secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
+            secondary_gun_penetration += mech_panzer::mech_panzer().secondary_gun_penetration;
+            tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
+            melee_damage += mech_panzer::mech_panzer().melee_damage;
+            front_armor += mech_panzer::mech_panzer().front_armor;
+            cout << "You Fight a " << mech_panzer::mech_panzer().mech_name << endl;
+            end_ai_mech_selection();
+            break;
+        case(3):
+            pilot_health += (mech_artemis::mech_artemis().pilot_health - 1);
+            front_armor += mech_artemis::mech_artemis().front_armor;
+            primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
+            primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
+            secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
+            secondary_gun_penetration += mech_artemis::mech_artemis().secondary_gun_penetration;
+            tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
+            melee_damage += mech_artemis::mech_artemis().melee_damage;
+            front_armor += mech_artemis::mech_artemis().front_armor;
+            cout << "You Fight an " << mech_artemis::mech_artemis().mech_name << endl;
+            end_ai_mech_selection();
+            break;
+        case(4):
+            pilot_health += (mech_aegis::mech_aegis().pilot_health - 1);
+            front_armor += mech_aegis::mech_aegis().front_armor;
+            primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
+            primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
+            secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
+            secondary_gun_penetration += mech_aegis::mech_aegis().secondary_gun_penetration;
+            tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
+            melee_damage += mech_aegis::mech_aegis().melee_damage;
+            front_armor += mech_aegis::mech_aegis().front_armor;
+            cout << "You Fight an " << mech_aegis::mech_aegis().mech_name << endl;
+            end_ai_mech_selection();
+            break;
+        default:
+            pilot_health += (mech_generic::mech_generic().pilot_health - 1);
+            front_armor += mech_generic::mech_generic().front_armor;
+            primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
+            primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
+            secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
+            secondary_gun_penetration += mech_generic::mech_generic().secondary_gun_penetration;
+            tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
+            melee_damage += mech_generic::mech_generic().melee_damage;
+            front_armor += mech_generic::mech_generic().front_armor;
+            cout << "You Fight a Generic Bland Enemy." << endl;
+            end_ai_mech_selection();
+            break;
+        }
     }
 
     void player_turn() {
 
         unfortify();
-        cout << "Your Turn!" << endl;
-        cout << "Player Front Armor: " << player_front_armor << endl;
+        cout << "Your Turn! " << "Your Health: " << player_pilot_health << endl;
         string user_input;
         getline(cin, user_input);
 
@@ -406,7 +493,7 @@ public:
         if (!is_player_turn)
         {
             primary_gun_damage *= 1.5;
-            gun_penetration *= 1.5;
+            primary_gun_penetration *= 1.5;
             cout << "Enemy Main Gun Overcharged!" << endl;
         }
     }
@@ -431,7 +518,7 @@ public:
                 {
                     actual_damage/=2;
                     pilot_health -= actual_damage;
-                    done_damage += (actual_damage / 2);
+                    done_damage += (actual_damage);
                     cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
                     end_combat_turn();
                 }
@@ -439,7 +526,7 @@ public:
                 {
                     actual_damage/=4;
                     pilot_health -= actual_damage;
-                    done_damage += (actual_damage / 4);
+                    done_damage += (actual_damage);
                     cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
                     end_combat_turn();
                 }
@@ -453,9 +540,9 @@ public:
 
     void enemy_combat_damage() 
     {
-        float enemy_actual_damage = 500;
+        float enemy_actual_damage = primary_gun_damage;
         float enemy_done_damage = 0;
-        float enemy_gun_penetration = 300;
+        float enemy_gun_penetration = primary_gun_penetration;
         float damage_multiplier = (enemy_gun_penetration - player_front_armor) * 0.05;
 
         if (is_player_attacking=true)
@@ -495,6 +582,11 @@ public:
 
     void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
         diceroll();
+        ai_mech_dice_roll();
+        if (ai_has_selected_mech)
+        {
+            ai_mech_selection();
+        }
         cout << "Enemy Mech Encountered!" << endl;
         random_effects();
         randomize_distance();

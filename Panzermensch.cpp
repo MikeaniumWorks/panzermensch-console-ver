@@ -385,6 +385,8 @@ public:
 
         unfortify();
         cout << "Your Turn! " << "Your Health: " << player_pilot_health << endl;
+        cout << "Your Actions: " << endl;
+        cout << "Fire | " << "Repair | " << "Fortify | " << "Overcharge" << endl;
         string user_input;
         getline(cin, user_input);
 
@@ -542,27 +544,29 @@ public:
     {
         float enemy_actual_damage = primary_gun_damage;
         float enemy_done_damage = 0;
-        float enemy_gun_penetration = primary_gun_penetration;
-        float damage_multiplier = (enemy_gun_penetration - player_front_armor) * 0.05;
+        float damage_multiplier = (primary_gun_penetration - player_front_armor) * 0.05;
 
         if (is_player_attacking=true)
         {
             if (player_front_armor > 0) {
-                if (enemy_gun_penetration > player_front_armor) {
-                    player_pilot_health -= (enemy_actual_damage * damage_multiplier);
-                    enemy_done_damage += (enemy_actual_damage * damage_multiplier);
+                if (primary_gun_penetration > player_front_armor) {
+                    enemy_actual_damage *= damage_multiplier;
+                    player_pilot_health -= enemy_actual_damage;
+                    enemy_done_damage += enemy_actual_damage;
                     cout << "We are Hit in Front armor! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (enemy_gun_penetration = player_front_armor)
+                else if (primary_gun_penetration = player_front_armor)
                 {
-                    player_pilot_health -= (enemy_actual_damage / 4);
-                    enemy_done_damage += (enemy_actual_damage / 4);
+                    enemy_actual_damage /= 4;
+                    player_pilot_health -= enemy_actual_damage;
+                    enemy_done_damage += enemy_actual_damage;
                     cout << "We are Hit! But Front Armor Held! Damaged for: " << enemy_done_damage << endl;
                 }
-                else if (enemy_gun_penetration < player_front_armor)
+                else if (primary_gun_penetration < player_front_armor)
                 {
-                    player_pilot_health -= (enemy_actual_damage / 8);
-                    enemy_done_damage += (enemy_actual_damage / 8);
+                    enemy_actual_damage /= 8;
+                    player_pilot_health -= enemy_actual_damage;
+                    enemy_done_damage += enemy_actual_damage;
                     cout << "We are Hit! Their Shot Penetrated! Damaged for: " << enemy_done_damage << endl;
                 }
             }

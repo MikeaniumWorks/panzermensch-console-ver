@@ -3,13 +3,13 @@ C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(172,47): w
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(201,39): warning C4552: '-': result of expression not used
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(205,25): warning C4552: '-': result of expression not used
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(206,32): warning C4552: '-': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(486,51): warning C4305: '*=': truncation from 'double' to 'float'
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(505,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(546,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(488,51): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(507,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(548,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Generating code
-  33 of 149 functions (22.1%) were compiled, the rest were copied from previous compilation.
-    6 functions were new in current compilation
-    10 functions had inline decision re-evaluated but remain unchanged
+  8 of 149 functions ( 5.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,

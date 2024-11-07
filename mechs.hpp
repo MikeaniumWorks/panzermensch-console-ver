@@ -87,23 +87,23 @@ class mech_emperor {
     //                          [__|     
 
 public:
-    float pilot_health = 1000;
-    float front_armor = 780;
+    float pilot_health = 0;
+    float front_armor = 0;
     bool primary_gun_capable = true;
-    float primary_gun_damage = 1260;
-    float primary_gun_penetration = 1200;
+    float primary_gun_damage = 0;
+    float primary_gun_penetration = 0;
     string primary_gun = "Godbreaker";
     bool secondary_gun_capable = true;
-    float secondary_gun_damage = 750;
-    float secondary_gun_penetration = 800;
+    float secondary_gun_damage = 0;
+    float secondary_gun_penetration = 0;
     string secondary_gun = "Aetheric Blaster";
     bool tertiary_gun_capable = true;
-    float tertiary_gun_damage = 21;
-    float tertiary_gun_penetration = 2000;
+    float tertiary_gun_damage = 0;
+    float tertiary_gun_penetration = 0;
     string tertiary_gun = "Godfire";
     bool melee_capable = true;
-    float melee_damage = 700;
-    float melee_sharpness = 2000;
+    float melee_damage = 0;
+    float melee_sharpness = 0;
     string melee_weapon = "Godslayer";
 
     string mech_name = "EMPEROR";

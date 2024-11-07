@@ -98,8 +98,15 @@ public:
 
     // General Stats
     int turn_count = 0;
+    int turn_skip_chance_dice = 2;
+    int turn_skip_chance_roll = 0;
+    int accuracy_modifier = 115;
+    int movement_speed_modifier = 100;
+    int accuracy_roll = 0;
     int dice = 6;
     int dice_result = 0;
+    int dice2 = 4;
+    int dice2_result = 0;
     int ai_mech_dice = 4;
 
     // World Stats.
@@ -110,18 +117,37 @@ public:
     bool ai_has_selected_mech = true;
     bool is_fortified = false;
     bool is_overcharged = false; // Equal False by default.
+    bool is_enemy_overcharged = false;
+    bool is_terrain_on = true;
+    bool case_1_hit = false;
+    bool case_2_hit = false;
+    bool case_3_hit = false;
+    bool case_4_hit = false;
     //bool is_effect_on = true;
-    int ai_mech_roll = 1;
+    int ai_mech_roll = 0;
     int distance = 0;
     string terrain;               // Unused for now.
+    string terrain_modifier_id_1 = "Plains";  // Plains
+    string terrain_modifier_id_2 = "Mountains"; // Mountains
+    string terrain_modifier_id_3 = "Hills"; // Hills
+    string terrain_modifier_id_4 = "Tundra"; // Arctic
     string user_input = "Input";            
 
     Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(0), player_gun_penetration(0), primary_gun_penetration(0), player_front_armor(0),
         player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0), secondary_gun_damage(0), secondary_gun_penetration(0),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), melee_damage(0), player_rear_armor(0), player_rear_armor_health(0), player_pilot_health(1),
-        player_veterancy(0), front_armor(350), front_armor_health(0), side_armor(0),
+        player_veterancy(0), front_armor(0), front_armor_health(0), side_armor(0),
         side_armor_health(0), rear_armor(0), rear_armor_health(0),
         pilot_health(1), veterancy(0) {}
+
+    void debug_values() {
+        cout << "---->>Enemy Front Armor: " << front_armor << endl;
+        cout << "---->>Player Front Armor: " << player_front_armor << endl;
+        cout << "---->>Enemy Primary Gun Damage: " << primary_gun_damage << endl;
+        cout << "---->>Enemy Primary Gun Penetration: " << primary_gun_penetration << endl;
+        cout << "---->>Player Primary Gun Damage: " << player_primary_gun_damage << endl;
+        cout << "---->>Player Primary Gun Penetration: " << player_primary_gun_penetration << endl;
+    }
 
     void end_turn() {
         is_player_turn = !is_player_turn;
@@ -178,12 +204,70 @@ public:
         }
     }
 
+    void turn_skip_chance() {
+        turn_skip_chance_roll = (rand() % turn_skip_chance_dice) + 0;
+        switch (turn_skip_chance_roll)
+        {
+        case(1):
+            //case_4_hit = false;
+            break;
+        case(2):
+            end_turn();
+            cout << "Turn Skipped! Low Vision!" << endl;
+            break;
+        default:
+            cout << "Turn Not Skipped." << endl;
+            break;
+        }
+    }
+
+
+    void terrain_roll() {
+        dice2_result = (rand() % dice2) + 0;
+    }
+
+    void terrain_modifier() {
+        is_terrain_on = true;
+        terrain_roll();
+        int terrain_roll = dice2_result;
+        switch (terrain_roll)
+        {
+        case(1):
+            cout << "Terrain: " << terrain_modifier_id_1 << endl;
+            break;
+        case(2):
+            cout << "Terrain: " << terrain_modifier_id_2 << endl;
+            accuracy_modifier -= 40;
+            movement_speed_modifier - 50;
+            break;
+        case(3):
+            cout << "Terrain: " << terrain_modifier_id_3 << endl;
+            accuracy_modifier -= 20;
+            movement_speed_modifier - 25;
+            break;
+        case(4):
+            cout << "Terrain: " << terrain_modifier_id_4 << endl;
+            accuracy_modifier -= 50;
+            break;
+        default:
+            cout << "Terrain: " << terrain_modifier_id_1 << endl;
+            break;
+        }
+    }
+
     void diceroll() {
         dice_result = (rand() % dice) + 1;
     }
 
     void ai_mech_dice_roll() {
         ai_mech_roll = (rand() % ai_mech_dice) + 0;
+    }
+
+    void modifier_checker() {
+        if (is_terrain_on)
+        {
+            terrain_modifier();
+        }
     }
 
     void random_effects() {
@@ -193,21 +277,26 @@ public:
         switch (effect_roll)
         {
         case (1):
+            case_1_hit = true;
             cout << "Terrain Unstable!" << endl;
-            //Accuracy Reduced. But I don't have an accuracy value YET.
+            accuracy_modifier -= 50;
             break;
         case (2):
+            case_2_hit = true;
             cout << "Humid Weather" << endl;
             player_primary_gun_damage - (player_primary_gun_damage * (1 - 0.12));
             break;
         case (3):
+            case_3_hit = true;
             cout << "Night of a Bad Omen!" << endl;
+            accuracy_modifier -= 75;
             front_armor - (front_armor * (1 - 0.6));
-            player_front_armor - (front_armor * (1 - 0.8));
+            player_front_armor - (player_front_armor * (1 - 0.8));
             break;
         case (4):
-            // out of ideas.
-            cout << "Case 4 Hit." << endl;
+            case_4_hit = true;
+            cout << "Immense Fog." << endl;
+            accuracy_modifier -= 75;
             break;
         case (5):
             // out of ideas.
@@ -240,7 +329,6 @@ public:
             player_tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
             player_melee_damage += mech_generic::mech_generic().melee_damage;
-            player_front_armor += mech_generic::mech_generic().front_armor;
             end_mech_selection();
         }
         else if (user_input == "Emperor")
@@ -254,7 +342,6 @@ public:
             player_tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
             player_melee_damage += mech_emperor::mech_emperor().melee_damage;
-            player_front_armor += mech_emperor::mech_emperor().front_armor;
             end_mech_selection();
         }
         else if (user_input == "Panzer")
@@ -268,7 +355,6 @@ public:
             player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             player_melee_damage += mech_panzer::mech_panzer().melee_damage;
-            player_front_armor += mech_panzer::mech_panzer().front_armor;
             end_mech_selection();
         }
         else if (user_input == "Artemis")
@@ -282,7 +368,6 @@ public:
             player_tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             player_melee_damage += mech_artemis::mech_artemis().melee_damage;
-            player_front_armor += mech_artemis::mech_artemis().front_armor;
             end_mech_selection();
         }
         else if (user_input == "Aegis")
@@ -296,7 +381,6 @@ public:
             player_tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             player_melee_damage += mech_aegis::mech_aegis().melee_damage;
-            player_front_armor += mech_aegis::mech_aegis().front_armor;
             end_mech_selection();
         }
         else 
@@ -318,7 +402,6 @@ public:
             tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
             tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
             melee_damage += mech_emperor::mech_emperor().melee_damage;
-            front_armor += mech_emperor::mech_emperor().front_armor;
             cout << "You Fight an " << mech_emperor::mech_emperor().mech_name << endl;
             end_ai_mech_selection();
             break;
@@ -332,7 +415,6 @@ public:
             tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             melee_damage += mech_panzer::mech_panzer().melee_damage;
-            front_armor += mech_panzer::mech_panzer().front_armor;
             cout << "You Fight a " << mech_panzer::mech_panzer().mech_name << endl;
             end_ai_mech_selection();
             break;
@@ -346,7 +428,6 @@ public:
             tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             melee_damage += mech_artemis::mech_artemis().melee_damage;
-            front_armor += mech_artemis::mech_artemis().front_armor;
             cout << "You Fight an " << mech_artemis::mech_artemis().mech_name << endl;
             end_ai_mech_selection();
             break;
@@ -360,7 +441,7 @@ public:
             tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             melee_damage += mech_aegis::mech_aegis().melee_damage;
-            front_armor += mech_aegis::mech_aegis().front_armor;
+ 
             cout << "You Fight an " << mech_aegis::mech_aegis().mech_name << endl;
             end_ai_mech_selection();
             break;
@@ -374,7 +455,6 @@ public:
             tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
             tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
             melee_damage += mech_generic::mech_generic().melee_damage;
-            front_armor += mech_generic::mech_generic().front_armor;
             cout << "You Fight a Generic Bland Enemy." << endl;
             end_ai_mech_selection();
             break;
@@ -428,7 +508,6 @@ public:
         else {
             cout << "Enemy Mech Is Broken!" << endl;
         }
-
     }
 
 
@@ -438,17 +517,14 @@ public:
             if (player_pilot_health < 350) {
                 player_pilot_health += 400;
                 cout << "Pilot Healed!" << endl;
-                end_turn();
             }
             else if (side_armor_health < 100) {
                 side_armor_health += 20;
                 cout << "Pilot Healed!" << endl;
-                end_turn();
             }
             else if (rear_armor_health < 75) {
                 rear_armor_health += 15;
                 cout << "Pilot Healed!" << endl;
-                end_turn();
             }
         }
         else if (!is_player_turn)
@@ -492,7 +568,7 @@ public:
     }
 
     void enemy_overcharge_action() {
-        if (!is_player_turn)
+        if (!is_player_turn && !is_enemy_overcharged)
         {
             primary_gun_damage *= 1.5;
             primary_gun_penetration *= 1.5;
@@ -504,38 +580,51 @@ public:
 
         float actual_damage = player_primary_gun_damage;
         float done_damage = 0;
-        float damage_multiplier = (player_primary_gun_penetration - front_armor) * 0.05;
+        float damage_multiplier = (front_armor - player_primary_gun_penetration) * 0.05;
 
-        if (is_player_attacking=true) {
-            if (front_armor > 0) {
-                if (player_primary_gun_penetration > front_armor)
-                {
-                    actual_damage*=damage_multiplier;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage * damage_multiplier);
-                    cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
-                    end_combat_turn();
+        accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
+        if (accuracy_roll > 100)
+        {
+            accuracy_roll = 100;
+        }
+        cout << accuracy_roll << endl;
+
+        if (accuracy_roll < 50)
+        {
+            cout << "We Missed!" << endl;
+        }
+        else {
+            if (is_player_attacking = true) {
+                if (front_armor > -1) {
+                    if (player_primary_gun_penetration > front_armor)
+                    {
+                        //actual_damage*=damage_multiplier;
+                        pilot_health -= actual_damage;
+                        done_damage += actual_damage;             //(actual_damage * damage_multiplier);
+                        cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
+                        end_combat_turn();
+                    }
+                    else if (player_primary_gun_penetration = front_armor)
+                    {
+                        actual_damage /= 4;
+                        pilot_health -= actual_damage;
+                        done_damage += (actual_damage);
+                        cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
+                        end_combat_turn();
+                    }
+                    else if (player_primary_gun_penetration < front_armor)
+                    {
+                        actual_damage /= 8;
+                        pilot_health -= actual_damage;
+                        done_damage += (actual_damage);
+                        cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
+                        end_combat_turn();
+                    }
+                    else
+                    {
+                        cout << "Something's wrong with the Front Armor Value" << endl;
+                    };
                 }
-                else if (player_primary_gun_penetration = front_armor)
-                {
-                    actual_damage/=2;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage);
-                    cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
-                    end_combat_turn();
-                }
-                else if (player_primary_gun_penetration < front_armor)
-                {
-                    actual_damage/=4;
-                    pilot_health -= actual_damage;
-                    done_damage += (actual_damage);
-                    cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
-                    end_combat_turn();
-                }
-                else
-                {
-                    cout << "Something's wrong with the Front Armor Value" << endl;
-                };
             }
         }
     }
@@ -548,11 +637,11 @@ public:
 
         if (is_player_attacking=true)
         {
-            if (player_front_armor > 0) {
+            if (player_front_armor > -1) {
                 if (primary_gun_penetration > player_front_armor) {
-                    enemy_actual_damage *= damage_multiplier;
+                    //enemy_actual_damage *= damage_multiplier;
                     player_pilot_health -= enemy_actual_damage;
-                    enemy_done_damage += enemy_actual_damage;
+                    enemy_done_damage += enemy_actual_damage; //(enemy_actual_damage *= damage_multiplier);
                     cout << "We are Hit in Front armor! Damaged for: " << enemy_done_damage << endl;
                 }
                 else if (primary_gun_penetration = player_front_armor)
@@ -594,6 +683,7 @@ public:
         cout << "Enemy Mech Encountered!" << endl;
         random_effects();
         randomize_distance();
+        terrain_modifier();
         cout << "Rangefinder reported Distance: " << distance << " Meters." << endl;
 
         while (player_pilot_health > 0 && pilot_health > 0) {

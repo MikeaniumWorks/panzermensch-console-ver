@@ -78,6 +78,7 @@ public:
 
     // Player Stats
     string player_mech = "Player";
+    string player_primary_gun_name = "Gun";
     float player_primary_gun_damage = 0;
     float player_primary_gun_penetration = 0;
     float player_secondary_gun_damage = 0;
@@ -295,25 +296,30 @@ public:
         {
         case (1):
             case_1_hit = true;
-            cout << BRIGHT_RED << "Terrain Unstable!" << RESET << endl;
-            accuracy_modifier -= 50;
+            cout << RED << "Terrain Unstable!" << RESET << endl;
+            cout << RED << "-50% Accuracy." << RESET << endl;
+            accuracy_modifier -= 35;
             break;
         case (2):
             case_2_hit = true;
-            cout << BRIGHT_RED << "Humid Weather." << RESET << endl;
+            cout << RED << "Humid Weather." << RESET << endl;
+            cout << RED << "Damage Reduced!" << RESET << endl;
             player_primary_gun_damage - (player_primary_gun_damage * (1 - 0.12));
             break;
         case (3):
             case_3_hit = true;
-            cout << BRIGHT_RED << "Night of a Bad Omen!" << RESET << endl;
-            accuracy_modifier -= 75;
+            cout << RED << "Night of a Bad Omen!" << RESET << endl;
+            cout << RED << "-50% Accuracy!" << RESET << endl;
+            cout << RED << "-80% Armor Effectiveness!" << RESET << endl;
+            accuracy_modifier -= 50;
             front_armor - (front_armor * (1 - 0.6));
             player_front_armor - (player_front_armor * (1 - 0.8));
             break;
         case (4):
             case_4_hit = true;
             cout << BRIGHT_RED << "Immense Fog." << RESET << endl;
-            accuracy_modifier -= 75;
+            cout << RED << "-50% Accuracy!" << RESET << endl;
+            accuracy_modifier -= 50;
             break;
         case (5):
             // out of ideas.
@@ -346,6 +352,7 @@ public:
             player_tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
             player_melee_damage += mech_generic::mech_generic().melee_damage;
+            player_primary_gun_name = mech_generic::mech_generic().primary_gun;
             cout << "You Chose The " << BRIGHT_GREEN << mech_generic::mech_generic().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -360,6 +367,7 @@ public:
             player_tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
             player_melee_damage += mech_emperor::mech_emperor().melee_damage;
+            player_primary_gun_name = mech_emperor::mech_emperor().primary_gun;
             cout << "You Chose The " << BRIGHT_GREEN << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -374,6 +382,7 @@ public:
             player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             player_melee_damage += mech_panzer::mech_panzer().melee_damage;
+            player_primary_gun_name = mech_emperor::mech_emperor().primary_gun;
             cout << "You Chose The " << BRIGHT_GREEN << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -388,6 +397,7 @@ public:
             player_tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             player_melee_damage += mech_artemis::mech_artemis().melee_damage;
+            player_primary_gun_name = mech_artemis::mech_artemis().primary_gun;
             cout << "You Chose The " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -402,6 +412,7 @@ public:
             player_tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             player_melee_damage += mech_aegis::mech_aegis().melee_damage;
+            player_primary_gun_name = mech_aegis::mech_aegis().primary_gun;
             cout << "You Chose The " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -494,6 +505,7 @@ public:
 
         if (user_input == "Fire") 
         {
+            cout << "Firing" << BRIGHT_GREEN << player_primary_gun_name << RESET << endl;
             player_combat_damage();
             unovercharge();
             end_turn();
@@ -538,15 +550,15 @@ public:
         {
             if (player_pilot_health < 350) {
                 player_pilot_health += 400;
-                cout << "Pilot Healed!" << endl;
+                cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
             }
             else if (side_armor_health < 100) {
                 side_armor_health += 20;
-                cout << "Pilot Healed!" << endl;
+                cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
             }
             else if (rear_armor_health < 75) {
                 rear_armor_health += 15;
-                cout << "Pilot Healed!" << endl;
+                cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
             }
         }
         else if (!is_player_turn)
@@ -584,7 +596,7 @@ public:
         {
                 player_primary_gun_damage *= 1.5;
                 player_primary_gun_penetration *= 1.1;
-                cout << "Main Gun " << RED << "Overcharged!" << RESET << endl;
+                cout << "Main Gun " << BRIGHT_RED << "Overcharged!" << RESET << endl;
                 overcharge_switch_on();
         }
     }
@@ -609,9 +621,9 @@ public:
         {
             accuracy_roll = 100;
         }
-        cout << accuracy_roll << endl;
+        //cout << accuracy_roll << endl;
 
-        if (accuracy_roll < 50)
+        if (accuracy_roll < 40)
         {
             cout << BRIGHT_RED << "We Missed!" << RESET << endl;
         }
@@ -626,20 +638,12 @@ public:
                         cout << "Target hit!" << BRIGHT_GREEN << " Shot Penetrated!" << RESET <<" Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
-                    else if (player_primary_gun_penetration = front_armor)
-                    {
-                        actual_damage /= 4;
-                        pilot_health -= actual_damage;
-                        done_damage += (actual_damage);
-                        cout << "Target hit! Front Armor is" << BRIGHT_YELLOW << " Sturdy" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
-                        end_combat_turn();
-                    }
                     else if (player_primary_gun_penetration < front_armor)
                     {
                         actual_damage /= 8;
                         pilot_health -= actual_damage;
                         done_damage += (actual_damage);
-                        cout << "Target hit! Front Armor is " << BRIGHT_RED << "TOO THICK!" << RESET << "Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
+                        cout << "Target hit! Front Armor is " << RED << "TOO THICK!" << RESET << "Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else
@@ -657,35 +661,43 @@ public:
         float enemy_done_damage = 0;
         float damage_multiplier = (primary_gun_penetration - player_front_armor) * 0.05;
 
-        if (is_player_attacking=true)
+        int enemy_accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
+        if (enemy_accuracy_roll > 100)
         {
-            if (player_front_armor > -1) {
-                if (primary_gun_penetration > player_front_armor) {
-                    //enemy_actual_damage *= damage_multiplier;
-                    player_pilot_health -= enemy_actual_damage;
-                    enemy_done_damage += enemy_actual_damage; //(enemy_actual_damage *= damage_multiplier);
-                    cout << "We are Hit! Our Armor was" << BRIGHT_GREEN << " Too Strong!" << RESET <<" Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
-                }
-                else if (primary_gun_penetration = player_front_armor)
-                {
-                    enemy_actual_damage /= 4;
-                    player_pilot_health -= enemy_actual_damage;
-                    enemy_done_damage += enemy_actual_damage;
-                    cout << "We are Hit!" << BRIGHT_YELLOW << " But Front Armor Held!" << RESET << " Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
-                }
-                else if (primary_gun_penetration < player_front_armor)
-                {
-                    enemy_actual_damage /= 8;
-                    player_pilot_health -= enemy_actual_damage;
-                    enemy_done_damage += enemy_actual_damage;
-                    cout << "We are Hit!" << BRIGHT_RED << " Their Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
-                }
-            }
+            enemy_accuracy_roll = 100;
+        }
+        //cout << accuracy_roll << endl;
+
+        if (enemy_accuracy_roll < 40)
+        {
+            cout << BRIGHT_GREEN << "The Enemy Missed!" << RESET << endl;
         }
         else
         {
-            cout << "This means that Combat Function is NOT accessed." << endl;
-        }
+
+            if (is_player_attacking = true)
+            {
+                if (player_front_armor > -1) {
+                    if (primary_gun_penetration > player_front_armor) {
+                        //enemy_actual_damage *= damage_multiplier;
+                        player_pilot_health -= enemy_actual_damage;
+                        enemy_done_damage += enemy_actual_damage; //(enemy_actual_damage *= damage_multiplier);
+                        cout << "We are Hit!" << BRIGHT_RED << " Their Shot Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
+                    }
+                    else if (primary_gun_penetration < player_front_armor)
+                    {
+                        enemy_actual_damage /= 8;
+                        player_pilot_health -= enemy_actual_damage;
+                        enemy_done_damage += enemy_actual_damage;
+                        cout << "We are Hit! Our Armor was" << BRIGHT_GREEN << " Too Strong!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
+                    }
+                }
+            }
+            else
+            {
+                cout << "This means that Combat Function is NOT accessed." << endl;
+            }
+        } 
     }
         
         
@@ -696,13 +708,13 @@ public:
 
 
     void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
+        cout << BRIGHT_RED << "Enemy Mech Encountered!" << RESET << endl;
         diceroll();
         ai_mech_dice_roll();
         if (ai_has_selected_mech)
         {
             ai_mech_selection();
         }
-        cout << "Enemy Mech Encountered!" << endl;
         random_effects();
         randomize_distance();
         terrain_modifier();

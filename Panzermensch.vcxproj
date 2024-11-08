@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="level1.cpp" />
     <ClCompile Include="mechs.cpp" />
     <ClCompile Include="Panzermensch.cpp" />
   </ItemGroup>

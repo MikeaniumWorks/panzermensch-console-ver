@@ -69,7 +69,7 @@ public:
     float mech_id;
     float tier;
 
-    mech_generic() : pilot_health(9500), front_armor(350), primary_gun_capable(true), primary_gun_damage(300), primary_gun_penetration(300), primary_gun("Primary"),
+    mech_generic() : pilot_health(9500), front_armor(350), primary_gun_capable(true), primary_gun_damage(300), primary_gun_penetration(10), primary_gun("Primary"),
         secondary_gun_capable(false), secondary_gun_damage(100), secondary_gun_penetration(100), secondary_gun("Secondary"), tertiary_gun_capable(false),
         tertiary_gun_damage(100), tertiary_gun_penetration(100), tertiary_gun("Tertiary"), melee_capable(false), melee_damage(100), melee_sharpness(100), 
         melee_weapon("Sword"), mech_name("Generic"), mech_id(0), tier(6) {};

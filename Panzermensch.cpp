@@ -27,7 +27,24 @@ namespace lightwind {
     string ironman = "if you see this, it worked";
 }
 
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN    "\033[36m"
+#define WHITE   "\033[37m"
 
+#define BRIGHT_BLACK   "\033[90m"
+#define BRIGHT_RED     "\033[91m"
+#define BRIGHT_GREEN   "\033[92m"
+#define BRIGHT_YELLOW  "\033[93m"
+#define BRIGHT_BLUE    "\033[94m"
+#define BRIGHT_MAGENTA "\033[95m"
+#define BRIGHT_CYAN    "\033[96m"
+#define BRIGHT_WHITE   "\033[97m"
 
 // TIME TO LEARN CLASSES.
 
@@ -100,7 +117,7 @@ public:
     int turn_count = 0;
     int turn_skip_chance_dice = 2;
     int turn_skip_chance_roll = 0;
-    int accuracy_modifier = 115;
+    int accuracy_modifier = 100;
     int movement_speed_modifier = 100;
     int accuracy_roll = 0;
     int dice = 6;
@@ -233,24 +250,24 @@ public:
         switch (terrain_roll)
         {
         case(1):
-            cout << "Terrain: " << terrain_modifier_id_1 << endl;
+            cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_1 << RESET << endl;
             break;
         case(2):
-            cout << "Terrain: " << terrain_modifier_id_2 << endl;
+            cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_2 << RESET << endl;
             accuracy_modifier -= 40;
             movement_speed_modifier - 50;
             break;
         case(3):
-            cout << "Terrain: " << terrain_modifier_id_3 << endl;
+            cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_3 << RESET << endl;
             accuracy_modifier -= 20;
             movement_speed_modifier - 25;
             break;
         case(4):
-            cout << "Terrain: " << terrain_modifier_id_4 << endl;
+            cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_4 << RESET << endl;
             accuracy_modifier -= 50;
             break;
         default:
-            cout << "Terrain: " << terrain_modifier_id_1 << endl;
+            cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_1 << RESET << endl;
             break;
         }
     }
@@ -278,24 +295,24 @@ public:
         {
         case (1):
             case_1_hit = true;
-            cout << "Terrain Unstable!" << endl;
+            cout << BRIGHT_RED << "Terrain Unstable!" << RESET << endl;
             accuracy_modifier -= 50;
             break;
         case (2):
             case_2_hit = true;
-            cout << "Humid Weather" << endl;
+            cout << BRIGHT_RED << "Humid Weather." << RESET << endl;
             player_primary_gun_damage - (player_primary_gun_damage * (1 - 0.12));
             break;
         case (3):
             case_3_hit = true;
-            cout << "Night of a Bad Omen!" << endl;
+            cout << BRIGHT_RED << "Night of a Bad Omen!" << RESET << endl;
             accuracy_modifier -= 75;
             front_armor - (front_armor * (1 - 0.6));
             player_front_armor - (player_front_armor * (1 - 0.8));
             break;
         case (4):
             case_4_hit = true;
-            cout << "Immense Fog." << endl;
+            cout << BRIGHT_RED << "Immense Fog." << RESET << endl;
             accuracy_modifier -= 75;
             break;
         case (5):
@@ -303,7 +320,7 @@ public:
             cout << "Case 5 Hit." << endl;
             break;
         default:
-            cout << "Everything seems Fine today." << endl;
+            cout << BRIGHT_GREEN << "Everything seems Fine today." << RESET << endl;
             break;
         }
     }
@@ -316,7 +333,7 @@ public:
 
     void player_selecting_mech() {
         cout << "Choose your Mech:" << endl;
-        cout << "Emperor" << " | " << "Panzer" << " | " << "Artemis" << " | " << "Aegis" << " | " << "Generic" << endl;
+        cout << BRIGHT_YELLOW << "Emperor" << RESET << " | " << BRIGHT_YELLOW << "Panzer" << RESET << " | " << BRIGHT_YELLOW << "Artemis" << RESET << " | " << BRIGHT_YELLOW << "Aegis" << RESET << " | " << BRIGHT_YELLOW << "Generic" << RESET << endl;
         getline(cin, user_input);
         if (user_input == "Generic")
         {
@@ -329,6 +346,7 @@ public:
             player_tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
             player_melee_damage += mech_generic::mech_generic().melee_damage;
+            cout << "You Chose The " << BRIGHT_GREEN << mech_generic::mech_generic().mech_name << RESET << endl;
             end_mech_selection();
         }
         else if (user_input == "Emperor")
@@ -342,6 +360,7 @@ public:
             player_tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
             player_melee_damage += mech_emperor::mech_emperor().melee_damage;
+            cout << "You Chose The " << BRIGHT_GREEN << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_mech_selection();
         }
         else if (user_input == "Panzer")
@@ -355,6 +374,7 @@ public:
             player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             player_melee_damage += mech_panzer::mech_panzer().melee_damage;
+            cout << "You Chose The " << BRIGHT_GREEN << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_mech_selection();
         }
         else if (user_input == "Artemis")
@@ -368,6 +388,7 @@ public:
             player_tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             player_melee_damage += mech_artemis::mech_artemis().melee_damage;
+            cout << "You Chose The " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_mech_selection();
         }
         else if (user_input == "Aegis")
@@ -381,6 +402,7 @@ public:
             player_tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             player_melee_damage += mech_aegis::mech_aegis().melee_damage;
+            cout << "You Chose The " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_mech_selection();
         }
         else 
@@ -402,7 +424,7 @@ public:
             tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
             tertiary_gun_penetration += mech_emperor::mech_emperor().tertiary_gun_penetration;
             melee_damage += mech_emperor::mech_emperor().melee_damage;
-            cout << "You Fight an " << mech_emperor::mech_emperor().mech_name << endl;
+            cout << "You Fight an " << BRIGHT_RED << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(2):
@@ -415,7 +437,7 @@ public:
             tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             melee_damage += mech_panzer::mech_panzer().melee_damage;
-            cout << "You Fight a " << mech_panzer::mech_panzer().mech_name << endl;
+            cout << "You Fight a " << BRIGHT_RED << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(3):
@@ -428,7 +450,7 @@ public:
             tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             melee_damage += mech_artemis::mech_artemis().melee_damage;
-            cout << "You Fight an " << mech_artemis::mech_artemis().mech_name << endl;
+            cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(4):
@@ -442,7 +464,7 @@ public:
             tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             melee_damage += mech_aegis::mech_aegis().melee_damage;
  
-            cout << "You Fight an " << mech_aegis::mech_aegis().mech_name << endl;
+            cout << "You Fight an " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         default:
@@ -455,7 +477,7 @@ public:
             tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
             tertiary_gun_penetration += mech_generic::mech_generic().tertiary_gun_penetration;
             melee_damage += mech_generic::mech_generic().melee_damage;
-            cout << "You Fight a Generic Bland Enemy." << endl;
+            cout << "You Fight a " << BRIGHT_RED << "Generic Bland Enemy." << RESET << endl;
             end_ai_mech_selection();
             break;
         }
@@ -464,9 +486,9 @@ public:
     void player_turn() {
 
         unfortify();
-        cout << "Your Turn! " << "Your Health: " << player_pilot_health << endl;
+        cout << BRIGHT_BLUE << "Your Turn! " << RESET << "Your Health: " << BRIGHT_GREEN << player_pilot_health << RESET << endl;
         cout << "Your Actions: " << endl;
-        cout << "Fire | " << "Repair | " << "Fortify | " << "Overcharge" << endl;
+        cout << BRIGHT_YELLOW << "Fire" << RESET << " | " << BRIGHT_YELLOW << "Repair" << RESET << " | " << BRIGHT_YELLOW << "Fortify" << RESET << " | " << BRIGHT_YELLOW << "Overcharge" << RESET << endl;
         string user_input;
         getline(cin, user_input);
 
@@ -553,7 +575,7 @@ public:
                 player_front_armor += 150;
                 player_side_armor += 150;
                 player_rear_armor += 75;
-                cout << "Armor Fortified!" << endl;
+                cout << BRIGHT_GREEN << "Armor Fortified!" << RESET << endl;
                 fortify_switch_on();
         }
     }
@@ -562,7 +584,7 @@ public:
         {
                 player_primary_gun_damage *= 1.5;
                 player_primary_gun_penetration *= 1.1;
-                cout << "Main Gun Overcharged!" << endl;
+                cout << "Main Gun " << RED << "Overcharged!" << RESET << endl;
                 overcharge_switch_on();
         }
     }
@@ -572,7 +594,7 @@ public:
         {
             primary_gun_damage *= 1.5;
             primary_gun_penetration *= 1.5;
-            cout << "Enemy Main Gun Overcharged!" << endl;
+            cout << RED << "Enemy Main Gun Overcharged!" << RESET << endl;
         }
     }
 
@@ -591,7 +613,7 @@ public:
 
         if (accuracy_roll < 50)
         {
-            cout << "We Missed!" << endl;
+            cout << BRIGHT_RED << "We Missed!" << RESET << endl;
         }
         else {
             if (is_player_attacking = true) {
@@ -601,7 +623,7 @@ public:
                         //actual_damage*=damage_multiplier;
                         pilot_health -= actual_damage;
                         done_damage += actual_damage;             //(actual_damage * damage_multiplier);
-                        cout << "Target hit in Front armor! Damaged for: " << done_damage << endl;
+                        cout << "Target hit!" << BRIGHT_GREEN << " Shot Penetrated!" << RESET <<" Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else if (player_primary_gun_penetration = front_armor)
@@ -609,7 +631,7 @@ public:
                         actual_damage /= 4;
                         pilot_health -= actual_damage;
                         done_damage += (actual_damage);
-                        cout << "Target hit! Front Armor is thick! Damaged for: " << done_damage << endl;
+                        cout << "Target hit! Front Armor is" << BRIGHT_YELLOW << " Sturdy" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else if (player_primary_gun_penetration < front_armor)
@@ -617,7 +639,7 @@ public:
                         actual_damage /= 8;
                         pilot_health -= actual_damage;
                         done_damage += (actual_damage);
-                        cout << "Target hit! Front Armor is TOO THICK! Damaged For: " << done_damage << endl;
+                        cout << "Target hit! Front Armor is " << BRIGHT_RED << "TOO THICK!" << RESET << "Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else
@@ -642,21 +664,21 @@ public:
                     //enemy_actual_damage *= damage_multiplier;
                     player_pilot_health -= enemy_actual_damage;
                     enemy_done_damage += enemy_actual_damage; //(enemy_actual_damage *= damage_multiplier);
-                    cout << "We are Hit in Front armor! Damaged for: " << enemy_done_damage << endl;
+                    cout << "We are Hit! Our Armor was" << BRIGHT_GREEN << " Too Strong!" << RESET <<" Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
                 }
                 else if (primary_gun_penetration = player_front_armor)
                 {
                     enemy_actual_damage /= 4;
                     player_pilot_health -= enemy_actual_damage;
                     enemy_done_damage += enemy_actual_damage;
-                    cout << "We are Hit! But Front Armor Held! Damaged for: " << enemy_done_damage << endl;
+                    cout << "We are Hit!" << BRIGHT_YELLOW << " But Front Armor Held!" << RESET << " Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
                 }
                 else if (primary_gun_penetration < player_front_armor)
                 {
                     enemy_actual_damage /= 8;
                     player_pilot_health -= enemy_actual_damage;
                     enemy_done_damage += enemy_actual_damage;
-                    cout << "We are Hit! Their Shot Penetrated! Damaged for: " << enemy_done_damage << endl;
+                    cout << "We are Hit!" << BRIGHT_RED << " Their Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_RED << enemy_done_damage << RESET << endl;
                 }
             }
         }
@@ -684,7 +706,7 @@ public:
         random_effects();
         randomize_distance();
         terrain_modifier();
-        cout << "Rangefinder reported Distance: " << distance << " Meters." << endl;
+        cout << "Rangefinder reported Distance: " << BRIGHT_CYAN << distance << RESET << " Meters." << endl;
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {
@@ -694,10 +716,12 @@ public:
                 }
                 else if (!has_selected_mech){
                     player_turn();
+                    cout << "-------" << endl;
                 }
             }
             else if (!is_player_turn) {
                 enemy_turn();
+                cout << "-------" << endl;
             }
         }
 

@@ -114,6 +114,10 @@ public:
     float rear_armor = 0;
     float pilot_health = 0;             
     float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
+    float ai_overcharge_weight = 5;
+    float ai_fortify_weight = 5;
+    float ai_repair_weight = 5;
+    float ai_fire_weight = 5;
 
 
     // General Stats
@@ -225,6 +229,13 @@ public:
         else
         {
             //cout << "Overcharge is False!" << endl;
+        }
+    }
+
+    void ai_weight_analysis() {
+        if (player_front_armor > front_armor)
+        {
+
         }
     }
 

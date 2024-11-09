@@ -6,9 +6,9 @@
 #include <cstdlib>
 #include <cmath>
 #include <chrono>
-#include <rapidjson/document.h>
-#include <rapidjson/filereadstream.h>
-#include <rapidjson/istreamwrapper.h>
+//#include <rapidjson/document.h>
+//#include <rapidjson/filereadstream.h>
+//#include <rapidjson/istreamwrapper.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -22,7 +22,7 @@
 //#include "vehicles.hpp"
 
 using namespace std;
-using namespace rapidjson;
+//using namespace rapidjson;
 namespace lightwind {
     string ironman = "if you see this, it worked";
 }
@@ -81,6 +81,7 @@ public:
     string player_primary_gun_name = "Gun";
     float player_primary_gun_damage = 0;
     float player_primary_gun_penetration = 0;
+    float player_unmodified_primary_gun_penetration = 0;
     float player_secondary_gun_damage = 0;
     float player_secondary_gun_penetration = 0;
     float player_tertiary_gun_damage = 0;
@@ -99,6 +100,7 @@ public:
     // Enemy Stats
     float primary_gun_damage = 0;
     float primary_gun_penetration = 0;
+    float unmodified_primary_gun_penetration = 0;
     float secondary_gun_damage = 0;
     float secondary_gun_penetration = 0;
     float tertiary_gun_damage = 0;
@@ -118,7 +120,7 @@ public:
     int turn_count = 0;
     int turn_skip_chance_dice = 2;
     int turn_skip_chance_roll = 0;
-    int accuracy_modifier = 100;
+    int accuracy_modifier = 90;
     int movement_speed_modifier = 100;
     int accuracy_roll = 0;
     int dice = 6;
@@ -126,6 +128,10 @@ public:
     int dice2 = 4;
     int dice2_result = 0;
     int ai_mech_dice = 4;
+    float damage_multiplier = 0;
+    float damage_multiplier_percentage = 0;
+    float enemy_damage_multiplier = 0;
+    float enemy_damage_multiplier_percentage = 0;
 
     // World Stats.
     bool is_player_turn = true;
@@ -212,8 +218,8 @@ public:
     void unovercharge() {
         if (is_overcharged)
         {
-            player_primary_gun_damage /= 1.5;
-            player_primary_gun_penetration /= 1.1;
+            player_primary_gun_damage /= 2;
+            player_primary_gun_penetration -= (player_unmodified_primary_gun_penetration * 0.25);
             overcharge_switch_off();
         }
         else
@@ -256,12 +262,12 @@ public:
         case(2):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_2 << RESET << endl;
             accuracy_modifier -= 40;
-            movement_speed_modifier - 50;
+            movement_speed_modifier -= 50;
             break;
         case(3):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_3 << RESET << endl;
             accuracy_modifier -= 20;
-            movement_speed_modifier - 25;
+            movement_speed_modifier -= 25;
             break;
         case(4):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_4 << RESET << endl;
@@ -278,7 +284,7 @@ public:
     }
 
     void ai_mech_dice_roll() {
-        ai_mech_roll = (rand() % ai_mech_dice) + 0;
+        ai_mech_roll = (rand() % ai_mech_dice) + 1;
     }
 
     void modifier_checker() {
@@ -289,6 +295,30 @@ public:
     }
 
     void random_effects() {
+        if (!case_1_hit)
+        {
+            //Nothing.
+        }
+        else if (!case_2_hit)
+        {
+            player_primary_gun_damage -= (player_primary_gun_damage * (1 - 0.12));
+        }
+        else if (!case_3_hit)
+        {
+            front_armor -= (front_armor * (1 - 0.6));
+            player_front_armor -= (player_front_armor * (1 - 0.8));
+        }
+        else if (!case_4_hit)
+        {
+            //Nothing.
+        }
+        else
+        {
+            cout << "Effects Modifier Didn't Work!" << endl;
+        }
+    }
+
+    void random_effects_choice() {
 
         int effect_roll = dice_result;
 
@@ -297,14 +327,14 @@ public:
         case (1):
             case_1_hit = true;
             cout << RED << "Terrain Unstable!" << RESET << endl;
-            cout << RED << "-50% Accuracy." << RESET << endl;
+            cout << RED << "-35% Accuracy." << RESET << endl;
             accuracy_modifier -= 35;
             break;
         case (2):
             case_2_hit = true;
             cout << RED << "Humid Weather." << RESET << endl;
             cout << RED << "Damage Reduced!" << RESET << endl;
-            player_primary_gun_damage - (player_primary_gun_damage * (1 - 0.12));
+
             break;
         case (3):
             case_3_hit = true;
@@ -312,8 +342,6 @@ public:
             cout << RED << "-50% Accuracy!" << RESET << endl;
             cout << RED << "-80% Armor Effectiveness!" << RESET << endl;
             accuracy_modifier -= 50;
-            front_armor - (front_armor * (1 - 0.6));
-            player_front_armor - (player_front_armor * (1 - 0.8));
             break;
         case (4):
             case_4_hit = true;
@@ -322,8 +350,10 @@ public:
             accuracy_modifier -= 50;
             break;
         case (5):
-            // out of ideas.
-            cout << "Case 5 Hit." << endl;
+            cout << GREEN << "Night of a Good Omen!" << RESET << endl;
+            cout << GREEN << "+50% Accuracy!" << RESET << endl;
+            //cout << GREEN << "+50% Chance to Penetrate!" << RESET << endl;
+            accuracy_modifier += 50;
             break;
         default:
             cout << BRIGHT_GREEN << "Everything seems Fine today." << RESET << endl;
@@ -347,6 +377,7 @@ public:
             player_front_armor += mech_generic::mech_generic().front_armor;
             player_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
             player_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             player_secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
             player_secondary_gun_penetration += mech_generic::mech_generic().secondary_gun_penetration;
             player_tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
@@ -362,6 +393,7 @@ public:
             player_front_armor += mech_emperor::mech_emperor().front_armor;
             player_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
             player_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             player_secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
             player_secondary_gun_penetration += mech_emperor::mech_emperor().secondary_gun_penetration;
             player_tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
@@ -377,6 +409,7 @@ public:
             player_front_armor += mech_panzer::mech_panzer().front_armor;
             player_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
             player_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             player_secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
             player_secondary_gun_penetration += mech_panzer::mech_panzer().secondary_gun_penetration;
             player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
@@ -392,6 +425,7 @@ public:
             player_front_armor += mech_artemis::mech_artemis().front_armor;
             player_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
             player_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             player_secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
             player_secondary_gun_penetration += mech_artemis::mech_artemis().secondary_gun_penetration;
             player_tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
@@ -407,6 +441,7 @@ public:
             player_front_armor += mech_aegis::mech_aegis().front_armor;
             player_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
             player_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             player_secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
             player_secondary_gun_penetration += mech_aegis::mech_aegis().secondary_gun_penetration;
             player_tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
@@ -430,6 +465,7 @@ public:
             front_armor += mech_emperor::mech_emperor().front_armor;
             primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
             primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
             secondary_gun_penetration += mech_emperor::mech_emperor().secondary_gun_penetration;
             tertiary_gun_damage += mech_emperor::mech_emperor().tertiary_gun_damage;
@@ -443,6 +479,7 @@ public:
             front_armor += mech_panzer::mech_panzer().front_armor;
             primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
             primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
             secondary_gun_penetration += mech_panzer::mech_panzer().secondary_gun_penetration;
             tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
@@ -456,6 +493,7 @@ public:
             front_armor += mech_artemis::mech_artemis().front_armor;
             primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
             primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
             secondary_gun_penetration += mech_artemis::mech_artemis().secondary_gun_penetration;
             tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
@@ -469,6 +507,7 @@ public:
             front_armor += mech_aegis::mech_aegis().front_armor;
             primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
             primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
             secondary_gun_penetration += mech_aegis::mech_aegis().secondary_gun_penetration;
             tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
@@ -483,6 +522,7 @@ public:
             front_armor += mech_generic::mech_generic().front_armor;
             primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
             primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
             secondary_gun_penetration += mech_generic::mech_generic().secondary_gun_penetration;
             tertiary_gun_damage += mech_generic::mech_generic().tertiary_gun_damage;
@@ -505,7 +545,7 @@ public:
 
         if (user_input == "Fire") 
         {
-            cout << "Firing" << BRIGHT_GREEN << player_primary_gun_name << RESET << endl;
+            cout << "Firing " << BRIGHT_GREEN << player_primary_gun_name << RESET << endl;
             player_combat_damage();
             unovercharge();
             end_turn();
@@ -594,8 +634,8 @@ public:
     void overcharge_action() {
         if (is_player_turn && !is_overcharged)
         {
-                player_primary_gun_damage *= 1.5;
-                player_primary_gun_penetration *= 1.1;
+                player_primary_gun_damage *= 2;
+                player_primary_gun_penetration += (player_unmodified_primary_gun_penetration * 0.25);
                 cout << "Main Gun " << BRIGHT_RED << "Overcharged!" << RESET << endl;
                 overcharge_switch_on();
         }
@@ -614,7 +654,17 @@ public:
 
         float actual_damage = player_primary_gun_damage;
         float done_damage = 0;
-        float damage_multiplier = (front_armor - player_primary_gun_penetration) * 0.05;
+        float distance = distance;
+        damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100)/100);;
+        if (damage_multiplier_percentage > 0.5)
+        {
+            damage_multiplier_percentage = 0.5;
+        }
+        damage_multiplier = (player_primary_gun_damage * damage_multiplier_percentage);
+
+        if (accuracy_modifier < 25) {
+            accuracy_modifier = 25;
+        }
 
         accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
         if (accuracy_roll > 100)
@@ -632,18 +682,18 @@ public:
                 if (front_armor > -1) {
                     if (player_primary_gun_penetration > front_armor)
                     {
-                        //actual_damage*=damage_multiplier;
+                        actual_damage+=damage_multiplier;
                         pilot_health -= actual_damage;
-                        done_damage += actual_damage;             //(actual_damage * damage_multiplier);
+                        done_damage += (actual_damage += damage_multiplier);
                         cout << "Target hit!" << BRIGHT_GREEN << " Shot Penetrated!" << RESET <<" Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else if (player_primary_gun_penetration < front_armor)
                     {
-                        actual_damage /= 8;
+                        actual_damage /= 6;
                         pilot_health -= actual_damage;
                         done_damage += (actual_damage);
-                        cout << "Target hit! Front Armor is " << RED << "TOO THICK!" << RESET << "Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
+                        cout << "Target hit! Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
                     else
@@ -659,7 +709,17 @@ public:
     {
         float enemy_actual_damage = primary_gun_damage;
         float enemy_done_damage = 0;
-        float damage_multiplier = (primary_gun_penetration - player_front_armor) * 0.05;
+
+        enemy_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);;
+        if (enemy_damage_multiplier_percentage > 0.5)
+        {
+            enemy_damage_multiplier_percentage = 0.5;
+        }
+        enemy_damage_multiplier = (primary_gun_damage * enemy_damage_multiplier_percentage);
+
+        if (accuracy_modifier < 30) {
+            accuracy_modifier = 30;
+        }
 
         int enemy_accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
         if (enemy_accuracy_roll > 100)
@@ -679,14 +739,14 @@ public:
             {
                 if (player_front_armor > -1) {
                     if (primary_gun_penetration > player_front_armor) {
-                        //enemy_actual_damage *= damage_multiplier;
+                        enemy_actual_damage += enemy_damage_multiplier;
                         player_pilot_health -= enemy_actual_damage;
-                        enemy_done_damage += enemy_actual_damage; //(enemy_actual_damage *= damage_multiplier);
+                        enemy_done_damage += (enemy_actual_damage += enemy_damage_multiplier);
                         cout << "We are Hit!" << BRIGHT_RED << " Their Shot Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
                     }
                     else if (primary_gun_penetration < player_front_armor)
                     {
-                        enemy_actual_damage /= 8;
+                        enemy_actual_damage /= 6;
                         player_pilot_health -= enemy_actual_damage;
                         enemy_done_damage += enemy_actual_damage;
                         cout << "We are Hit! Our Armor was" << BRIGHT_GREEN << " Too Strong!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
@@ -715,7 +775,7 @@ public:
         {
             ai_mech_selection();
         }
-        random_effects();
+        random_effects_choice();
         randomize_distance();
         terrain_modifier();
         cout << "Rangefinder reported Distance: " << BRIGHT_CYAN << distance << RESET << " Meters." << endl;
@@ -725,6 +785,7 @@ public:
                 if (has_selected_mech) 
                 {
                     player_selecting_mech();
+                    random_effects();
                 }
                 else if (!has_selected_mech){
                     player_turn();
@@ -738,11 +799,11 @@ public:
         }
 
         if (player_pilot_health <= 0) {
-            cout << "We have been Destroyed!" << endl;
+            cout << RED << "We have been Destroyed!" << RESET << endl;
         }
         else if (pilot_health <= 0)
         {
-            cout << "We are Victorious! Enemy Mech Destroyed!" << endl;
+            cout << BRIGHT_GREEN << "We are Victorious! Enemy Mech Destroyed!" << RESET << endl;
         }
 
     }

@@ -1,12 +1,13 @@
 ﻿  Panzermensch.cpp
 C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(226,90): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(308,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(312,41): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(313,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(642,94): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(315,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(319,41): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(320,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(649,94): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Generating code
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(661): error C4700: uninitialized local variable 'distance' used
-  32 of 164 functions (19.5%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-LINK : fatal error LNK1257: code generation failed
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 164 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

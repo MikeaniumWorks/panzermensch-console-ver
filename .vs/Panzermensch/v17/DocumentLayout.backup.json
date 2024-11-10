@@ -26,6 +26,10 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
@@ -35,10 +39,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Bookmark",
@@ -56,10 +56,9 @@
               "RelativeDocumentMoniker": "mechs.hpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
               "RelativeToolTip": "mechs.hpp",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAHAAAABuAAAAAAAAAA==",
+              "ViewState": "AgIAALQAAAAAAAAAAAAawM8AAACMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-11-06T18:45:56.267Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-06T18:45:56.267Z"
             },
             {
               "$type": "Document",
@@ -69,7 +68,7 @@
               "RelativeDocumentMoniker": "Panzermensch.cpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
               "RelativeToolTip": "Panzermensch.cpp",
-              "ViewState": "AgIAALYCAAAAAAAAAAAawOsCAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAIcCAAAAAAAAAAAuwJsCAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-11-06T16:45:19.54Z",
               "EditorCaption": ""

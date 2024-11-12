@@ -148,6 +148,7 @@ public:
     float enemy_damage_multiplier_percentage = 0;
 
     // World Stats.
+    const double PI = std::atan(1.0) * 4;
     bool is_player_turn = true;
     bool is_player_attacking = true;
     bool is_player_moving = true; // Unused for now
@@ -165,6 +166,8 @@ public:
     bool case_4_hit = false;
     //bool is_effect_on = true;
     int ai_mech_roll = 0;
+    const int min_distance = 100;
+    const int max_distance = 12000;
     int distance = 0;
     string terrain;               // Unused for now.
     string terrain_modifier_id_1 = "Plains";  // Plains
@@ -281,6 +284,10 @@ public:
                 ai_fire_weight -= 1;
                 ai_fortify_weight += 2;
             }
+        }
+        else if (player_front_armor == front_armor || player_front_armor == primary_gun_penetration)
+        {
+            ai_fire_weight += 1;
         }
         else if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
         {
@@ -453,8 +460,6 @@ public:
     }
 
     void randomize_distance() {
-        const int min_distance = 100;
-        const int max_distance = 12000;
         distance = rand() % (max_distance - min_distance + 1) + min_distance;
     }
 
@@ -676,6 +681,7 @@ public:
 
     void enemy_turn() {
         if (pilot_health > 0) {
+            unfortify();
             cout << "Enemy Mech Turn!" << endl;
             ai_weight_analysis();
             ai_decision_making();
@@ -762,14 +768,34 @@ public:
 
         float actual_damage = player_primary_gun_damage;
         float done_damage = 0;
-        float distance = 0;
+        float distance_float = distance - max_distance;
+        float actual_penetration = player_primary_gun_penetration;
+        
+        float damage_distance_multiplier = abs(sin((((max_distance - distance_float) / max_distance) * (PI / 2)) * player_primary_gun_damage));
+        float penetration_distance_multiplier = abs(sin((((max_distance - distance_float) / max_distance) * (PI / 2)) * player_primary_gun_penetration));
+
+        actual_penetration * penetration_distance_multiplier;
+
+        if (penetration_distance_multiplier > 1)
+        {
+            penetration_distance_multiplier = 1;
+        }
+        if (damage_distance_multiplier > 1)
+        {
+            damage_distance_multiplier = 1;
+        }
+
+        cout << "=========>" << damage_distance_multiplier << endl;
+        cout << "=========>" << penetration_distance_multiplier << endl;
+
+        float penetration_penalty_multiplier = (player_primary_gun_penetration - front_armor);
+
         damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100)/100);;
         if (damage_multiplier_percentage > 0.5)
         {
             damage_multiplier_percentage = 0.5;
         }
         damage_multiplier = (player_primary_gun_damage * damage_multiplier_percentage);
-
         if (accuracy_modifier < 25) {
             accuracy_modifier = 25;
         }
@@ -788,19 +814,20 @@ public:
         else {
             if (is_player_attacking = true) {
                 if (front_armor > -1) {
-                    if (player_primary_gun_penetration > front_armor)
+                    if (actual_penetration >= front_armor)
                     {
-                        actual_damage+=damage_multiplier;
+                        actual_damage *= damage_distance_multiplier;
+                        actual_damage += damage_multiplier;
                         pilot_health -= actual_damage;
                         done_damage += (actual_damage += damage_multiplier);
                         cout << "Target hit!" << BRIGHT_GREEN << " Shot Penetrated!" << RESET <<" Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
-                    else if (player_primary_gun_penetration < front_armor)
+                    else if (actual_penetration < front_armor)
                     {
-                        actual_damage /= 6;
+                        actual_damage *= damage_distance_multiplier;
                         pilot_health -= actual_damage;
-                        done_damage += (actual_damage);
+                        done_damage += (actual_damage * damage_distance_multiplier);
                         cout << "Target hit! Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
@@ -817,6 +844,27 @@ public:
     {
         float enemy_actual_damage = primary_gun_damage;
         float enemy_done_damage = 0;
+        float enemy_distance_float = distance - max_distance;
+        float enemy_actual_penetration = primary_gun_penetration;
+
+        float enemy_damage_distance_multiplier = abs(sin((((max_distance - enemy_distance_float) / max_distance) * (PI / 2)) * primary_gun_damage));
+        float enemy_penetration_distance_multiplier = abs(sin((((max_distance - enemy_distance_float) / max_distance) * (PI / 2)) * primary_gun_penetration));
+
+        enemy_actual_penetration* enemy_penetration_distance_multiplier;
+
+        if (enemy_penetration_distance_multiplier > 1)
+        {
+            enemy_penetration_distance_multiplier = 1;
+        }
+        if (enemy_damage_distance_multiplier > 1)
+        {
+            enemy_damage_distance_multiplier = 1;
+        }
+
+        cout << "=========>" << enemy_damage_distance_multiplier << endl;
+        cout << "=========>" << enemy_penetration_distance_multiplier << endl;
+
+        float enemy_penetration_penalty_multiplier = (player_primary_gun_penetration - front_armor); // W.I.P
 
         enemy_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);;
         if (enemy_damage_multiplier_percentage > 0.5)
@@ -846,17 +894,18 @@ public:
             if (is_player_attacking = true)
             {
                 if (player_front_armor > -1) {
-                    if (primary_gun_penetration > player_front_armor) {
+                    if (enemy_actual_penetration >= player_front_armor) {
+                        enemy_actual_damage *= enemy_damage_distance_multiplier;
                         enemy_actual_damage += enemy_damage_multiplier;
                         player_pilot_health -= enemy_actual_damage;
                         enemy_done_damage += (enemy_actual_damage += enemy_damage_multiplier);
                         cout << "We are Hit!" << BRIGHT_RED << " Their Shot Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
                     }
-                    else if (primary_gun_penetration < player_front_armor)
+                    else if (enemy_actual_penetration < player_front_armor)
                     {
-                        enemy_actual_damage /= 6;
+                        enemy_actual_damage *= enemy_damage_distance_multiplier;
                         player_pilot_health -= enemy_actual_damage;
-                        enemy_done_damage += enemy_actual_damage;
+                        enemy_done_damage += (enemy_actual_damage * enemy_damage_distance_multiplier);
                         cout << "We are Hit! Our Armor was" << BRIGHT_GREEN << " Too Strong!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
                     }
                 }

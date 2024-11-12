@@ -205,7 +205,7 @@ public:
     float mech_id;
     float tier;
 
-    mech_aegis() : pilot_health(8000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1200), primary_gun_penetration(1100), primary_gun("Radiance"),
+    mech_aegis() : pilot_health(8000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1200), primary_gun_penetration(2000), primary_gun("Radiance"),
         secondary_gun_capable(false), secondary_gun_damage(0), secondary_gun_penetration(0), secondary_gun("None"), tertiary_gun_capable(false),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(1000), melee_sharpness(1600),
         melee_weapon("Lightblade"), mech_name("Aegis"), mech_id(4), tier(1) {};

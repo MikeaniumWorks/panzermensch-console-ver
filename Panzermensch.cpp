@@ -122,11 +122,12 @@ public:
     float ai_fortify_chance = 0;
     float ai_repair_weight = 5;
     float ai_repair_chance = 0;
-    float ai_fire_weight = 7.5;
+    float ai_fire_weight = 6.5;
     float ai_fire_chance = 0;
     float ai_aggression = 50;
     float ai_defensiveness = 50;
     float ai_decision_chance = 0;
+    float ai_fortify_counter = 0;
 
 
     // General Stats
@@ -154,6 +155,7 @@ public:
     bool ai_has_selected_mech = true;
     bool is_fortified = false;
     bool is_ai_fortified = false;
+    bool has_ai_fortified_once = false;
     bool is_overcharged = false; // Equal False by default.
     bool is_ai_overcharged = false;
     bool is_terrain_on = true;
@@ -268,7 +270,17 @@ public:
         }
         if (player_front_armor > front_armor || player_front_armor < primary_gun_penetration)
         {
-            ai_fortify_weight += 2;
+            
+            if (has_ai_fortified_once)
+            {
+                ai_fortify_weight += 0;
+                ai_fire_weight += 1;
+            }
+            else
+            {
+                ai_fire_weight -= 1;
+                ai_fortify_weight += 2;
+            }
         }
         else if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
         {
@@ -291,13 +303,18 @@ public:
         ai_overcharge_chance = (ai_overcharge_weight * 10);
         ai_repair_chance = (ai_repair_weight * 10);
 
-        if (ai_fire_chance > ai_fortify_chance, ai_overcharge_chance, ai_repair_chance) {
+        if (ai_fire_chance > ai_fortify_chance || ai_fire_chance > ai_overcharge_chance || ai_fire_chance > ai_repair_chance) {
+            cout << "They Fire on Us!" << endl;
             enemy_combat_damage();
+            //ai_fire_weight -= 1;
         }
-        else if (ai_fortify_chance > ai_fire_chance, ai_overcharge_chance, ai_repair_chance)
+        else if (ai_fortify_chance > ai_fire_chance || ai_fortify_chance > ai_overcharge_chance || ai_fortify_chance > ai_repair_chance)
         {
             ai_fortify_action();
             //Fortify
+            ai_fortify_weight -= 2;
+            ai_fortify_counter += 1;
+            has_ai_fortified_once = !has_ai_fortified_once;
         }
 
     }
@@ -492,7 +509,7 @@ public:
             player_tertiary_gun_damage += mech_panzer::mech_panzer().tertiary_gun_damage;
             player_tertiary_gun_penetration += mech_panzer::mech_panzer().tertiary_gun_penetration;
             player_melee_damage += mech_panzer::mech_panzer().melee_damage;
-            player_primary_gun_name = mech_emperor::mech_emperor().primary_gun;
+            player_primary_gun_name = mech_panzer::mech_panzer().primary_gun;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -659,8 +676,10 @@ public:
 
     void enemy_turn() {
         if (pilot_health > 0) {
-            cout << "Enemy Mech Turn! They Fire at us!" << endl;
-            enemy_combat_damage();
+            cout << "Enemy Mech Turn!" << endl;
+            ai_weight_analysis();
+            ai_decision_making();
+            //enemy_combat_damage();
             end_turn();
         }
         else {
@@ -718,7 +737,7 @@ public:
         {
             front_armor += (front_armor * 0.15);
             cout << BRIGHT_RED << "Enemy Armor Fortified!" << RESET << endl;
-            fortify_switch_on();
+            ai_fortify_switch_on();
         }
     }
     void overcharge_action() {

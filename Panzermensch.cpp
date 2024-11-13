@@ -95,6 +95,7 @@ public:
     float player_rear_armor_health = 0;
     float player_rear_armor = 0;
     float player_pilot_health = 0;
+    float player_unmodified_pilot_health = 0;
     float player_gun_penetration = 0;
     float player_veterancy = 0;
 
@@ -114,20 +115,22 @@ public:
     float side_armor = 0;
     float rear_armor_health = 0;
     float rear_armor = 0;
-    float pilot_health = 0;             
-    float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its floategers up to 10.
-    float ai_overcharge_weight = 5;
+    float pilot_health = 0;   
+    float unmodified_pilot_health = 0;
+    float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
+    int ai_overcharge_weight = 4;
     float ai_overcharge_chance = 0;
-    float ai_fortify_weight = 5;
+    int ai_fortify_weight = 4;
     float ai_fortify_chance = 0;
-    float ai_repair_weight = 5;
+    int ai_repair_weight = 4;
     float ai_repair_chance = 0;
-    float ai_fire_weight = 6.5;
+    int ai_fire_weight = 6;
     float ai_fire_chance = 0;
-    float ai_aggression = 50;
-    float ai_defensiveness = 50;
+    int ai_aggression = 50;
+    int ai_defensiveness = 50;
     float ai_decision_chance = 0;
-    float ai_fortify_counter = 0;
+    int ai_fortify_counter = 0;
+    int ai_overcharge_counter = 0;
 
 
     // General Stats
@@ -137,10 +140,13 @@ public:
     int accuracy_modifier = 90;
     int movement_speed_modifier = 100;
     int accuracy_roll = 0;
+    int ai_accuracy_modifier = 90;
     int dice = 6;
     int dice_result = 0;
     int dice2 = 4;
+    int dice3 = 4;
     int dice2_result = 0;
+    int dice3_result = 0;
     int ai_mech_dice = 4;
     float damage_multiplier = 0;
     float damage_multiplier_percentage = 0;
@@ -159,6 +165,7 @@ public:
     bool has_ai_fortified_once = false;
     bool is_overcharged = false; // Equal False by default.
     bool is_ai_overcharged = false;
+    bool has_ai_overcharged_once = false;
     bool is_terrain_on = true;
     bool case_1_hit = false;
     bool case_2_hit = false;
@@ -228,6 +235,14 @@ public:
         is_overcharged = false;
     }
 
+    void ai_overcharge_switch_on() {
+        is_ai_overcharged = true;
+    }
+
+    void ai_overcharge_switch_off() {
+        is_ai_overcharged = false;
+    }
+
     void unfortify() {
         if (is_player_turn && is_fortified)
         {
@@ -246,11 +261,18 @@ public:
     }
 
     void unovercharge() {
-        if (is_overcharged)
+        if (is_player_turn && is_overcharged)
         {
             player_primary_gun_damage /= 2;
             player_primary_gun_penetration -= (player_unmodified_primary_gun_penetration * 0.25);
             overcharge_switch_off();
+        }
+        else if (!is_player_turn && is_ai_overcharged)
+        {
+            primary_gun_damage /= 2;
+            primary_gun_penetration -= (unmodified_primary_gun_penetration * 0.25);
+            ai_overcharge_switch_off();
+            cout << YELLOW << "AI Unovercharged" << RESET << endl;
         }
         else
         {
@@ -263,67 +285,92 @@ public:
         float player_pilot_percentage = (player_pilot_health * 0.14);
         if (player_front_armor > front_armor)
         {
-            ai_overcharge_weight += 2;
-            ai_fortify_weight += 2;
-        }
-        else if (player_front_armor < front_armor)
-        {
-            ai_overcharge_weight -= 2;
-            ai_fortify_weight -= 2;
-        }
-        if (player_front_armor > front_armor || player_front_armor < primary_gun_penetration)
-        {
             
             if (has_ai_fortified_once)
             {
-                ai_fortify_weight += 0;
+                ai_fortify_weight -= 1;
                 ai_fire_weight += 1;
             }
             else
             {
                 ai_fire_weight -= 1;
-                ai_fortify_weight += 2;
+                ai_fortify_weight += 1;
             }
         }
         else if (player_front_armor == front_armor || player_front_armor == primary_gun_penetration)
         {
             ai_fire_weight += 1;
+            ai_overcharge_weight += 1;
         }
         else if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
         {
-            ai_fortify_weight -= 2;
+            if (has_ai_overcharged_once)
+            {
+                ai_fire_weight += 4;
+            }
+            else
+            {
+                ai_fortify_weight -= 2;
+                ai_overcharge_weight += 2;
+            }
         }
         if (player_pilot_percentage > enemy_pilot_percentage)
         {
-            ai_repair_weight += 2;
+            ai_repair_weight += 1;
         }
         else if (player_pilot_percentage < enemy_pilot_percentage)
         {
-            ai_repair_weight -= 2;
+            ai_repair_weight -= 1;
+        }
+        else if (player_front_armor > front_armor || player_front_armor > primary_gun_penetration)
+        {
+            ai_fortify_weight += 2;
+            ai_overcharge_weight += 1;
         }
     }
     
     void ai_decision_making() {
         ai_weight_analysis();
-        ai_fire_chance = (ai_fire_weight * 10);
-        ai_fortify_chance = (ai_fortify_weight * 10);
-        ai_overcharge_chance = (ai_overcharge_weight * 10);
-        ai_repair_chance = (ai_repair_weight * 10);
 
-        if (ai_fire_chance > ai_fortify_chance || ai_fire_chance > ai_overcharge_chance || ai_fire_chance > ai_repair_chance) {
+        ai_fire_chance = ((rand() % dice3) + ai_fire_weight);
+        cout << ai_fire_chance << " FIRE CHANCE!" << endl;
+        ai_fortify_chance = ((rand() % dice3) + ai_fortify_weight);
+        cout << ai_fire_chance << " FORTIFY CHANCE!" << endl;
+        ai_overcharge_chance = ((rand() % dice3) + ai_overcharge_weight);
+        cout << ai_overcharge_chance << " OVERCHARGE CHANCE!" << endl;
+        ai_repair_chance = ((rand() % dice3) + ai_repair_weight);
+        cout << ai_repair_chance << " REPAIR CHANCE!" << endl;
+
+        if (ai_fire_chance > ai_fortify_chance && ai_fire_chance > ai_overcharge_chance && ai_fire_chance > ai_repair_chance) {
             cout << "They Fire on Us!" << endl;
             enemy_combat_damage();
-            //ai_fire_weight -= 1;
         }
-        else if (ai_fortify_chance > ai_fire_chance || ai_fortify_chance > ai_overcharge_chance || ai_fortify_chance > ai_repair_chance)
+        else if (ai_fortify_chance > ai_fire_chance && ai_fortify_chance > ai_overcharge_chance && ai_fortify_chance > ai_repair_chance)
         {
             ai_fortify_action();
-            //Fortify
             ai_fortify_weight -= 2;
+            ai_overcharge_weight += 1;
+            ai_fire_weight += 1;
             ai_fortify_counter += 1;
             has_ai_fortified_once = !has_ai_fortified_once;
         }
-
+        else if (ai_overcharge_chance > ai_fire_chance && ai_overcharge_chance > ai_fortify_chance && ai_overcharge_chance > ai_repair_chance)
+        {
+            ai_overcharge_action();
+            ai_overcharge_weight -= 2;
+            ai_fire_weight += 1;
+            ai_overcharge_counter += 1;
+            has_ai_overcharged_once = !has_ai_overcharged_once;
+        }
+        else if (ai_repair_chance > ai_fire_chance && ai_repair_chance > ai_overcharge_chance && ai_repair_chance > ai_fortify_chance)
+        {
+            repair_action();
+            ai_repair_weight -= 2;
+        }
+        else
+        {
+            enemy_combat_damage();
+        }
     }
 
     void turn_skip_chance() {
@@ -360,11 +407,13 @@ public:
         case(2):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_2 << RESET << endl;
             accuracy_modifier -= 40;
+            ai_accuracy_modifier -= 40;
             movement_speed_modifier -= 50;
             break;
         case(3):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_3 << RESET << endl;
             accuracy_modifier -= 20;
+            ai_accuracy_modifier -= 20;
             movement_speed_modifier -= 25;
             break;
         case(4):
@@ -393,26 +442,28 @@ public:
     }
 
     void random_effects() {
-        if (!case_1_hit)
+        if (case_1_hit)
         {
             //Nothing.
         }
-        else if (!case_2_hit)
+        else if (case_2_hit)
         {
             player_primary_gun_damage -= (player_primary_gun_damage * (1 - 0.12));
+            //cout << "Random Effects 2 Is Active!" << endl;
         }
-        else if (!case_3_hit)
+        else if (case_3_hit)
         {
-            front_armor -= (front_armor * (1 - 0.6));
-            player_front_armor -= (player_front_armor * (1 - 0.8));
+            front_armor -= (front_armor * (1 - 0.4));
+            player_front_armor -= (player_front_armor * (1 - 0.4));
+            //cout << "Random Effects 3 Is Active!" << endl;
         }
-        else if (!case_4_hit)
+        else if (case_4_hit)
         {
             //Nothing.
         }
         else
         {
-            cout << "Effects Modifier Didn't Work!" << endl;
+            //cout << "Effects Modifier Didn't Work!" << endl;
         }
     }
 
@@ -470,6 +521,7 @@ public:
         if (user_input == "Generic")
         {
             player_pilot_health += (mech_generic::mech_generic().pilot_health - 1);
+            player_unmodified_pilot_health += mech_generic::mech_generic().pilot_health;
             player_front_armor += mech_generic::mech_generic().front_armor;
             player_unmodified_front_armor += mech_generic::mech_generic().front_armor;
             player_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
@@ -487,6 +539,7 @@ public:
         else if (user_input == "Emperor")
         {
             player_pilot_health += (mech_emperor::mech_emperor().pilot_health - 1);
+            player_unmodified_pilot_health += mech_emperor::mech_emperor().pilot_health;
             player_front_armor += mech_emperor::mech_emperor().front_armor;
             player_unmodified_front_armor += mech_emperor::mech_emperor().front_armor;
             player_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
@@ -504,6 +557,7 @@ public:
         else if (user_input == "Panzer")
         {
             player_pilot_health += (mech_panzer::mech_panzer().pilot_health - 1);
+            player_unmodified_pilot_health += mech_panzer::mech_panzer().pilot_health;
             player_front_armor += mech_panzer::mech_panzer().front_armor;
             player_unmodified_front_armor += mech_panzer::mech_panzer().front_armor;
             player_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
@@ -521,6 +575,7 @@ public:
         else if (user_input == "Artemis")
         {
             player_pilot_health += (mech_artemis::mech_artemis().pilot_health - 1);
+            player_unmodified_pilot_health += mech_artemis::mech_artemis().pilot_health;
             player_front_armor += mech_artemis::mech_artemis().front_armor;
             player_unmodified_front_armor += mech_artemis::mech_artemis().front_armor;
             player_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
@@ -532,12 +587,15 @@ public:
             player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             player_melee_damage += mech_artemis::mech_artemis().melee_damage;
             player_primary_gun_name = mech_artemis::mech_artemis().primary_gun;
+            accuracy_modifier += 25;
+            ai_accuracy_modifier -= 25;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_mech_selection();
         }
         else if (user_input == "Aegis")
         {
             player_pilot_health += (mech_aegis::mech_aegis().pilot_health - 1);
+            player_unmodified_pilot_health += mech_aegis::mech_aegis().pilot_health;
             player_front_armor += mech_aegis::mech_aegis().front_armor;
             player_unmodified_front_armor += mech_aegis::mech_aegis().front_armor;
             player_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
@@ -549,6 +607,7 @@ public:
             player_tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             player_melee_damage += mech_aegis::mech_aegis().melee_damage;
             player_primary_gun_name = mech_aegis::mech_aegis().primary_gun;
+            accuracy_modifier += 25;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -563,6 +622,7 @@ public:
         {
         case(1):
             pilot_health += (mech_emperor::mech_emperor().pilot_health - 1);
+            unmodified_pilot_health += mech_emperor::mech_emperor().pilot_health;
             front_armor += mech_emperor::mech_emperor().front_armor;
             unmodified_front_armor += mech_emperor::mech_emperor().front_armor;
             primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
@@ -578,6 +638,7 @@ public:
             break;
         case(2):
             pilot_health += (mech_panzer::mech_panzer().pilot_health - 1);
+            unmodified_pilot_health += mech_panzer::mech_panzer().pilot_health;
             front_armor += mech_panzer::mech_panzer().front_armor;
             unmodified_front_armor += mech_panzer::mech_panzer().front_armor;
             primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
@@ -593,6 +654,7 @@ public:
             break;
         case(3):
             pilot_health += (mech_artemis::mech_artemis().pilot_health - 1);
+            unmodified_pilot_health += mech_artemis::mech_artemis().pilot_health;
             front_armor += mech_artemis::mech_artemis().front_armor;
             unmodified_front_armor += mech_artemis::mech_artemis().front_armor;
             primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
@@ -603,11 +665,14 @@ public:
             tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             melee_damage += mech_artemis::mech_artemis().melee_damage;
+            ai_accuracy_modifier += 25;
+            accuracy_modifier -= 25;
             cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(4):
             pilot_health += (mech_aegis::mech_aegis().pilot_health - 1);
+            unmodified_pilot_health += mech_aegis::mech_aegis().pilot_health;
             front_armor += mech_aegis::mech_aegis().front_armor;
             unmodified_front_armor += mech_aegis::mech_aegis().front_armor;
             primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
@@ -618,12 +683,13 @@ public:
             tertiary_gun_damage += mech_aegis::mech_aegis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             melee_damage += mech_aegis::mech_aegis().melee_damage;
- 
+            ai_accuracy_modifier += 25;
             cout << "You Fight an " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         default:
             pilot_health += (mech_generic::mech_generic().pilot_health - 1);
+            unmodified_pilot_health += mech_generic::mech_generic().pilot_health;
             front_armor += mech_generic::mech_generic().front_armor;
             unmodified_front_armor += mech_generic::mech_generic().front_armor;
             primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
@@ -697,35 +763,20 @@ public:
     void repair_action() {
         if (is_player_turn) 
         {
-            if (player_pilot_health < 350) {
-                player_pilot_health += 400;
+            if (player_pilot_health < unmodified_pilot_health) {
+                player_pilot_health += (player_unmodified_pilot_health * 0.10);
                 cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
             }
-            else if (side_armor_health < 100) {
-                side_armor_health += 20;
-                cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
-            }
-            else if (rear_armor_health < 75) {
-                rear_armor_health += 15;
-                cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
+            else
+            {
+                cout << BRIGHT_CYAN << "You are Already at Full Health!" << RESET << endl;
             }
         }
         else if (!is_player_turn)
         {
-            if (pilot_health < 350) {
-                pilot_health += 100;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
-            }
-            else if (side_armor_health < 100) {
-                side_armor_health += 20;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
-            }
-            else if (rear_armor_health < 75) {
-                rear_armor_health += 15;
-                cout << "Enemy Pilot Healed!" << endl;
-                end_turn();
+            if (pilot_health < unmodified_pilot_health) {
+                pilot_health += (unmodified_pilot_health * 0.10);
+                cout << BRIGHT_RED << "Enemy Pilot Healed!" << RESET << endl;
             }
         }
     }
@@ -758,9 +809,10 @@ public:
     void ai_overcharge_action() {
         if (!is_player_turn && !is_ai_overcharged)
         {
-            primary_gun_damage *= 1.5;
-            primary_gun_penetration *= 1.5;
-            cout << RED << "Enemy Guns Overcharged!" << RESET << endl;
+            primary_gun_damage *= 2;
+            primary_gun_penetration += (unmodified_primary_gun_penetration * 0.25);
+            cout << RED << "Enemy Gun Overcharged!" << RESET << endl;
+            ai_overcharge_switch_on();
         }
     }
 
@@ -873,11 +925,11 @@ public:
         }
         enemy_damage_multiplier = (primary_gun_damage * enemy_damage_multiplier_percentage);
 
-        if (accuracy_modifier < 30) {
-            accuracy_modifier = 30;
+        if (ai_accuracy_modifier < 30) {
+            ai_accuracy_modifier = 30;
         }
 
-        int enemy_accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
+        int enemy_accuracy_roll = (rand() % ai_accuracy_modifier) + ai_accuracy_modifier;
         if (enemy_accuracy_roll > 100)
         {
             enemy_accuracy_roll = 100;

@@ -1,35 +1,34 @@
 ﻿  Panzermensch.cpp
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(249,66): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(254,52): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(267,90): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(273,76): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(284,38): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(285,39): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(335,44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(337,47): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(339,50): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(341,46): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(451,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(456,41): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(457,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(767,72): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(778,58): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(787,59): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(795,41): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(804,94): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(813,76): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(823,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(826,42): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(827,47): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(829,28): warning C4552: '*': result of expression not used
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(899,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(902,48): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(903,53): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(905,33): warning C4552: '*': result of expression not used
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(253,66): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(258,52): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(271,90): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(277,76): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(311,38): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(312,45): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(313,39): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(365,44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(367,47): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(369,50): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(371,46): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(493,80): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(498,41): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(499,55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(824,72): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(835,58): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(844,59): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(852,41): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(861,94): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(870,76): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(880,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(883,42): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(884,47): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(972,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(975,48): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ltmik\source\repos\panzermensch-console-ver\Panzermensch.cpp(976,53): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Generating code
-  14 of 173 functions ( 8.1%) were compiled, the rest were copied from previous compilation.
+  2 of 174 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,

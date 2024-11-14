@@ -66,8 +66,8 @@ public:
     string melee_weapon;
 
     string mech_name;
-    float mech_id;
-    float tier;
+    int mech_id;
+    int tier;
 
     mech_generic() : pilot_health(9500), front_armor(350), primary_gun_capable(true), primary_gun_damage(300), primary_gun_penetration(10), primary_gun("Primary"),
         secondary_gun_capable(false), secondary_gun_damage(100), secondary_gun_penetration(100), secondary_gun("Secondary"), tertiary_gun_capable(false),
@@ -107,8 +107,8 @@ public:
     string melee_weapon = "Godslayer";
 
     string mech_name = "EMPEROR";
-    float mech_id = 1;
-    float tier = 1;
+    int mech_id = 1;
+    int tier = 1;
 
     mech_emperor() : pilot_health(10000), front_armor(1580), primary_gun_capable(true), primary_gun_damage(1560), primary_gun_penetration(1800), primary_gun("Godbreaker"),
         secondary_gun_capable(true), secondary_gun_damage(550), secondary_gun_penetration(800), secondary_gun("Godstorm"), tertiary_gun_capable(true),
@@ -138,10 +138,10 @@ public:
     string melee_weapon;
 
     string mech_name;
-    float mech_id;
-    float tier;
+    int mech_id;
+    int tier;
 
-    mech_panzer() : pilot_health(12500), front_armor(1850), primary_gun_capable(true), primary_gun_damage(1800), primary_gun_penetration(1200), primary_gun("Ironclad"),
+    mech_panzer() : pilot_health(12500), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2500), primary_gun_penetration(1450), primary_gun("Bulwark"),
         secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1100), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
         tertiary_gun_damage(1550), tertiary_gun_penetration(800), tertiary_gun("Goliath"), melee_capable(false), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1) {};
@@ -170,10 +170,10 @@ public:
     string melee_weapon;
 
     string mech_name;
-    float mech_id;
-    float tier;
+    int mech_id;
+    int tier;
 
-    mech_artemis() : pilot_health(8000), front_armor(1450), primary_gun_capable(true), primary_gun_damage(975), primary_gun_penetration(1350), primary_gun("Wrath of the Stars"),
+    mech_artemis() : pilot_health(10000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1400), primary_gun_penetration(2500), primary_gun("Wrath of the Stars"),
         secondary_gun_capable(true), secondary_gun_damage(670), secondary_gun_penetration(800), secondary_gun("Lance of Heaven"), tertiary_gun_capable(false),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(750), melee_sharpness(1600),
         melee_weapon("Astral Claw"), mech_name("Artemis"), mech_id(3), tier(1) {};
@@ -202,13 +202,13 @@ public:
     string melee_weapon;
 
     string mech_name;
-    float mech_id;
-    float tier;
+    int mech_id;
+    int tier;
 
-    mech_aegis() : pilot_health(8000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1200), primary_gun_penetration(2000), primary_gun("Radiance"),
+    mech_aegis() : pilot_health(10000), front_armor(1600), primary_gun_capable(true), primary_gun_damage(1200), primary_gun_penetration(2500), primary_gun("Radiance"),
         secondary_gun_capable(false), secondary_gun_damage(0), secondary_gun_penetration(0), secondary_gun("None"), tertiary_gun_capable(false),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(1000), melee_sharpness(1600),
         melee_weapon("Lightblade"), mech_name("Aegis"), mech_id(4), tier(1) {};
-
+    
 };
 

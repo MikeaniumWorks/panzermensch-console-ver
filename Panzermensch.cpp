@@ -80,6 +80,7 @@ public:
     string player_mech = "Player";
     string player_primary_gun_name = "Gun";
     float player_primary_gun_damage = 0;
+    float player_unmodified_primary_gun_damage = 0;
     float player_primary_gun_penetration = 0;
     float player_unmodified_primary_gun_penetration = 0;
     float player_secondary_gun_damage = 0;
@@ -100,7 +101,10 @@ public:
     float player_veterancy = 0;
 
     // Enemy Stats
+    string enemy_mech = "Enemy";
+    int enemy_mech_id = 0;
     float primary_gun_damage = 0;
+    float unmodified_primary_gun_damage = 0;
     float primary_gun_penetration = 0;
     float unmodified_primary_gun_penetration = 0;
     float secondary_gun_damage = 0;
@@ -272,7 +276,7 @@ public:
             primary_gun_damage /= 2;
             primary_gun_penetration -= (unmodified_primary_gun_penetration * 0.25);
             ai_overcharge_switch_off();
-            cout << YELLOW << "AI Unovercharged" << RESET << endl;
+            //cout << YELLOW << "AI Unovercharged" << RESET << endl;
         }
         else
         {
@@ -280,9 +284,33 @@ public:
         }
     }
 
+    void weight_limiter() {
+        if (ai_fire_weight>10)
+        {
+            ai_fire_weight = 10;
+            ai_fire_weight -= 3;
+        }
+        else if (ai_fortify_weight > 10)
+        {
+            ai_fortify_weight = 10;
+            ai_fortify_weight -= 3;
+        }
+        else if (ai_overcharge_weight > 10)
+        {
+            ai_overcharge_weight = 10;
+            ai_overcharge_weight -= 3;
+        }
+        else if (ai_repair_weight > 10)
+        {
+            ai_repair_weight = 10;
+            ai_repair_weight -= 3;
+        }
+    }
+
     void ai_weight_analysis() {
-        float enemy_pilot_percentage = (pilot_health * 0.14);
-        float player_pilot_percentage = (player_pilot_health * 0.14);
+        float enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
+        float enemy_pilot_health_percentage = (unmodified_pilot_health * 0.86);
+        float player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
         if (player_front_armor > front_armor)
         {
             
@@ -290,11 +318,13 @@ public:
             {
                 ai_fortify_weight -= 1;
                 ai_fire_weight += 1;
+                ai_overcharge_weight += 1;
             }
             else
             {
                 ai_fire_weight -= 1;
                 ai_fortify_weight += 1;
+                ai_overcharge_weight += 1;
             }
         }
         else if (player_front_armor == front_armor || player_front_armor == primary_gun_penetration)
@@ -306,7 +336,7 @@ public:
         {
             if (has_ai_overcharged_once)
             {
-                ai_fire_weight += 4;
+                ai_fire_weight += 5;
             }
             else
             {
@@ -314,23 +344,23 @@ public:
                 ai_overcharge_weight += 2;
             }
         }
-        if (player_pilot_percentage > enemy_pilot_percentage)
+        else if (pilot_health < enemy_pilot_health_percentage)
         {
             ai_repair_weight += 1;
         }
-        else if (player_pilot_percentage < enemy_pilot_percentage)
-        {
-            ai_repair_weight -= 1;
-        }
         else if (player_front_armor > front_armor || player_front_armor > primary_gun_penetration)
         {
-            ai_fortify_weight += 2;
+            ai_fortify_weight += 1;
             ai_overcharge_weight += 1;
         }
+        else {
+            cout << "Weight Analysis is Faulty!" << endl;
+        }
+        weight_limiter();
     }
     
     void ai_decision_making() {
-        ai_weight_analysis();
+        //ai_weight_analysis();
 
         ai_fire_chance = ((rand() % dice3) + ai_fire_weight);
         cout << ai_fire_chance << " FIRE CHANCE!" << endl;
@@ -344,6 +374,7 @@ public:
         if (ai_fire_chance > ai_fortify_chance && ai_fire_chance > ai_overcharge_chance && ai_fire_chance > ai_repair_chance) {
             cout << "They Fire on Us!" << endl;
             enemy_combat_damage();
+            unovercharge();
         }
         else if (ai_fortify_chance > ai_fire_chance && ai_fortify_chance > ai_overcharge_chance && ai_fortify_chance > ai_repair_chance)
         {
@@ -354,10 +385,20 @@ public:
             ai_fortify_counter += 1;
             has_ai_fortified_once = !has_ai_fortified_once;
         }
+        else if (ai_overcharge_chance > ai_fire_chance && ai_overcharge_chance > ai_fortify_chance && ai_overcharge_chance > ai_repair_chance && is_overcharged)
+        {
+            enemy_combat_damage();
+            unovercharge();
+        }
+        else if (ai_overcharge_chance == ai_fire_chance || ai_overcharge_chance == ai_fortify_chance || ai_overcharge_chance == ai_repair_chance || is_overcharged)
+        {
+            enemy_combat_damage();
+            unovercharge();
+        }
         else if (ai_overcharge_chance > ai_fire_chance && ai_overcharge_chance > ai_fortify_chance && ai_overcharge_chance > ai_repair_chance)
         {
             ai_overcharge_action();
-            ai_overcharge_weight -= 2;
+            ai_overcharge_weight -= 3;
             ai_fire_weight += 1;
             ai_overcharge_counter += 1;
             has_ai_overcharged_once = !has_ai_overcharged_once;
@@ -370,6 +411,7 @@ public:
         else
         {
             enemy_combat_damage();
+            unovercharge();
         }
     }
 
@@ -448,7 +490,7 @@ public:
         }
         else if (case_2_hit)
         {
-            player_primary_gun_damage -= (player_primary_gun_damage * (1 - 0.12));
+            player_primary_gun_damage -= (player_unmodified_primary_gun_damage * (1 - 0.12));
             //cout << "Random Effects 2 Is Active!" << endl;
         }
         else if (case_3_hit)
@@ -491,12 +533,14 @@ public:
             cout << RED << "-50% Accuracy!" << RESET << endl;
             cout << RED << "-80% Armor Effectiveness!" << RESET << endl;
             accuracy_modifier -= 50;
+            ai_accuracy_modifier -= 25;
             break;
         case (4):
             case_4_hit = true;
             cout << BRIGHT_RED << "Immense Fog." << RESET << endl;
             cout << RED << "-50% Accuracy!" << RESET << endl;
             accuracy_modifier -= 50;
+            ai_accuracy_modifier -= 25;
             break;
         case (5):
             cout << GREEN << "Night of a Good Omen!" << RESET << endl;
@@ -525,6 +569,7 @@ public:
             player_front_armor += mech_generic::mech_generic().front_armor;
             player_unmodified_front_armor += mech_generic::mech_generic().front_armor;
             player_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
             player_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             player_unmodified_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             player_secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
@@ -543,6 +588,7 @@ public:
             player_front_armor += mech_emperor::mech_emperor().front_armor;
             player_unmodified_front_armor += mech_emperor::mech_emperor().front_armor;
             player_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
             player_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             player_unmodified_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             player_secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
@@ -561,6 +607,7 @@ public:
             player_front_armor += mech_panzer::mech_panzer().front_armor;
             player_unmodified_front_armor += mech_panzer::mech_panzer().front_armor;
             player_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
             player_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             player_unmodified_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             player_secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
@@ -579,6 +626,7 @@ public:
             player_front_armor += mech_artemis::mech_artemis().front_armor;
             player_unmodified_front_armor += mech_artemis::mech_artemis().front_armor;
             player_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
             player_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             player_unmodified_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             player_secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
@@ -587,8 +635,8 @@ public:
             player_tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             player_melee_damage += mech_artemis::mech_artemis().melee_damage;
             player_primary_gun_name = mech_artemis::mech_artemis().primary_gun;
-            accuracy_modifier += 25;
-            ai_accuracy_modifier -= 25;
+            accuracy_modifier += 45;
+            ai_accuracy_modifier -= 35;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -599,6 +647,7 @@ public:
             player_front_armor += mech_aegis::mech_aegis().front_armor;
             player_unmodified_front_armor += mech_aegis::mech_aegis().front_armor;
             player_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
             player_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             player_unmodified_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             player_secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
@@ -620,12 +669,13 @@ public:
     void ai_mech_selection() {
         switch (ai_mech_roll)
         {
-        case(1):
+        case(1): // Emperor
             pilot_health += (mech_emperor::mech_emperor().pilot_health - 1);
             unmodified_pilot_health += mech_emperor::mech_emperor().pilot_health;
             front_armor += mech_emperor::mech_emperor().front_armor;
             unmodified_front_armor += mech_emperor::mech_emperor().front_armor;
             primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_emperor::mech_emperor().primary_gun_damage;
             primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             unmodified_primary_gun_penetration += mech_emperor::mech_emperor().primary_gun_penetration;
             secondary_gun_damage += mech_emperor::mech_emperor().secondary_gun_damage;
@@ -636,12 +686,13 @@ public:
             cout << "You Fight an " << BRIGHT_RED << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
-        case(2):
+        case(2): // Panzer
             pilot_health += (mech_panzer::mech_panzer().pilot_health - 1);
             unmodified_pilot_health += mech_panzer::mech_panzer().pilot_health;
             front_armor += mech_panzer::mech_panzer().front_armor;
             unmodified_front_armor += mech_panzer::mech_panzer().front_armor;
             primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_panzer::mech_panzer().primary_gun_damage;
             primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             unmodified_primary_gun_penetration += mech_panzer::mech_panzer().primary_gun_penetration;
             secondary_gun_damage += mech_panzer::mech_panzer().secondary_gun_damage;
@@ -652,12 +703,13 @@ public:
             cout << "You Fight a " << BRIGHT_RED << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
-        case(3):
+        case(3): // Artemis
             pilot_health += (mech_artemis::mech_artemis().pilot_health - 1);
             unmodified_pilot_health += mech_artemis::mech_artemis().pilot_health;
             front_armor += mech_artemis::mech_artemis().front_armor;
             unmodified_front_armor += mech_artemis::mech_artemis().front_armor;
             primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_artemis::mech_artemis().primary_gun_damage;
             primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             unmodified_primary_gun_penetration += mech_artemis::mech_artemis().primary_gun_penetration;
             secondary_gun_damage += mech_artemis::mech_artemis().secondary_gun_damage;
@@ -665,17 +717,19 @@ public:
             tertiary_gun_damage += mech_artemis::mech_artemis().tertiary_gun_damage;
             tertiary_gun_penetration += mech_artemis::mech_artemis().tertiary_gun_penetration;
             melee_damage += mech_artemis::mech_artemis().melee_damage;
-            ai_accuracy_modifier += 25;
-            accuracy_modifier -= 25;
+            enemy_mech_id += mech_artemis::mech_artemis().mech_id;
+            ai_accuracy_modifier += 45;
+            accuracy_modifier -= 35;
             cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
-        case(4):
+        case(4): // Aegis
             pilot_health += (mech_aegis::mech_aegis().pilot_health - 1);
             unmodified_pilot_health += mech_aegis::mech_aegis().pilot_health;
             front_armor += mech_aegis::mech_aegis().front_armor;
             unmodified_front_armor += mech_aegis::mech_aegis().front_armor;
             primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_aegis::mech_aegis().primary_gun_damage;
             primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             unmodified_primary_gun_penetration += mech_aegis::mech_aegis().primary_gun_penetration;
             secondary_gun_damage += mech_aegis::mech_aegis().secondary_gun_damage;
@@ -684,15 +738,17 @@ public:
             tertiary_gun_penetration += mech_aegis::mech_aegis().tertiary_gun_penetration;
             melee_damage += mech_aegis::mech_aegis().melee_damage;
             ai_accuracy_modifier += 25;
+            accuracy_modifier -= 25;
             cout << "You Fight an " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
-        default:
+        default: // Generic
             pilot_health += (mech_generic::mech_generic().pilot_health - 1);
             unmodified_pilot_health += mech_generic::mech_generic().pilot_health;
             front_armor += mech_generic::mech_generic().front_armor;
             unmodified_front_armor += mech_generic::mech_generic().front_armor;
             primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_generic::mech_generic().primary_gun_damage;
             primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             unmodified_primary_gun_penetration += mech_generic::mech_generic().primary_gun_penetration;
             secondary_gun_damage += mech_generic::mech_generic().secondary_gun_damage;
@@ -749,6 +805,7 @@ public:
         if (pilot_health > 0) {
             unfortify();
             cout << "Enemy Mech Turn!" << endl;
+            cout << "Enemy Health: " << BRIGHT_RED << pilot_health << RESET << endl;
             ai_weight_analysis();
             ai_decision_making();
             //enemy_combat_damage();
@@ -823,24 +880,34 @@ public:
         float distance_float = distance - max_distance;
         float actual_penetration = player_primary_gun_penetration;
         
-        float damage_distance_multiplier = abs(sin((((max_distance - distance_float) / max_distance) * (PI / 2)) * player_primary_gun_damage));
-        float penetration_distance_multiplier = abs(sin((((max_distance - distance_float) / max_distance) * (PI / 2)) * player_primary_gun_penetration));
+        float damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
+        float penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration)) * 100;
 
-        actual_penetration * penetration_distance_multiplier;
+        cout << "Penetration: " << player_primary_gun_penetration << endl;
+        cout << "Actual Penetration: " << actual_penetration << endl;
 
         if (penetration_distance_multiplier > 1)
         {
             penetration_distance_multiplier = 1;
+        }
+        if (penetration_distance_multiplier < 0.25)
+        {
+            penetration_distance_multiplier = 0.25;
+        }
+        if (damage_distance_multiplier < 0.25)
+        {
+            damage_distance_multiplier = 0.25;
         }
         if (damage_distance_multiplier > 1)
         {
             damage_distance_multiplier = 1;
         }
 
-        cout << "=========>" << damage_distance_multiplier << endl;
-        cout << "=========>" << penetration_distance_multiplier << endl;
+        actual_penetration *= penetration_distance_multiplier;
 
-        float penetration_penalty_multiplier = (player_primary_gun_penetration - front_armor);
+        cout << "DMG Distance Multiplier =========>" << damage_distance_multiplier << endl;
+        cout << "PEN Distance Multiplier =========>" << penetration_distance_multiplier << endl;
+
 
         damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100)/100);;
         if (damage_multiplier_percentage > 0.5)
@@ -859,9 +926,15 @@ public:
         }
         //cout << accuracy_roll << endl;
 
-        if (accuracy_roll < 40)
+        if (accuracy_roll < 40 && enemy_mech_id == 4)
         {
-            cout << BRIGHT_RED << "We Missed!" << RESET << endl;
+            cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << " We Missed!" << RESET << endl;
+            accuracy_modifier += 3;
+        }
+        else if (accuracy_roll < 40)
+        {
+            cout << BRIGHT_RED << " We Missed!" << RESET << endl;
+            accuracy_modifier += 3;
         }
         else {
             if (is_player_attacking = true) {
@@ -899,24 +972,31 @@ public:
         float enemy_distance_float = distance - max_distance;
         float enemy_actual_penetration = primary_gun_penetration;
 
-        float enemy_damage_distance_multiplier = abs(sin((((max_distance - enemy_distance_float) / max_distance) * (PI / 2)) * primary_gun_damage));
-        float enemy_penetration_distance_multiplier = abs(sin((((max_distance - enemy_distance_float) / max_distance) * (PI / 2)) * primary_gun_penetration));
+        float enemy_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
+        float enemy_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration)) * 100;
 
-        enemy_actual_penetration* enemy_penetration_distance_multiplier;
 
         if (enemy_penetration_distance_multiplier > 1)
         {
             enemy_penetration_distance_multiplier = 1;
+        }
+        if (enemy_penetration_distance_multiplier < 0.25)
+        {
+            enemy_penetration_distance_multiplier = 0.25;
+        }
+        if (enemy_damage_distance_multiplier < 0.25)
+        {
+            enemy_damage_distance_multiplier = 0.25;
         }
         if (enemy_damage_distance_multiplier > 1)
         {
             enemy_damage_distance_multiplier = 1;
         }
 
-        cout << "=========>" << enemy_damage_distance_multiplier << endl;
-        cout << "=========>" << enemy_penetration_distance_multiplier << endl;
+        enemy_actual_penetration *= enemy_penetration_distance_multiplier;
 
-        float enemy_penetration_penalty_multiplier = (player_primary_gun_penetration - front_armor); // W.I.P
+        cout << "DMG Distance Multiplier =========>" << enemy_damage_distance_multiplier << endl;
+        cout << "PEN Distance Multiplier =========>" << enemy_penetration_distance_multiplier << endl;
 
         enemy_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);;
         if (enemy_damage_multiplier_percentage > 0.5)
@@ -942,7 +1022,6 @@ public:
         }
         else
         {
-
             if (is_player_attacking = true)
             {
                 if (player_front_armor > -1) {

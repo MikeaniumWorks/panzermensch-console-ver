@@ -144,6 +144,7 @@ public:
     int accuracy_modifier = 90;
     int movement_speed_modifier = 100;
     int accuracy_roll = 0;
+    int ai_accuracy_roll = 0;
     int ai_accuracy_modifier = 90;
     int dice = 6;
     int dice_result = 0;
@@ -156,6 +157,18 @@ public:
     float damage_multiplier_percentage = 0;
     float enemy_damage_multiplier = 0;
     float enemy_damage_multiplier_percentage = 0;
+    float actual_damage = 0;
+    float done_damage = 0;
+    float distance_float = 0;
+    float actual_penetration = 0;
+    float damage_distance_multiplier = 0;
+    float penetration_distance_multiplier = 0;
+    float enemy_actual_damage = 0;
+    float enemy_done_damage = 0;
+    float enemy_distance_float = 0;
+    float enemy_actual_penetration = 0;
+    float enemy_damage_distance_multiplier = 0;
+    float enemy_penetration_distance_multiplier = 0;
 
     // World Stats.
     const double PI = std::atan(1.0) * 4;
@@ -194,7 +207,7 @@ public:
         side_armor_health(0), rear_armor(0), rear_armor_health(0),
         pilot_health(1), veterancy(0) {}
 
-    void debug_values() {
+    void debug_values() {  // Debug, Duh.
         cout << "---->>Enemy Front Armor: " << front_armor << endl;
         cout << "---->>Player Front Armor: " << player_front_armor << endl;
         cout << "---->>Enemy Primary Gun Damage: " << primary_gun_damage << endl;
@@ -203,51 +216,51 @@ public:
         cout << "---->>Player Primary Gun Penetration: " << player_primary_gun_penetration << endl;
     }
 
-    void end_turn() {
+    void end_turn() {  // Ends Turn Of Current Person.
         is_player_turn = !is_player_turn;
     }
 
-    void end_mech_selection() {
+    void end_mech_selection() { // Sets Player Selection Bool to True. Assigned when Player Selects Mech.
         has_selected_mech = !has_selected_mech;
     }
 
-    void end_ai_mech_selection() {
+    void end_ai_mech_selection() { // Ends AI Mech Selection. Sets Ai Mech Selection Bool to True.
         ai_has_selected_mech = !ai_has_selected_mech;
     }
 
-    void fortify_switch_on() {
+    void fortify_switch_on() {   // ON Switch for Player Fortify Flag.
         is_fortified = true;
     }
 
-    void fortify_switch_off() {
+    void fortify_switch_off() {   // OFF Switch for Player Fortify Flag.
         is_fortified = false;
     }
 
-    void ai_fortify_switch_on() {
+    void ai_fortify_switch_on() {   // ON Switch for AI Fortify Flag.
         is_ai_fortified = true;
     }
 
-    void ai_fortify_switch_off() {
+    void ai_fortify_switch_off() {   // OFF Switch for AI Fortify Flag.
         is_ai_fortified = false;
     }
     
-    void overcharge_switch_on() {
+    void overcharge_switch_on() {   // ON Switch for Player Overcharge Flag.
         is_overcharged = true;
     }
     
-    void overcharge_switch_off() {
+    void overcharge_switch_off() {   // OFF Switch for Player Overcharge Flag.
         is_overcharged = false;
     }
 
-    void ai_overcharge_switch_on() {
+    void ai_overcharge_switch_on() {   // ON Switch for AI Overcharge Flag.
         is_ai_overcharged = true;
     }
 
-    void ai_overcharge_switch_off() {
+    void ai_overcharge_switch_off() {  // OFF Switch for AI Overcharge Flag.
         is_ai_overcharged = false;
     }
 
-    void unfortify() {
+    void unfortify() {   // Checks if Person is Fortified, If more than one turn, It removes the Modifiers so they aren't permanent.
         if (is_player_turn && is_fortified)
         {
             player_front_armor -= (player_unmodified_front_armor * 0.15);
@@ -258,13 +271,13 @@ public:
             front_armor -= (unmodified_front_armor * 0.15);
             ai_fortify_switch_off();
         }
-        else
+        else //DEBUG
         {
             //cout << "Fortified is False!" << endl;
         }
     }
 
-    void unovercharge() {
+    void unovercharge() { // Checks if Person Has already been Overcharged, If they are, It Removes the Modifiers So they can't fire Endlessly with the same power as being Overcharged.
         if (is_player_turn && is_overcharged)
         {
             player_primary_gun_damage /= 2;
@@ -278,13 +291,13 @@ public:
             ai_overcharge_switch_off();
             //cout << YELLOW << "AI Unovercharged" << RESET << endl;
         }
-        else
+        else //DEBUG
         {
             //cout << "Overcharge is False!" << endl;
         }
     }
 
-    void weight_limiter() {
+    void weight_limiter() {    // Limits Weights to 10 So it doesn't increase to the point where No other option can be picked but the oversized option.
         if (ai_fire_weight>10)
         {
             ai_fire_weight = 10;
@@ -307,7 +320,7 @@ public:
         }
     }
 
-    void ai_weight_analysis() {
+    void ai_weight_analysis() {  // Analyzes the Weight of all Options based on the Situation.
         float enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
         float enemy_pilot_health_percentage = (unmodified_pilot_health * 0.86);
         float player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
@@ -353,13 +366,13 @@ public:
             ai_fortify_weight += 1;
             ai_overcharge_weight += 1;
         }
-        else {
+        else { //DEBUG
             cout << "Weight Analysis is Faulty!" << endl;
         }
         weight_limiter();
     }
     
-    void ai_decision_making() {
+    void ai_decision_making() { // The AI Brain, Applies Weight into Chances and Picks Decisions based on the Chance.
         //ai_weight_analysis();
 
         ai_fire_chance = ((rand() % dice3) + ai_fire_weight);
@@ -414,8 +427,8 @@ public:
             unovercharge();
         }
     }
-
-    void turn_skip_chance() {
+    
+    void turn_skip_chance() {     // Still Unused Ability/Function/Effect made to roll a Dice to see if Turns would get Skipped.
         turn_skip_chance_roll = (rand() % turn_skip_chance_dice) + 0;
         switch (turn_skip_chance_roll)
         {
@@ -433,11 +446,11 @@ public:
     }
 
 
-    void terrain_roll() {
+    void terrain_roll() {   // Rolls Dice for Terrain Choice.
         dice2_result = (rand() % dice2) + 0;
     }
 
-    void terrain_modifier() {
+    void terrain_modifier() {    // Terrain Assigner, Also Adds the Modifiers of the Terrain.
         is_terrain_on = true;
         terrain_roll();
         int terrain_roll = dice2_result;
@@ -468,22 +481,22 @@ public:
         }
     }
 
-    void diceroll() {
+    void diceroll() {      // Dice Roll meant for Day Modifier Choice.
         dice_result = (rand() % dice) + 1;
     }
 
-    void ai_mech_dice_roll() {
+    void ai_mech_dice_roll() {   // Dice Roll for AI Mech Choosing
         ai_mech_roll = (rand() % ai_mech_dice) + 1;
     }
-
-    void modifier_checker() {
+     
+    void modifier_checker() {       // Supposed to check modifiers, So if its Terrain X, it Applies its Values and makes sure it is applied.
         if (is_terrain_on)
         {
             terrain_modifier();
         }
     }
 
-    void random_effects() {
+    void random_effects() {       // Supposed to be The Day Modifier Assignor, To Actually Apply the Modifiers.
         if (case_1_hit)
         {
             //Nothing.
@@ -509,7 +522,7 @@ public:
         }
     }
 
-    void random_effects_choice() {
+    void random_effects_choice() {        // Day Modifier Roller
 
         int effect_roll = dice_result;
 
@@ -554,11 +567,11 @@ public:
         }
     }
 
-    void randomize_distance() {
+    void randomize_distance() {       // Randomizes Distance.
         distance = rand() % (max_distance - min_distance + 1) + min_distance;
     }
 
-    void player_selecting_mech() {
+    void player_selecting_mech() {       // Player Mech Selection Function.
         cout << "Choose your Mech:" << endl;
         cout << YELLOW << "Emperor" << RESET << " | " << BRIGHT_BLACK << "Panzer" << RESET << " | " << BLUE << "Artemis" << RESET << " | " << BRIGHT_CYAN << "Aegis" << RESET << " | " << BRIGHT_YELLOW << "Generic" << RESET << endl;
         getline(cin, user_input);
@@ -666,7 +679,7 @@ public:
         }
     }
 
-    void ai_mech_selection() {
+    void ai_mech_selection() {     // AI Mech Selection Function.
         switch (ai_mech_roll)
         {
         case(1): // Emperor
@@ -762,7 +775,7 @@ public:
         }
     }
 
-    void player_turn() {
+    void player_turn() {      // Player Turn Function.
 
         unfortify();
         cout << BRIGHT_BLUE << "Your Turn! " << RESET << "Your Health: " << BRIGHT_GREEN << player_pilot_health << RESET << endl;
@@ -801,14 +814,13 @@ public:
         }
     }
 
-    void enemy_turn() {
+    void enemy_turn() {           // Enemy Turn Function.
         if (pilot_health > 0) {
             unfortify();
             cout << "Enemy Mech Turn!" << endl;
             cout << "Enemy Health: " << BRIGHT_RED << pilot_health << RESET << endl;
             ai_weight_analysis();
             ai_decision_making();
-            //enemy_combat_damage();
             end_turn();
         }
         else {
@@ -817,7 +829,7 @@ public:
     }
 
 
-    void repair_action() {
+    void repair_action() {  // Repair Function
         if (is_player_turn) 
         {
             if (player_pilot_health < unmodified_pilot_health) {
@@ -838,7 +850,7 @@ public:
         }
     }
 
-    void fortify_action() {
+    void fortify_action() {    // Fortify Function
         if (is_player_turn && !is_fortified)
         {
                 player_front_armor += (player_front_armor * 0.15);
@@ -846,7 +858,7 @@ public:
                 fortify_switch_on();
         }
     }
-    void ai_fortify_action() {
+    void ai_fortify_action() {     // AI Fortify Function
         if (!is_player_turn && !is_fortified)
         {
             front_armor += (front_armor * 0.15);
@@ -854,7 +866,7 @@ public:
             ai_fortify_switch_on();
         }
     }
-    void overcharge_action() {
+    void overcharge_action() {  // Overcharge Function
         if (is_player_turn && !is_overcharged)
         {
                 player_primary_gun_damage *= 2;
@@ -863,7 +875,7 @@ public:
                 overcharge_switch_on();
         }
     }
-    void ai_overcharge_action() {
+    void ai_overcharge_action() {  // AI Overchjarge Function
         if (!is_player_turn && !is_ai_overcharged)
         {
             primary_gun_damage *= 2;
@@ -873,18 +885,16 @@ public:
         }
     }
 
-    void player_combat_damage() {          // What happens when the guns fire.
+    void player_combat_value_initializer() { // Initializes Player Stats Values
+        actual_damage = player_primary_gun_damage;
+        done_damage = 0;
+        distance_float = distance - max_distance;
+        actual_penetration = player_primary_gun_penetration;
+    }
 
-        float actual_damage = player_primary_gun_damage;
-        float done_damage = 0;
-        float distance_float = distance - max_distance;
-        float actual_penetration = player_primary_gun_penetration;
-        
-        float damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
-        float penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration)) * 100;
-
-        cout << "Penetration: " << player_primary_gun_penetration << endl;
-        cout << "Actual Penetration: " << actual_penetration << endl;
+    void player_combat_calculator() { // Calculates Damage and Penetration.
+        damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
+        penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration));
 
         if (penetration_distance_multiplier > 1)
         {
@@ -903,28 +913,40 @@ public:
             damage_distance_multiplier = 1;
         }
 
-        actual_penetration *= penetration_distance_multiplier;
-
-        cout << "DMG Distance Multiplier =========>" << damage_distance_multiplier << endl;
-        cout << "PEN Distance Multiplier =========>" << penetration_distance_multiplier << endl;
-
-
-        damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100)/100);;
+        damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100) / 100);;
         if (damage_multiplier_percentage > 0.5)
         {
             damage_multiplier_percentage = 0.5;
         }
+
         damage_multiplier = (player_primary_gun_damage * damage_multiplier_percentage);
+        actual_penetration *= penetration_distance_multiplier;
+
+        //DEBUG
+        cout << "DMG Distance Multiplier =========>" << damage_distance_multiplier << endl;
+        cout << "PEN Distance Multiplier =========>" << penetration_distance_multiplier << endl;
+    }
+
+    void player_accuracy_roll() {   // Rolls Player Accuracy.
         if (accuracy_modifier < 25) {
             accuracy_modifier = 25;
         }
 
         accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
+
         if (accuracy_roll > 100)
         {
             accuracy_roll = 100;
         }
+
+        //DEBUG
         //cout << accuracy_roll << endl;
+    }
+
+    void player_combat_damage() {          // Combat Operation, Damage Calculation and Infliction.
+        player_combat_value_initializer();
+        player_combat_calculator();
+        player_accuracy_roll();
 
         if (accuracy_roll < 40 && enemy_mech_id == 4)
         {
@@ -956,25 +978,25 @@ public:
                         cout << "Target hit! Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                         end_combat_turn();
                     }
-                    else
+                    else //DEBUG.
                     {
-                        cout << "Something's wrong with the Front Armor Value" << endl;
+                        cout << "Something's wrong with the Combat Damage Function." << endl;
                     };
                 }
             }
         }
     }
 
-    void enemy_combat_damage() 
-    {
-        float enemy_actual_damage = primary_gun_damage;
-        float enemy_done_damage = 0;
-        float enemy_distance_float = distance - max_distance;
-        float enemy_actual_penetration = primary_gun_penetration;
+    void enemy_combat_value_initializer() {  // Enemy Combat Stat Initializer.
+        enemy_actual_damage = primary_gun_damage;
+        enemy_done_damage = 0;
+        enemy_distance_float = distance - max_distance;
+        enemy_actual_penetration = primary_gun_penetration;
+    }
 
-        float enemy_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
-        float enemy_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration)) * 100;
-
+    void enemy_combat_calculator() {  // Calculates Enemy Damage and Penetration.
+        enemy_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
+        enemy_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration));
 
         if (enemy_penetration_distance_multiplier > 1)
         {
@@ -993,30 +1015,42 @@ public:
             enemy_damage_distance_multiplier = 1;
         }
 
-        enemy_actual_penetration *= enemy_penetration_distance_multiplier;
-
-        cout << "DMG Distance Multiplier =========>" << enemy_damage_distance_multiplier << endl;
-        cout << "PEN Distance Multiplier =========>" << enemy_penetration_distance_multiplier << endl;
-
         enemy_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);;
         if (enemy_damage_multiplier_percentage > 0.5)
         {
             enemy_damage_multiplier_percentage = 0.5;
         }
-        enemy_damage_multiplier = (primary_gun_damage * enemy_damage_multiplier_percentage);
 
+        enemy_damage_multiplier = (primary_gun_damage * enemy_damage_multiplier_percentage);
+        enemy_actual_penetration *= enemy_penetration_distance_multiplier;
+
+        //DEBUG
+        cout << "DMG Distance Multiplier =========>" << enemy_damage_distance_multiplier << endl;
+        cout << "PEN Distance Multiplier =========>" << enemy_penetration_distance_multiplier << endl;
+    }
+
+    void enemy_accuracy_roll() { // Calculates Enemy Accuracy.
         if (ai_accuracy_modifier < 30) {
             ai_accuracy_modifier = 30;
         }
 
-        int enemy_accuracy_roll = (rand() % ai_accuracy_modifier) + ai_accuracy_modifier;
-        if (enemy_accuracy_roll > 100)
-        {
-            enemy_accuracy_roll = 100;
-        }
-        //cout << accuracy_roll << endl;
+        ai_accuracy_roll = (rand() % ai_accuracy_modifier) + ai_accuracy_modifier;
 
-        if (enemy_accuracy_roll < 40)
+        if (ai_accuracy_roll > 100)
+        {
+            ai_accuracy_roll = 100;
+        }
+
+        //DEBUG
+        //cout << accuracy_roll << endl;
+    }
+
+    void enemy_combat_damage() {       // AI Combat Operation, Damage Calculation and Infliction.
+        enemy_combat_value_initializer();
+        enemy_combat_calculator();
+        enemy_accuracy_roll();
+
+        if (ai_accuracy_roll < 40)
         {
             cout << BRIGHT_GREEN << "The Enemy Missed!" << RESET << endl;
         }
@@ -1049,7 +1083,7 @@ public:
     }
         
         
-    void end_combat_turn() {
+    void end_combat_turn() {          // Ends Combat Turn. So Far it is Unused, but I have a plan for it later.
         is_player_attacking = !is_player_attacking;
     }
 

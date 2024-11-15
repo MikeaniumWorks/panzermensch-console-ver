@@ -112,7 +112,7 @@ public:
 
     mech_emperor() : pilot_health(10000), front_armor(1580), primary_gun_capable(true), primary_gun_damage(1560), primary_gun_penetration(1800), primary_gun("Godbreaker"),
         secondary_gun_capable(true), secondary_gun_damage(550), secondary_gun_penetration(800), secondary_gun("Godstorm"), tertiary_gun_capable(true),
-        tertiary_gun_damage(21), tertiary_gun_penetration(2000), tertiary_gun("Godfire"), melee_capable(false), melee_damage(1700), melee_sharpness(2000), 
+        tertiary_gun_damage(521), tertiary_gun_penetration(2000), tertiary_gun("Godfire"), melee_capable(false), melee_damage(1700), melee_sharpness(2000), 
         melee_weapon("Godslayer"), mech_name("Emperor"), mech_id(1), tier(1) {};
 };
 
@@ -141,9 +141,9 @@ public:
     int mech_id;
     int tier;
 
-    mech_panzer() : pilot_health(12500), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2500), primary_gun_penetration(1450), primary_gun("Bulwark"),
-        secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1100), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
-        tertiary_gun_damage(1550), tertiary_gun_penetration(800), tertiary_gun("Goliath"), melee_capable(false), melee_damage(0), melee_sharpness(0),
+    mech_panzer() : pilot_health(12500), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2500), primary_gun_penetration(1250), primary_gun("Bulwark"),
+        secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1000), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
+        tertiary_gun_damage(500), tertiary_gun_penetration(2000), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1) {};
 
 };

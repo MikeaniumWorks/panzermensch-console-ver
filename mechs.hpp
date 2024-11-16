@@ -69,7 +69,7 @@ public:
     int mech_id;
     int tier;
 
-    mech_generic() : pilot_health(9500), front_armor(350), primary_gun_capable(true), primary_gun_damage(300), primary_gun_penetration(10), primary_gun("Primary"),
+    mech_generic() : pilot_health(100000), front_armor(12500), primary_gun_capable(true), primary_gun_damage(20000), primary_gun_penetration(10000), primary_gun("Primary"),
         secondary_gun_capable(false), secondary_gun_damage(100), secondary_gun_penetration(100), secondary_gun("Secondary"), tertiary_gun_capable(false),
         tertiary_gun_damage(100), tertiary_gun_penetration(100), tertiary_gun("Tertiary"), melee_capable(false), melee_damage(100), melee_sharpness(100), 
         melee_weapon("Sword"), mech_name("Generic"), mech_id(0), tier(6) {};
@@ -110,7 +110,7 @@ public:
     int mech_id = 1;
     int tier = 1;
 
-    mech_emperor() : pilot_health(10000), front_armor(1580), primary_gun_capable(true), primary_gun_damage(1560), primary_gun_penetration(1800), primary_gun("Godbreaker"),
+    mech_emperor() : pilot_health(20000), front_armor(1580), primary_gun_capable(true), primary_gun_damage(1560), primary_gun_penetration(1800), primary_gun("Godbreaker"),
         secondary_gun_capable(true), secondary_gun_damage(550), secondary_gun_penetration(800), secondary_gun("Godstorm"), tertiary_gun_capable(true),
         tertiary_gun_damage(521), tertiary_gun_penetration(2000), tertiary_gun("Godfire"), melee_capable(false), melee_damage(1700), melee_sharpness(2000), 
         melee_weapon("Godslayer"), mech_name("Emperor"), mech_id(1), tier(1) {};
@@ -141,9 +141,9 @@ public:
     int mech_id;
     int tier;
 
-    mech_panzer() : pilot_health(12500), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2500), primary_gun_penetration(1250), primary_gun("Bulwark"),
+    mech_panzer() : pilot_health(25000), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2100), primary_gun_penetration(1350), primary_gun("Bulwark"),
         secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1000), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
-        tertiary_gun_damage(500), tertiary_gun_penetration(2000), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
+        tertiary_gun_damage(700), tertiary_gun_penetration(2600), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1) {};
 
 };
@@ -173,7 +173,7 @@ public:
     int mech_id;
     int tier;
 
-    mech_artemis() : pilot_health(10000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1400), primary_gun_penetration(2500), primary_gun("Wrath of the Stars"),
+    mech_artemis() : pilot_health(20000), front_armor(1500), primary_gun_capable(true), primary_gun_damage(1400), primary_gun_penetration(2500), primary_gun("Wrath of the Stars"),
         secondary_gun_capable(true), secondary_gun_damage(670), secondary_gun_penetration(800), secondary_gun("Lance of Heaven"), tertiary_gun_capable(false),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(750), melee_sharpness(1600),
         melee_weapon("Astral Claw"), mech_name("Artemis"), mech_id(3), tier(1) {};
@@ -205,7 +205,7 @@ public:
     int mech_id;
     int tier;
 
-    mech_aegis() : pilot_health(10000), front_armor(1600), primary_gun_capable(true), primary_gun_damage(1200), primary_gun_penetration(2500), primary_gun("Radiance"),
+    mech_aegis() : pilot_health(20000), front_armor(1600), primary_gun_capable(true), primary_gun_damage(2150), primary_gun_penetration(3000), primary_gun("Wrath of Light"),
         secondary_gun_capable(false), secondary_gun_damage(0), secondary_gun_penetration(0), secondary_gun("None"), tertiary_gun_capable(false),
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(1000), melee_sharpness(1600),
         melee_weapon("Lightblade"), mech_name("Aegis"), mech_id(4), tier(1) {};

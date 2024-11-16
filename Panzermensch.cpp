@@ -115,6 +115,9 @@ public:
     float player_unmodified_pilot_health = 0;
     float player_gun_penetration = 0;
     float player_veterancy = 0;
+    bool player_primary_gun_destroyed = false;
+    bool player_secondary_gun_destroyed = false;
+    bool player_tertiary_gun_destroyed = false;
 
     // Enemy Stats
     string enemy_mech = "Enemy";
@@ -168,6 +171,9 @@ public:
     float ai_decision_chance = 0;
     int ai_fortify_counter = 0;
     int ai_overcharge_counter = 0;
+    bool ai_primary_gun_destroyed = false;
+    bool ai_secondary_gun_destroyed = false;
+    bool ai_tertiary_gun_destroyed = false;
 
 
     // General Stats
@@ -183,6 +189,12 @@ public:
     int dice_result = 0;
     int dice2 = 4;
     int dice3 = 4;
+    int crit_dice = 12;
+    int crit_choice_dice = 6;
+    int crit_gun_destroy_dice = 3;
+    int crit_dice_result = 0;
+    int crit_choice_dice_result = 0;
+    int crit_gun_destroy_dice_result = 0;
     int dice2_result = 0;
     int dice3_result = 0;
     int ai_mech_dice = 4;
@@ -237,6 +249,14 @@ public:
     bool is_overcharged = false; // Equal False by default.
     bool is_ai_overcharged = false;
     bool has_ai_overcharged_once = false;
+    bool is_vulnerable = false;
+    bool is_ai_vulnerable = false;
+    bool player_primary_crit_caused = false;
+    bool player_secondary_crit_caused = false;
+    bool player_tertiary_crit_caused = false;
+    bool enemy_primary_crit_caused = false;
+    bool enemy_secondary_crit_caused = false;
+    bool enemy_tertiary_crit_caused = false;
     bool is_terrain_on = true;
     bool case_1_hit = false;
     bool case_2_hit = false;
@@ -347,6 +367,7 @@ public:
             primary_gun_damage /= 2;
             primary_gun_penetration -= (unmodified_primary_gun_penetration * 0.25);
             ai_overcharge_switch_off();
+            has_ai_overcharged_once = false;
             //cout << YELLOW << "AI Unovercharged" << RESET << endl;
         }
         else //DEBUG
@@ -382,7 +403,11 @@ public:
         float enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
         float enemy_pilot_health_percentage = (unmodified_pilot_health * 0.86);
         float player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
-        if (player_front_armor > front_armor)
+        if (has_ai_overcharged_once)
+        {
+            ai_fire_weight += 6;
+        }
+        else if (player_front_armor > front_armor)
         {
             
             if (has_ai_fortified_once)
@@ -405,19 +430,14 @@ public:
         }
         else if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
         {
-            if (has_ai_overcharged_once)
-            {
-                ai_fire_weight += 4;
-            }
-            else
-            {
-                ai_fortify_weight -= 2;
-                ai_overcharge_weight += 2;
-            }
+
+            ai_fortify_weight -= 2;
+            ai_overcharge_weight += 2;
+
         }
         else if (pilot_health < enemy_pilot_health_percentage)
         {
-            ai_repair_weight += 1;
+            ai_repair_weight += 2;
         }
         else if (player_front_armor > front_armor || player_front_armor > primary_gun_penetration)
         {
@@ -473,12 +493,12 @@ public:
             ai_overcharge_weight -= 2;
             ai_fire_weight += 0;
             ai_overcharge_counter += 1;
-            has_ai_overcharged_once = !has_ai_overcharged_once;
+            has_ai_overcharged_once = true;
         }
         else if (ai_repair_chance > ai_fire_chance && ai_repair_chance > ai_overcharge_chance && ai_repair_chance > ai_fortify_chance)
         {
             repair_action();
-            ai_repair_weight -= 2;
+            ai_repair_weight -= 1;
         }
         else
         {
@@ -622,6 +642,199 @@ public:
             break;
         default:
             cout << BRIGHT_GREEN << "Everything seems Fine today." << RESET << endl;
+            break;
+        }
+    }
+
+    void crit_choice_dice_roll() {
+        crit_choice_dice_result = rand() % crit_choice_dice;
+    }
+
+    void crit_choice_roll() {
+        crit_choice_dice_roll();
+        switch (crit_choice_dice_result)
+        {
+        case(1):
+            //crit_vulnerable();
+            crit_gun_destroy();
+            break;
+        case(2):
+            crit_gun_destroy();
+            break;
+        case(3):
+            //crit_vulnerable();
+            crit_gun_destroy();
+            break;
+        case(4):
+            crit_gun_destroy();
+            break;
+        case(5):
+            //crit_vulnerable();
+            crit_gun_destroy();
+            break;
+        case(6):
+            crit_gun_destroy();
+            break;
+        default:
+            crit_gun_destroy();
+            break;
+        }
+    }
+
+    void crit_vulnerable() {
+        if (is_player_attacking == true)
+        {
+            is_ai_vulnerable = is_ai_vulnerable;
+            front_armor -= (unmodified_front_armor * 0.5);
+            cout << "We made the Enemy " << BRIGHT_GREEN << "VULNERABLE!" << RESET << endl;
+        }
+        else if (is_player_attacking == false)
+        {
+            player_front_armor -= (player_unmodified_front_armor * 0.5);
+            is_vulnerable = !is_vulnerable;
+            cout << "THE ENEMY HAS MADE US " RED << "VULNERABLE!" << RESET << endl;
+        }
+    }
+
+    void crit_gun_destroy_dice_roll() {
+        crit_gun_destroy_dice_result = rand() % crit_gun_destroy_dice;
+    }
+
+    void crit_gun_destroy() {
+        crit_gun_destroy_dice_roll();
+        if (is_player_attacking == false)
+        {
+            switch (crit_gun_destroy_dice_result)
+            {
+            case(1):
+                if (player_primary_gun_destroyed == true) {
+                    cout << "The Enemy Hit " << BRIGHT_RED << player_primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    player_primary_gun_capable = false;
+                    cout << player_primary_gun_name << " HAS BEEN HIT! " << RED << player_primary_gun_name << " DISABLED!" << RESET << endl;
+                    player_primary_gun_destroyed = true;
+                }
+                break;
+            case(2):
+                if (player_secondary_gun_destroyed == true) {
+                    cout << "The Enemy Hit " << BRIGHT_RED << player_secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    player_secondary_gun_capable = false;
+                    cout << player_secondary_gun_name << " HAS BEEN HIT! " << RED << player_secondary_gun_name << " DISABLED!" << RESET << endl;
+                    player_secondary_gun_destroyed = true;
+                }
+                    break;
+            case(3):
+                if (player_tertiary_gun_destroyed == true) {
+                    cout << "The Enemy Hit " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    player_tertiary_gun_capable = false;
+                    cout << player_tertiary_gun_name << " HAS BEEN HIT! " << RED << player_tertiary_gun_name << " DISABLED!" << RESET << endl;
+                    player_tertiary_gun_destroyed = true;
+                }
+                break;
+            }
+        }
+        else if (is_player_attacking == true)
+        {
+            switch (crit_gun_destroy_dice_result)
+            {
+            case(1):
+                if (ai_primary_gun_destroyed == true) {
+                    cout << "We Hit Enemy " << BRIGHT_RED << player_primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    primary_gun_capable = false;
+                    cout << "Enemy " << BRIGHT_RED << primary_gun_name << RESET << " Has Been Hit! " << BRIGHT_GREEN << primary_gun_name << " DISABLED!" << RESET << endl;
+                    ai_primary_gun_destroyed = true;
+                }
+                break;
+            case(2):
+                if (ai_secondary_gun_destroyed == true) {
+                    cout << "We Hit Enemy " << BRIGHT_RED << player_secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    secondary_gun_capable = false;
+                    cout << "Enemy " << BRIGHT_RED << secondary_gun_name << RESET << " Has Been Hit! " << secondary_gun_name << BRIGHT_GREEN << " DISABLED!" << RESET << endl;
+                    ai_secondary_gun_destroyed = true;
+                }
+                    break;
+            case(3):
+                if (ai_tertiary_gun_destroyed == true) {
+                    cout << "We Hit Enemy " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                }
+                else
+                {
+                    tertiary_gun_capable = false;
+                    cout << "Enemy " << BRIGHT_RED << tertiary_gun_name << RESET << " Has Been Hit! " << BRIGHT_GREEN << tertiary_gun_name << " DISABLED!" << RESET << endl;
+                    ai_tertiary_gun_destroyed = true;
+                }
+                break;
+            }
+        }
+    }
+
+    void crit_dice_roll() {
+        crit_dice_result = rand() % crit_dice + 1;
+    }
+
+    void crit_roll() {
+        crit_dice_roll();
+        switch (crit_dice_result)
+        {
+        case(1):
+            if (is_player_turn == true)
+            {
+                cout << BRIGHT_GREEN << "We have Inflicted a Crit on the Enemy!" << RESET << endl;
+            }
+            else if (is_player_turn == false)
+            {
+                cout << RED << "The Enemy Has Inflicted a Crit On us!" << RESET << endl;
+            }
+            crit_choice_roll();
+            break;
+        case(2):
+
+            break;
+        case(3):
+
+            break;
+        case(4):
+
+            break;
+        case(5):
+
+            break;
+        case(6):
+
+            break;
+        case(7):
+
+            break;
+        case(8):
+
+            break;
+        case(9):
+
+            break;
+        case(10):
+
+            break;
+        case(11):
+
+            break;
+        case(12):
+
+            break;
+        default:
             break;
         }
     }
@@ -870,6 +1083,7 @@ public:
             primary_gun_name = mech_artemis::mech_artemis().primary_gun;
             secondary_gun_name = mech_artemis::mech_artemis().secondary_gun;
             tertiary_gun_name = mech_artemis::mech_artemis().tertiary_gun;
+            enemy_mech_id = mech_artemis::mech_artemis().mech_id;
             ai_accuracy_modifier += 45;
             accuracy_modifier -= 35;
             cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
@@ -939,6 +1153,7 @@ public:
     void player_turn() {      // Player Turn Function.
 
         unfortify();
+        is_player_attacking = true;
         cout << BRIGHT_BLUE << "Your Turn! " << RESET << "Your Health: " << BRIGHT_GREEN << player_pilot_health << RESET << endl;
         cout << "Your Actions: " << endl;
         cout << BRIGHT_YELLOW << "Fire" << RESET << " | " << BRIGHT_YELLOW << "Repair" << RESET << " | " << BRIGHT_YELLOW << "Fortify" << RESET << " | " << BRIGHT_YELLOW << "Overcharge" << RESET << endl;
@@ -976,6 +1191,7 @@ public:
     }
 
     void enemy_turn() {           // Enemy Turn Function.
+        is_player_attacking = false;
         if (pilot_health > 0) {
             unfortify();
             cout << "Enemy Mech Turn!" << endl;
@@ -1040,7 +1256,7 @@ public:
                 overcharge_switch_on();
         }
     }
-    void ai_overcharge_action() {  // AI Overchjarge Function
+    void ai_overcharge_action() {  // AI Overcharge Function
         if (!is_player_turn && !is_ai_overcharged)
         {
             primary_gun_damage *= 2;
@@ -1175,7 +1391,7 @@ public:
         player_accuracy_roll();
         if (player_primary_gun_capable)
         {
-            if (accuracy_roll < 40 && enemy_mech_id == 4)
+            if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
                 cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_primary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
@@ -1189,18 +1405,18 @@ public:
             {
                 if (primary_actual_penetration >= front_armor)
                 {
-                    player_primary_actual_damage *= player_primary_damage_distance_multiplier;
                     player_primary_actual_damage += player_primary_damage_multiplier;
+                    player_primary_actual_damage *= player_primary_damage_distance_multiplier;
+                    done_damage += player_primary_actual_damage;
                     pilot_health -= player_primary_actual_damage;
-                    done_damage += (player_primary_actual_damage += player_primary_damage_multiplier);
                     cout << "Target hit! " << BRIGHT_GREEN << player_primary_gun_name << " Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                     done_damage = 0;
                 }
                 else if (primary_actual_penetration < front_armor)
                 {
                     player_primary_actual_damage *= player_primary_damage_distance_multiplier;
+                    done_damage += player_primary_actual_damage;
                     pilot_health -= player_primary_actual_damage;
-                    done_damage += (player_primary_actual_damage += player_primary_damage_multiplier);
                     cout << "Target hit By " << BRIGHT_GREEN << player_primary_gun_name << RESET << " Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage << RESET << endl;
                     done_damage = 0;
                 }
@@ -1216,7 +1432,7 @@ public:
         player_accuracy_roll();
         if (player_secondary_gun_capable)
         {
-            if (accuracy_roll < 40 && enemy_mech_id == 4)
+            if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
                 cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_secondary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
@@ -1230,18 +1446,18 @@ public:
             {
                 if (player_secondary_actual_penetration >= front_armor)
                 {
-                    player_secondary_actual_damage *= player_secondary_damage_distance_multiplier;
                     player_secondary_actual_damage += player_secondary_damage_multiplier;
+                    player_secondary_actual_damage *= player_secondary_damage_distance_multiplier;
+                    done_damage2 += player_secondary_actual_damage;
                     pilot_health -= player_secondary_actual_damage;
-                    done_damage2 += (player_secondary_actual_damage += player_secondary_damage_multiplier);
                     cout << "Target hit! " << BRIGHT_GREEN << player_secondary_gun_name << " Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage2 << RESET << endl;
                     done_damage2 = 0;
                 }
                 else if (player_secondary_actual_penetration < front_armor)
                 {
                     player_secondary_actual_damage *= player_secondary_damage_distance_multiplier;
+                    done_damage2 += player_secondary_actual_damage;
                     pilot_health -= player_secondary_actual_damage;
-                    done_damage2 += (player_secondary_actual_damage += player_secondary_damage_multiplier);
                     cout << "Target hit By " << BRIGHT_GREEN << player_secondary_gun_name << RESET << " Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage2 << RESET << endl;
                     done_damage2 = 0;
                 }
@@ -1257,7 +1473,7 @@ public:
         player_accuracy_roll();
         if (player_tertiary_gun_capable)
         {
-            if (accuracy_roll < 40 && enemy_mech_id == 4)
+            if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
                 cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_tertiary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
@@ -1271,18 +1487,18 @@ public:
             {
                 if (player_tertiary_actual_penetration >= front_armor)
                 {
-                    player_tertiary_actual_damage *= player_tertiary_damage_distance_multiplier;
                     player_tertiary_actual_damage += player_tertiary_damage_multiplier;
+                    player_tertiary_actual_damage *= player_tertiary_damage_distance_multiplier;
+                    done_damage3 += player_tertiary_actual_damage;
                     pilot_health -= player_tertiary_actual_damage;
-                    done_damage3 += (player_tertiary_actual_damage += player_tertiary_damage_multiplier);
                     cout << "Target hit! " << BRIGHT_GREEN << player_tertiary_gun_name << " Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage3 << RESET << endl;
                     done_damage3 = 0;
                 }
                 else if (player_tertiary_actual_penetration < front_armor)
                 {
                     player_tertiary_actual_damage *= player_tertiary_damage_distance_multiplier;
+                    done_damage3 += player_tertiary_actual_damage;
                     pilot_health -= player_tertiary_actual_damage;
-                    done_damage3 += (player_tertiary_actual_damage += player_tertiary_damage_multiplier);
                     cout << "Target hit By " << BRIGHT_GREEN << player_tertiary_gun_name << RESET << " Front Armor is " << RED << "TOO THICK!" << RESET << " Damaged For: " << BRIGHT_GREEN << done_damage3 << RESET << endl;
                     done_damage3 = 0;
                 }
@@ -1298,11 +1514,21 @@ public:
         player_combat_value_initializer();
         player_combat_calculator();
 
-        if (is_player_attacking = true) {
+        if (is_player_attacking == true) {
             if (front_armor > -1) {
                 player_primary_damage_calculator();
                 player_secondary_damage_calculator();
                 player_tertiary_damage_calculator();
+                if (player_primary_gun_capable == false && player_secondary_gun_capable == false && player_tertiary_gun_capable == false)
+                {
+                    cout << RED << "We Have No Weapons." << RESET << endl;
+                    end_combat_turn();
+                }
+                else
+                {
+                    crit_roll();
+                    end_combat_turn();
+                }
                 end_combat_turn();
             }
         }
@@ -1435,7 +1661,7 @@ public:
         {
             if (ai_accuracy_roll < 40)
             {
-                cout << BRIGHT_RED << primary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy " << BRIGHT_GREEN << primary_gun_name << " Missed!" << RESET << endl;
                 ai_accuracy_modifier += 3;
             }
             else
@@ -1444,24 +1670,20 @@ public:
                 {
                     primary_actual_damage *= enemy_primary_damage_distance_multiplier;
                     primary_actual_damage += enemy_primary_damage_multiplier;
+                    enemy_done_damage += primary_actual_damage;
                     player_pilot_health -= primary_actual_damage;
-                    enemy_done_damage += (primary_actual_damage += enemy_primary_damage_multiplier);
-                    cout << "Target hit! " << BRIGHT_RED << primary_gun_name << RESET << " Shot" << RED << "Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
+                    cout << "Target hit! " << BRIGHT_RED << primary_gun_name << RESET << " Shot" << RED << " Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage << RESET << endl;
                     enemy_done_damage = 0;
                 }
                 else if (primary_actual_penetration < player_front_armor)
                 {
                     primary_actual_damage *= enemy_primary_damage_distance_multiplier;
+                    enemy_done_damage += primary_actual_damage;
                     player_pilot_health -= primary_actual_damage;
-                    enemy_done_damage += (primary_actual_damage += enemy_primary_damage_multiplier);
-                    cout << "Target hit By " << BRIGHT_RED << primary_gun_name << " Hit!" << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage << RESET << endl;
+                    cout << "Target hit By " << BRIGHT_RED << primary_gun_name << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage << RESET << endl;
                     enemy_done_damage = 0;
                 }
             }
-        }
-        else
-        {
-            cout << "We are " << RED << "Disarmed." << RESET << endl;
         }
     }
 
@@ -1471,7 +1693,7 @@ public:
         {
             if (accuracy_roll < 40)
             {
-                cout << BRIGHT_RED << secondary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy " << BRIGHT_GREEN << secondary_gun_name << " Missed!" << RESET << endl;
                 ai_accuracy_modifier += 3;
             }
             else
@@ -1480,17 +1702,17 @@ public:
                 {
                     secondary_actual_damage *= enemy_secondary_damage_distance_multiplier;
                     secondary_actual_damage += enemy_secondary_damage_multiplier;
+                    enemy_done_damage2 += secondary_actual_damage;
                     player_pilot_health -= secondary_actual_damage;
-                    enemy_done_damage2 += (secondary_actual_damage += enemy_secondary_damage_multiplier);
-                    cout << "Target hit! " << BRIGHT_RED << secondary_gun_name << RESET << " Shot" << RED << "Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage2 << RESET << endl;
+                    cout << "Target hit! " << BRIGHT_RED << secondary_gun_name << RESET << " Shot" << RED << " Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage2 << RESET << endl;
                     enemy_done_damage2 = 0;
                 }
                 else if (secondary_actual_penetration < player_front_armor)
                 {
                     secondary_actual_damage *= enemy_secondary_damage_distance_multiplier;
+                    enemy_done_damage2 += secondary_actual_damage;
                     player_pilot_health -= secondary_actual_damage;
-                    enemy_done_damage2 += (secondary_actual_damage += enemy_secondary_damage_multiplier);
-                    cout << "Target hit By " << BRIGHT_RED << secondary_gun_name << " Hit!" << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage2 << RESET << endl;
+                    cout << "Target hit By " << BRIGHT_RED << secondary_gun_name << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage2 << RESET << endl;
                     enemy_done_damage2 = 0;
                 }
             }
@@ -1507,7 +1729,7 @@ public:
         {
             if (accuracy_roll < 40)
             {
-                cout << BRIGHT_RED << "Enemy " << tertiary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy " << BRIGHT_GREEN << tertiary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
             }
             else
@@ -1516,17 +1738,17 @@ public:
                 {
                     tertiary_actual_damage *= enemy_tertiary_damage_distance_multiplier;
                     tertiary_actual_damage += enemy_tertiary_damage_multiplier;
+                    enemy_done_damage3 += tertiary_actual_damage;
                     player_pilot_health -= tertiary_actual_damage;
-                    enemy_done_damage3 += (tertiary_actual_damage += enemy_tertiary_damage_multiplier);
-                    cout << "Target hit! " << BRIGHT_RED << tertiary_gun_name << RESET << " Shot" << RED << "Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage3 << RESET << endl;
+                    cout << "Target hit! " << BRIGHT_RED << tertiary_gun_name << RESET << " Shot" << RED << " Penetrated!" << RESET << " Damaged for: " << RED << enemy_done_damage3 << RESET << endl;
                     enemy_done_damage3 = 0;
                 }
                 else if (tertiary_actual_penetration < player_front_armor)
                 {
                     tertiary_actual_damage *= enemy_tertiary_damage_distance_multiplier;
+                    enemy_done_damage3 += tertiary_actual_damage;
                     player_pilot_health -= tertiary_actual_damage;
-                    enemy_done_damage3 += (tertiary_actual_damage += enemy_tertiary_damage_multiplier);
-                    cout << "Target hit By " << BRIGHT_RED << tertiary_gun_name << " Hit!" << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage3 << RESET << endl;
+                    cout << "Target hit By " << BRIGHT_RED << tertiary_gun_name << RESET << " Our Front Armor " << BRIGHT_GREEN << "Held Strong!" << RESET << " Damaged For: " << RED << enemy_done_damage3 << RESET << endl;
                     enemy_done_damage3 = 0;
                 }
             }
@@ -1540,13 +1762,22 @@ public:
     void enemy_combat_damage() {       // AI Combat Operation, Damage Calculation and Infliction.
         enemy_combat_value_initializer();
         enemy_combat_calculator();
-            if (is_player_attacking = true)
+            if (is_player_attacking == false)
             {
                 if (player_front_armor > -1) {
                     enemy_primary_damage_calculator();
                     enemy_secondary_damage_calculator();
                     enemy_tertiary_damage_calculator();
-                    end_combat_turn();
+                    if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
+                    {
+                        cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
+                        end_combat_turn();
+                    }
+                    else
+                    {
+                        crit_roll();
+                        end_combat_turn();
+                    }
                 }
             }
             else

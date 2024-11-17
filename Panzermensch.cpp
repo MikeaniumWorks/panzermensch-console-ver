@@ -82,39 +82,39 @@ public:
     string player_secondary_gun_name = "Gun2";
     string player_tertiary_gun_name = "Gun3";
     bool  player_primary_gun_capable = true;
-    float player_primary_gun_damage = 0;
-    float player_primary_actual_damage = 0;
-    float player_unmodified_primary_gun_damage = 0;
-    float player_primary_gun_penetration = 0;
-    float player_unmodified_primary_gun_penetration = 0;
-    float player_primary_actual_penetration = 0;
+    double player_primary_gun_damage = 0;
+    double player_primary_actual_damage = 0;
+    double player_unmodified_primary_gun_damage = 0;
+    double player_primary_gun_penetration = 0;
+    double player_unmodified_primary_gun_penetration = 0;
+    double player_primary_actual_penetration = 0;
     bool  player_secondary_gun_capable = false;
-    float player_secondary_gun_damage = 0;
-    float player_unmodified_secondary_gun_damage = 0;
-    float player_secondary_actual_damage = 0;
-    float player_secondary_gun_penetration = 0;
-    float player_unmodified_secondary_gun_penetration = 0;
-    float player_secondary_actual_penetration = 0;
+    double player_secondary_gun_damage = 0;
+    double player_unmodified_secondary_gun_damage = 0;
+    double player_secondary_actual_damage = 0;
+    double player_secondary_gun_penetration = 0;
+    double player_unmodified_secondary_gun_penetration = 0;
+    double player_secondary_actual_penetration = 0;
     bool  player_tertiary_gun_capable = false;
-    float player_tertiary_gun_damage = 0;
-    float player_unmodified_tertiary_gun_damage = 0;
-    float player_tertiary_actual_damage = 0;
-    float player_tertiary_gun_penetration = 0;
-    float player_unmodified_tertiary_gun_penetration = 0;
-    float player_tertiary_actual_penetration = 0;
+    double player_tertiary_gun_damage = 0;
+    double player_unmodified_tertiary_gun_damage = 0;
+    double player_tertiary_actual_damage = 0;
+    double player_tertiary_gun_penetration = 0;
+    double player_unmodified_tertiary_gun_penetration = 0;
+    double player_tertiary_actual_penetration = 0;
     bool  player_melee_capable = false;
-    float player_melee_damage = 0;
-    float player_front_armor_health = 0;
-    float player_front_armor = 0;
-    float player_unmodified_front_armor = 0;
-    float player_side_armor_health = 0;
-    float player_side_armor = 0;
-    float player_rear_armor_health = 0;
-    float player_rear_armor = 0;
-    float player_pilot_health = 0;
-    float player_unmodified_pilot_health = 0;
-    float player_gun_penetration = 0;
-    float player_veterancy = 0;
+    double player_melee_damage = 0;
+    double player_front_armor_health = 0;
+    double player_front_armor = 0;
+    double player_unmodified_front_armor = 0;
+    double player_side_armor_health = 0;
+    double player_side_armor = 0;
+    double player_rear_armor_health = 0;
+    double player_rear_armor = 0;
+    double player_pilot_health = 0;
+    double player_unmodified_pilot_health = 0;
+    double player_gun_penetration = 0;
+    double player_veterancy = 0;
     bool player_primary_gun_destroyed = false;
     bool player_secondary_gun_destroyed = false;
     bool player_tertiary_gun_destroyed = false;
@@ -126,49 +126,49 @@ public:
     string tertiary_gun_name = "Gun3";
     int enemy_mech_id = 0;
     bool  primary_gun_capable = true;
-    float primary_gun_damage = 0;
-    float primary_actual_damage = 0;
-    float unmodified_primary_gun_damage = 0;
-    float primary_gun_penetration = 0;
-    float unmodified_primary_gun_penetration = 0;
-    float primary_actual_penetration = 0;
+    double primary_gun_damage = 0;
+    double primary_actual_damage = 0;
+    double unmodified_primary_gun_damage = 0;
+    double primary_gun_penetration = 0;
+    double unmodified_primary_gun_penetration = 0;
+    double primary_actual_penetration = 0;
     bool  secondary_gun_capable = false;
-    float secondary_gun_damage = 0;
-    float unmodified_secondary_gun_damage = 0;
-    float secondary_actual_damage = 0;
-    float secondary_gun_penetration = 0;
-    float unmodified_secondary_gun_penetration = 0;
-    float secondary_actual_penetration = 0;
+    double secondary_gun_damage = 0;
+    double unmodified_secondary_gun_damage = 0;
+    double secondary_actual_damage = 0;
+    double secondary_gun_penetration = 0;
+    double unmodified_secondary_gun_penetration = 0;
+    double secondary_actual_penetration = 0;
     bool  tertiary_gun_capable = false;
-    float tertiary_gun_damage = 0;
-    float unmodified_tertiary_gun_damage = 0;
-    float tertiary_actual_damage = 0;
-    float tertiary_gun_penetration = 0;
-    float unmodified_tertiary_gun_penetration = 0;
-    float tertiary_actual_penetration = 0;
+    double tertiary_gun_damage = 0;
+    double unmodified_tertiary_gun_damage = 0;
+    double tertiary_actual_damage = 0;
+    double tertiary_gun_penetration = 0;
+    double unmodified_tertiary_gun_penetration = 0;
+    double tertiary_actual_penetration = 0;
     bool  melee_capable = false;
-    float melee_damage = 0;
-    float front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
-    float front_armor = 0;
-    float unmodified_front_armor = 0;
-    float side_armor_health = 0;
-    float side_armor = 0;
-    float rear_armor_health = 0;
-    float rear_armor = 0;
-    float pilot_health = 0;
-    float unmodified_pilot_health = 0;
-    float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
+    double melee_damage = 0;
+    double front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
+    double front_armor = 0;
+    double unmodified_front_armor = 0;
+    double side_armor_health = 0;
+    double side_armor = 0;
+    double rear_armor_health = 0;
+    double rear_armor = 0;
+    double pilot_health = 0;
+    double unmodified_pilot_health = 0;
+    double veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
     int ai_overcharge_weight = 4;
-    float ai_overcharge_chance = 0;
+    double ai_overcharge_chance = 0;
     int ai_fortify_weight = 4;
-    float ai_fortify_chance = 0;
+    double ai_fortify_chance = 0;
     int ai_repair_weight = 4;
-    float ai_repair_chance = 0;
+    double ai_repair_chance = 0;
     int ai_fire_weight = 6;
-    float ai_fire_chance = 0;
+    double ai_fire_chance = 0;
     int ai_aggression = 50;
     int ai_defensiveness = 50;
-    float ai_decision_chance = 0;
+    double ai_decision_chance = 0;
     int ai_fortify_counter = 0;
     int ai_overcharge_counter = 0;
     bool ai_primary_gun_destroyed = false;
@@ -195,46 +195,48 @@ public:
     int crit_dice_result = 0;
     int crit_choice_dice_result = 0;
     int crit_gun_destroy_dice_result = 0;
+    int player_crit_modifier = 0;
+    int ai_crit_modifier = 0;
     int dice2_result = 0;
     int dice3_result = 0;
     int ai_mech_dice = 4;
-    float player_primary_damage_multiplier = 0;
-    float player_secondary_damage_multiplier = 0;
-    float player_tertiary_damage_multiplier = 0;
-    float player_primary_damage_multiplier_percentage = 0;
-    float player_secondary_damage_multiplier_percentage = 0;
-    float player_tertiary_damage_multiplier_percentage = 0;
-    float enemy_primary_damage_multiplier = 0;
-    float enemy_secondary_damage_multiplier = 0;
-    float enemy_tertiary_damage_multiplier = 0;
-    float enemy_primary_damage_multiplier_percentage = 0;
-    float enemy_secondary_damage_multiplier_percentage = 0;
-    float enemy_tertiary_damage_multiplier_percentage = 0;
-    float actual_damage = 0;
-    float done_damage = 0;
-    float done_damage2 = 0;
-    float done_damage3 = 0;
-    float distance_float = 0;
-    float actual_penetration = 0;
-    float player_primary_damage_distance_multiplier = 0;
-    float player_secondary_damage_distance_multiplier = 0;
-    float player_tertiary_damage_distance_multiplier = 0;
-    float player_primary_penetration_distance_multiplier = 0;
-    float player_secondary_penetration_distance_multiplier = 0;
-    float player_tertiary_penetration_distance_multiplier = 0;
-    float enemy_actual_damage = 0;
-    float enemy_done_damage = 0;
-    float enemy_done_damage2 = 0;
-    float enemy_done_damage3 = 0;
-    float enemy_distance_float = 0;
-    float enemy_actual_penetration = 0;
-    float enemy_damage_distance_multiplier = 0;
-    float enemy_primary_damage_distance_multiplier = 0;
-    float enemy_secondary_damage_distance_multiplier = 0;
-    float enemy_tertiary_damage_distance_multiplier = 0;
-    float enemy_primary_penetration_distance_multiplier = 0;
-    float enemy_secondary_penetration_distance_multiplier = 0;
-    float enemy_tertiary_penetration_distance_multiplier = 0;
+    double player_primary_damage_multiplier = 0;
+    double player_secondary_damage_multiplier = 0;
+    double player_tertiary_damage_multiplier = 0;
+    double player_primary_damage_multiplier_percentage = 0;
+    double player_secondary_damage_multiplier_percentage = 0;
+    double player_tertiary_damage_multiplier_percentage = 0;
+    double enemy_primary_damage_multiplier = 0;
+    double enemy_secondary_damage_multiplier = 0;
+    double enemy_tertiary_damage_multiplier = 0;
+    double enemy_primary_damage_multiplier_percentage = 0;
+    double enemy_secondary_damage_multiplier_percentage = 0;
+    double enemy_tertiary_damage_multiplier_percentage = 0;
+    double actual_damage = 0;
+    double done_damage = 0;
+    double done_damage2 = 0;
+    double done_damage3 = 0;
+    double distance_double = 0;
+    double actual_penetration = 0;
+    double player_primary_damage_distance_multiplier = 0;
+    double player_secondary_damage_distance_multiplier = 0;
+    double player_tertiary_damage_distance_multiplier = 0;
+    double player_primary_penetration_distance_multiplier = 0;
+    double player_secondary_penetration_distance_multiplier = 0;
+    double player_tertiary_penetration_distance_multiplier = 0;
+    double enemy_actual_damage = 0;
+    double enemy_done_damage = 0;
+    double enemy_done_damage2 = 0;
+    double enemy_done_damage3 = 0;
+    double enemy_distance_double = 0;
+    double enemy_actual_penetration = 0;
+    double enemy_damage_distance_multiplier = 0;
+    double enemy_primary_damage_distance_multiplier = 0;
+    double enemy_secondary_damage_distance_multiplier = 0;
+    double enemy_tertiary_damage_distance_multiplier = 0;
+    double enemy_primary_penetration_distance_multiplier = 0;
+    double enemy_secondary_penetration_distance_multiplier = 0;
+    double enemy_tertiary_penetration_distance_multiplier = 0;
 
     // World Stats.
     const double PI = std::atan(1.0) * 4;
@@ -369,6 +371,10 @@ public:
         {
             primary_gun_damage /= 2;
             primary_gun_penetration -= (unmodified_primary_gun_penetration * 0.25);
+            secondary_gun_damage /= 2;
+            secondary_gun_penetration -= (unmodified_secondary_gun_penetration * 0.25);
+            tertiary_gun_damage /= 2;
+            tertiary_gun_penetration -= (unmodified_tertiary_gun_penetration * 0.25);
             ai_overcharge_switch_off();
             has_ai_overcharged_once = false;
             //cout << YELLOW << "AI Unovercharged" << RESET << endl;
@@ -403,11 +409,11 @@ public:
     }
 
     void ai_weight_analysis() {  // Analyzes the Weight of all Options based on the Situation.
-        float enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
-        float enemy_pilot_health_percentage1 = (unmodified_pilot_health * 0.85);
-        float enemy_pilot_health_percentage2 = (unmodified_pilot_health * 0.50);
-        float enemy_pilot_health_percentage3 = (unmodified_pilot_health * 0.25);
-        float player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
+        double enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
+        double enemy_pilot_health_percentage1 = (unmodified_pilot_health * 0.85);
+        double enemy_pilot_health_percentage2 = (unmodified_pilot_health * 0.50);
+        double enemy_pilot_health_percentage3 = (unmodified_pilot_health * 0.25);
+        double player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
         if (has_ai_overcharged_once)
         {
             ai_fire_weight += 6;
@@ -511,7 +517,7 @@ public:
         else if (ai_repair_chance > ai_fire_chance && ai_repair_chance > ai_overcharge_chance && ai_repair_chance > ai_fortify_chance)
         {
             repair_action();
-            ai_repair_weight -= 1;
+            ai_repair_weight -= 2;
         }
         else
         {
@@ -661,6 +667,10 @@ public:
 
     void crit_choice_dice_roll() {
         crit_choice_dice_result = rand() % crit_choice_dice;
+        if (crit_choice_dice_result > 6)
+        {
+            crit_choice_dice_result = 6;
+        }
     }
 
     void crit_choice_roll() {
@@ -817,7 +827,11 @@ public:
     }
 
     void crit_dice_roll() {
-        crit_dice_result = rand() % crit_dice + 1;
+        crit_dice_result = rand() % crit_dice + (player_crit_modifier - ai_crit_modifier);
+        if (crit_dice_result > 12)
+        {
+            crit_dice_result = 12;
+        }
     }
 
     void crit_roll() {
@@ -825,15 +839,7 @@ public:
         switch (crit_dice_result)
         {
         case(1):
-            if (is_player_turn == true)
-            {
-                cout << BRIGHT_GREEN << "We have Inflicted a Crit on the Enemy!" << RESET << endl;
-            }
-            else if (is_player_turn == false)
-            {
-                cout << RED << "The Enemy Has Inflicted a Crit On us!" << RESET << endl;
-            }
-            crit_choice_roll();
+
             break;
         case(2):
 
@@ -866,7 +872,17 @@ public:
 
             break;
         case(12):
-
+            if (is_player_turn == true)
+            {
+                cout << BRIGHT_GREEN << "We have Inflicted a Crit on the Enemy!" << RESET << endl;
+                ai_accuracy_modifier -= 10;
+            }
+            else if (is_player_turn == false)
+            {
+                cout << RED << "The Enemy Has Inflicted a Crit On us!" << RESET << endl;
+                accuracy_modifier -= 10;
+            }
+            crit_choice_roll();
             break;
         default:
             break;
@@ -1273,7 +1289,7 @@ public:
         if (is_player_turn)
         {
             if (player_pilot_health < unmodified_pilot_health) {
-                player_pilot_health += (player_unmodified_pilot_health * 0.10);
+                player_pilot_health += (player_unmodified_pilot_health * 0.05);
                 cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
             }
             else
@@ -1284,7 +1300,7 @@ public:
         else if (!is_player_turn)
         {
             if (pilot_health < unmodified_pilot_health) {
-                pilot_health += (unmodified_pilot_health * 0.10);
+                pilot_health += (unmodified_pilot_health * 0.05);
                 cout << BRIGHT_RED << "Enemy Pilot Healed!" << RESET << endl;
             }
         }
@@ -1293,7 +1309,7 @@ public:
     void fortify_action() {    // Fortify Function
         if (is_player_turn && !is_fortified)
         {
-            player_front_armor += (player_front_armor * 0.15);
+            player_front_armor += (player_front_armor * 0.50);
             cout << BRIGHT_GREEN << "Armor Fortified!" << RESET << endl;
             fortify_switch_on();
         }
@@ -1301,7 +1317,7 @@ public:
     void ai_fortify_action() {     // AI Fortify Function
         if (!is_player_turn && !is_fortified)
         {
-            front_armor += (front_armor * 0.15);
+            front_armor += (front_armor * 0.50);
             cout << BRIGHT_RED << "Enemy Armor Fortified!" << RESET << endl;
             ai_fortify_switch_on();
         }
@@ -1315,7 +1331,8 @@ public:
             player_secondary_gun_penetration += (player_unmodified_secondary_gun_penetration * 0.25);
             player_tertiary_gun_damage *= 2;
             player_tertiary_gun_penetration += (player_unmodified_tertiary_gun_penetration * 0.25);
-            cout << "Main Gun " << BRIGHT_RED << "Overcharged!" << RESET << endl;
+            player_crit_modifier += 1;
+            cout << "Our Guns are " << RED << "Overcharged!" << RESET << endl;
             overcharge_switch_on();
         }
     }
@@ -1324,6 +1341,11 @@ public:
         {
             primary_gun_damage *= 2;
             primary_gun_penetration += (unmodified_primary_gun_penetration * 0.25);
+            secondary_gun_damage *= 2;
+            secondary_gun_penetration += (unmodified_secondary_gun_penetration * 0.25);
+            tertiary_gun_damage *= 2;
+            tertiary_gun_penetration += (unmodified_tertiary_gun_penetration * 0.25);
+            ai_crit_modifier += 1;
             cout << RED << "Enemy Gun Overcharged!" << RESET << endl;
             ai_overcharge_switch_on();
         }
@@ -1336,7 +1358,7 @@ public:
         done_damage = 0;
         done_damage2 = 0;
         done_damage3 = 0;
-        distance_float = abs(distance - max_distance);
+        distance_double = abs(distance - max_distance);
         player_primary_actual_penetration = player_primary_gun_penetration;
         player_secondary_actual_penetration = player_secondary_gun_penetration;
         player_tertiary_actual_penetration = player_tertiary_gun_penetration;
@@ -1409,14 +1431,14 @@ public:
 
     void player_combat_calculator() { // Calculates Damage and Penetration.
         // Player Damage & Penetration Distance Multiplier Calculator.
-        player_primary_damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
-        player_primary_penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration));
+        player_primary_damage_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
+        player_primary_penetration_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration));
 
-        player_secondary_damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_secondary_gun_damage));
-        player_secondary_penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_secondary_gun_penetration));
+        player_secondary_damage_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_secondary_gun_damage));
+        player_secondary_penetration_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_secondary_gun_penetration));
 
-        player_tertiary_damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_damage));
-        player_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_penetration));
+        player_tertiary_damage_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_damage));
+        player_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_penetration));
         // Player Penetration Distance Multiplier Limiters.
         // Player Damage Multipliers.
         player_primary_damage_multiplier_percentage = abs((front_armor - player_unmodified_primary_gun_penetration) / (front_armor / 100) / 100);
@@ -1440,8 +1462,8 @@ public:
     }
 
     void player_accuracy_roll() {   // Rolls Player Accuracy.
-        if (accuracy_modifier < 25) {
-            accuracy_modifier = 25;
+        if (accuracy_modifier < 35) {
+            accuracy_modifier = 35;
         }
 
         accuracy_roll = (rand() % accuracy_modifier) + accuracy_modifier;
@@ -1605,7 +1627,7 @@ public:
         enemy_done_damage = 0;
         enemy_done_damage2 = 0;
         enemy_done_damage3 = 0;
-        enemy_distance_float = distance - max_distance;
+        enemy_distance_double = distance - max_distance;
         primary_actual_penetration = primary_gun_penetration;
         secondary_actual_penetration = secondary_gun_penetration;
         tertiary_actual_penetration = tertiary_gun_penetration;
@@ -1678,14 +1700,14 @@ public:
 
     void enemy_combat_calculator() {  // Calculates Enemy Damage and Penetration.
         // Enemy Damage & Penetration Distance Multiplier Calculator.
-        enemy_primary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
-        enemy_primary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration));
+        enemy_primary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
+        enemy_primary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration));
 
-        enemy_secondary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_secondary_gun_damage));
-        enemy_secondary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_secondary_gun_penetration));
+        enemy_secondary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_secondary_gun_damage));
+        enemy_secondary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_secondary_gun_penetration));
 
-        enemy_tertiary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_damage));
-        enemy_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_penetration));
+        enemy_tertiary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_damage));
+        enemy_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_penetration));
         // Enemy Damage Multipliers.
         enemy_primary_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);
         enemy_secondary_damage_multiplier_percentage = abs((player_front_armor - secondary_gun_penetration) / (player_front_armor / 100) / 100);
@@ -1709,8 +1731,8 @@ public:
     }
 
     void enemy_accuracy_roll() { // Calculates Enemy Accuracy.
-        if (ai_accuracy_modifier < 30) {
-            ai_accuracy_modifier = 30;
+        if (ai_accuracy_modifier < 35) {
+            ai_accuracy_modifier = 35;
         }
 
         ai_accuracy_roll = (rand() % ai_accuracy_modifier) + ai_accuracy_modifier;

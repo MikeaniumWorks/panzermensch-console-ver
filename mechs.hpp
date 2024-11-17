@@ -212,3 +212,34 @@ public:
     
 };
 
+class mech_admin {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    int mech_id;
+    int tier;
+
+    mech_admin() : pilot_health(200000), front_armor(5000), primary_gun_capable(true), primary_gun_damage(15000), primary_gun_penetration(15000), primary_gun("B.F.G"),
+        secondary_gun_capable(true), secondary_gun_damage(50000), secondary_gun_penetration(5000), secondary_gun("Arserailer"), tertiary_gun_capable(true),
+        tertiary_gun_damage(200000), tertiary_gun_penetration(10), tertiary_gun("Helltickler"), melee_capable(true), melee_damage(100000), melee_sharpness(1),
+        melee_weapon("Banhammer"), mech_name("Admin"), mech_id(5), tier(1) {};
+
+};

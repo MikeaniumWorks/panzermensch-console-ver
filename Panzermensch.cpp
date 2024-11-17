@@ -1028,6 +1028,35 @@ public:
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_mech_selection();
         }
+        else if (user_input == "Admin")
+        {
+            player_pilot_health += (mech_admin::mech_admin().pilot_health - 1);
+            player_unmodified_pilot_health += mech_admin::mech_admin().pilot_health;
+            player_front_armor += mech_admin::mech_admin().front_armor;
+            player_unmodified_front_armor += mech_admin::mech_admin().front_armor;
+            player_primary_gun_capable = mech_admin::mech_admin().primary_gun_capable;
+            player_primary_gun_damage += mech_admin::mech_admin().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_admin::mech_admin().primary_gun_damage;
+            player_primary_gun_penetration += mech_admin::mech_admin().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_admin::mech_admin().primary_gun_penetration;
+            player_secondary_gun_capable = mech_admin::mech_admin().secondary_gun_capable;
+            player_secondary_gun_damage += mech_admin::mech_admin().secondary_gun_damage;
+            player_unmodified_secondary_gun_damage += mech_admin::mech_admin().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_admin::mech_admin().secondary_gun_penetration;
+            player_unmodified_secondary_gun_penetration += mech_admin::mech_admin().secondary_gun_penetration;
+            player_tertiary_gun_capable = mech_admin::mech_admin().tertiary_gun_capable;
+            player_tertiary_gun_damage += mech_admin::mech_admin().tertiary_gun_damage;
+            player_unmodified_tertiary_gun_damage += mech_admin::mech_admin().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_admin::mech_admin().tertiary_gun_penetration;
+            player_unmodified_tertiary_gun_penetration += mech_admin::mech_admin().tertiary_gun_penetration;
+            player_melee_capable = mech_admin::mech_admin().melee_capable;
+            player_melee_damage += mech_admin::mech_admin().melee_damage;
+            player_primary_gun_name = mech_admin::mech_admin().primary_gun;
+            player_secondary_gun_name = mech_admin::mech_admin().secondary_gun;
+            player_tertiary_gun_name = mech_admin::mech_admin().tertiary_gun;
+            cout << "Welcome, Mr. 007- I mean " << BRIGHT_GREEN << mech_admin::mech_admin().mech_name << RESET << endl;
+            end_mech_selection();
+        }
         else 
         {
             cout << "Try again." << endl;
@@ -1854,7 +1883,7 @@ public:
                     random_effects();
                 }
                 else if (!has_selected_mech){
-                    debug_values();
+                    //debug_values();
                     player_turn();
                     cout << "-------" << endl;
                 }

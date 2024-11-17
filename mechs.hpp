@@ -143,7 +143,7 @@ public:
 
     mech_panzer() : pilot_health(25000), front_armor(1850), primary_gun_capable(true), primary_gun_damage(2100), primary_gun_penetration(1350), primary_gun("Bulwark"),
         secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1000), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
-        tertiary_gun_damage(700), tertiary_gun_penetration(2600), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
+        tertiary_gun_damage(1000), tertiary_gun_penetration(2600), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1) {};
 
 };

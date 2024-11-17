@@ -1393,7 +1393,7 @@ public:
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
-                cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_primary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy Artemis was Too Fast! " << BRIGHT_RED << player_primary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
             }
             else if (accuracy_roll < 40)
@@ -1434,7 +1434,7 @@ public:
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
-                cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_secondary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy Artemis was Too Fast! " << BRIGHT_RED << player_secondary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
             }
             else if (accuracy_roll < 40)
@@ -1475,7 +1475,7 @@ public:
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
-                cout << "Enemy Artemis was Too Fast!" << BRIGHT_RED << player_tertiary_gun_name << " Missed!" << RESET << endl;
+                cout << "Enemy Artemis was Too Fast! " << BRIGHT_RED << player_tertiary_gun_name << " Missed!" << RESET << endl;
                 accuracy_modifier += 3;
             }
             else if (accuracy_roll < 40)

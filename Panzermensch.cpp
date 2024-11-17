@@ -149,13 +149,13 @@ public:
     bool  melee_capable = false;
     float melee_damage = 0;
     float front_armor_health = 0;       // Armor Integrity, for front, side and rear. The more Hits The Mech takes, The more Armor Integrity decreases, Once it reaches 0, The front armor gets a massive debuff and Pilot recieves extra damage.
-    float front_armor = 0;         
+    float front_armor = 0;
     float unmodified_front_armor = 0;
     float side_armor_health = 0;
     float side_armor = 0;
     float rear_armor_health = 0;
     float rear_armor = 0;
-    float pilot_health = 0;   
+    float pilot_health = 0;
     float unmodified_pilot_health = 0;
     float veterancy = 0;                // Unused for now. Experience, Which makes movement faster, perception better and accuracy better. It is like levels, so its integers up to 10.
     int ai_overcharge_weight = 4;
@@ -272,7 +272,7 @@ public:
     string terrain_modifier_id_2 = "Mountains"; // Mountains
     string terrain_modifier_id_3 = "Hills"; // Hills
     string terrain_modifier_id_4 = "Tundra"; // Arctic
-    string user_input = "Input";            
+    string user_input = "Input";
 
     Panzermensch() : player_primary_gun_damage(0), primary_gun_damage(0), player_gun_penetration(0), primary_gun_penetration(0), player_front_armor(0),
         player_front_armor_health(0), player_side_armor(0), player_side_armor_health(0), secondary_gun_damage(0), secondary_gun_penetration(0),
@@ -320,11 +320,11 @@ public:
     void ai_fortify_switch_off() {   // OFF Switch for AI Fortify Flag.
         is_ai_fortified = false;
     }
-    
+
     void overcharge_switch_on() {   // ON Switch for Player Overcharge Flag.
         is_overcharged = true;
     }
-    
+
     void overcharge_switch_off() {   // OFF Switch for Player Overcharge Flag.
         is_overcharged = false;
     }
@@ -380,7 +380,7 @@ public:
     }
 
     void weight_limiter() {    // Limits Weights to 10 So it doesn't increase to the point where No other option can be picked but the oversized option.
-        if (ai_fire_weight>10)
+        if (ai_fire_weight > 10)
         {
             ai_fire_weight = 10;
             ai_fire_weight -= 3;
@@ -414,7 +414,7 @@ public:
         }
         if (player_front_armor > front_armor)
         {
-            
+
             if (has_ai_fortified_once)
             {
                 ai_fortify_weight -= 1;
@@ -462,7 +462,7 @@ public:
         }
         weight_limiter();
     }
-    
+
     void ai_decision_making() { // The AI Brain, Applies Weight into Chances and Picks Decisions based on the Chance.
         //ai_weight_analysis();
 
@@ -519,7 +519,7 @@ public:
             unovercharge();
         }
     }
-    
+
     void turn_skip_chance() {     // Still Unused Ability/Function/Effect made to roll a Dice to see if Turns would get Skipped.
         turn_skip_chance_roll = (rand() % turn_skip_chance_dice) + 0;
         switch (turn_skip_chance_roll)
@@ -580,7 +580,7 @@ public:
     void ai_mech_dice_roll() {   // Dice Roll for AI Mech Choosing
         ai_mech_roll = (rand() % ai_mech_dice) + 1;
     }
-     
+
     void modifier_checker() {       // Supposed to check modifiers, So if its Terrain X, it Applies its Values and makes sure it is applied.
         if (is_terrain_on)
         {
@@ -754,7 +754,7 @@ public:
                 {
                     crit_gun_destroy();
                 }
-                    break;
+                break;
             case(3):
                 if (player_tertiary_gun_capable == true)
                 {
@@ -800,7 +800,7 @@ public:
                     cout << "Enemy " << BRIGHT_RED << secondary_gun_name << RESET << " Has Been Hit! " << secondary_gun_name << BRIGHT_GREEN << " DISABLED!" << RESET << endl;
                     ai_secondary_gun_destroyed = true;
                 }
-                    break;
+                break;
             case(3):
                 if (ai_tertiary_gun_destroyed == true) {
                     cout << "We Hit Enemy " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
@@ -1057,7 +1057,7 @@ public:
             cout << "Welcome, Mr. 007- I mean " << BRIGHT_GREEN << mech_admin::mech_admin().mech_name << RESET << endl;
             end_mech_selection();
         }
-        else 
+        else
         {
             cout << "Try again." << endl;
         }
@@ -1223,19 +1223,19 @@ public:
         string user_input;
         getline(cin, user_input);
 
-        if (user_input == "Fire") 
+        if (user_input == "Fire")
         {
             cout << "Firing " << BRIGHT_GREEN << player_primary_gun_name << ", " << player_secondary_gun_name << ", " << player_tertiary_gun_name << RESET << endl;
             player_combat_damage();
             unovercharge();
             end_turn();
         }
-        else if (user_input == "Repair") 
+        else if (user_input == "Repair")
         {
             repair_action();
             end_turn();
         }
-        else if (user_input == "Fortify") 
+        else if (user_input == "Fortify")
         {
             fortify_action();
             end_turn();
@@ -1270,7 +1270,7 @@ public:
 
 
     void repair_action() {  // Repair Function
-        if (is_player_turn) 
+        if (is_player_turn)
         {
             if (player_pilot_health < unmodified_pilot_health) {
                 player_pilot_health += (player_unmodified_pilot_health * 0.10);
@@ -1293,9 +1293,9 @@ public:
     void fortify_action() {    // Fortify Function
         if (is_player_turn && !is_fortified)
         {
-                player_front_armor += (player_front_armor * 0.15);
-                cout << BRIGHT_GREEN << "Armor Fortified!" << RESET << endl;
-                fortify_switch_on();
+            player_front_armor += (player_front_armor * 0.15);
+            cout << BRIGHT_GREEN << "Armor Fortified!" << RESET << endl;
+            fortify_switch_on();
         }
     }
     void ai_fortify_action() {     // AI Fortify Function
@@ -1309,14 +1309,14 @@ public:
     void overcharge_action() {  // Overcharge Function
         if (is_player_turn && !is_overcharged)
         {
-                player_primary_gun_damage *= 2;
-                player_primary_gun_penetration += (player_unmodified_primary_gun_penetration * 0.25);
-                player_secondary_gun_damage *= 2;
-                player_secondary_gun_penetration += (player_unmodified_secondary_gun_penetration * 0.25);
-                player_tertiary_gun_damage *= 2;
-                player_tertiary_gun_penetration += (player_unmodified_tertiary_gun_penetration * 0.25);
-                cout << "Main Gun " << BRIGHT_RED << "Overcharged!" << RESET << endl;
-                overcharge_switch_on();
+            player_primary_gun_damage *= 2;
+            player_primary_gun_penetration += (player_unmodified_primary_gun_penetration * 0.25);
+            player_secondary_gun_damage *= 2;
+            player_secondary_gun_penetration += (player_unmodified_secondary_gun_penetration * 0.25);
+            player_tertiary_gun_damage *= 2;
+            player_tertiary_gun_penetration += (player_unmodified_tertiary_gun_penetration * 0.25);
+            cout << "Main Gun " << BRIGHT_RED << "Overcharged!" << RESET << endl;
+            overcharge_switch_on();
         }
     }
     void ai_overcharge_action() {  // AI Overcharge Function
@@ -1433,7 +1433,7 @@ public:
         player_secondary_actual_penetration *= player_secondary_penetration_distance_multiplier;
         player_tertiary_actual_penetration *= player_tertiary_penetration_distance_multiplier;
         //
-        
+
         //DEBUG
         //cout << "PRIMARY DMG Distance Multiplier =========>" << player_primary_damage_distance_multiplier << endl;
         //cout << "PRIMARY PEN Distance Multiplier =========>" << player_primary_penetration_distance_multiplier << endl;
@@ -1831,31 +1831,31 @@ public:
     void enemy_combat_damage() {       // AI Combat Operation, Damage Calculation and Infliction.
         enemy_combat_value_initializer();
         enemy_combat_calculator();
-            if (is_player_attacking == false)
-            {
-                if (player_front_armor > -1) {
-                    enemy_primary_damage_calculator();
-                    enemy_secondary_damage_calculator();
-                    enemy_tertiary_damage_calculator();
-                    if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
-                    {
-                        cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
-                        end_combat_turn();
-                    }
-                    else
-                    {
-                        crit_roll();
-                        end_combat_turn();
-                    }
+        if (is_player_attacking == false)
+        {
+            if (player_front_armor > -1) {
+                enemy_primary_damage_calculator();
+                enemy_secondary_damage_calculator();
+                enemy_tertiary_damage_calculator();
+                if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
+                {
+                    cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
+                    end_combat_turn();
+                }
+                else
+                {
+                    crit_roll();
+                    end_combat_turn();
                 }
             }
-            else
-            {
-                cout << "This means that Combat Function is NOT accessed." << endl;
-            }
+        }
+        else
+        {
+            cout << "This means that Combat Function is NOT accessed." << endl;
+        }
     }
-        
-        
+
+
     void end_combat_turn() {          // Ends Combat Turn. So Far it is Unused, but I have a plan for it later.
         is_player_attacking = !is_player_attacking;
     }
@@ -1877,12 +1877,12 @@ public:
 
         while (player_pilot_health > 0 && pilot_health > 0) {
             if (is_player_turn) {
-                if (has_selected_mech) 
+                if (has_selected_mech)
                 {
                     player_selecting_mech();
                     random_effects();
                 }
-                else if (!has_selected_mech){
+                else if (!has_selected_mech) {
                     //debug_values();
                     player_turn();
                     cout << "-------" << endl;

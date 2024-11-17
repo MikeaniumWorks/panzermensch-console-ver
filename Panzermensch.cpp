@@ -288,6 +288,9 @@ public:
         cout << "---->>Enemy Primary Gun Penetration: " << primary_gun_penetration << endl;
         cout << "---->>Player Primary Gun Damage: " << player_primary_gun_damage << endl;
         cout << "---->>Player Primary Gun Penetration: " << player_primary_gun_penetration << endl;
+        cout << "---->>Player Actual Primary Gun Penetration: " << player_primary_actual_penetration << endl;
+        cout << "---->>Player Actual Secondary Gun Penetration: " << player_secondary_actual_penetration << endl;
+        cout << "---->>Player Actual Tertiary Gun Penetration: " << player_tertiary_actual_penetration << endl;
     }
 
     void end_turn() {  // Ends Turn Of Current Person.
@@ -401,13 +404,15 @@ public:
 
     void ai_weight_analysis() {  // Analyzes the Weight of all Options based on the Situation.
         float enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
-        float enemy_pilot_health_percentage = (unmodified_pilot_health * 0.86);
+        float enemy_pilot_health_percentage1 = (unmodified_pilot_health * 0.85);
+        float enemy_pilot_health_percentage2 = (unmodified_pilot_health * 0.50);
+        float enemy_pilot_health_percentage3 = (unmodified_pilot_health * 0.25);
         float player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
         if (has_ai_overcharged_once)
         {
             ai_fire_weight += 6;
         }
-        else if (player_front_armor > front_armor)
+        if (player_front_armor > front_armor)
         {
             
             if (has_ai_fortified_once)
@@ -423,23 +428,31 @@ public:
                 ai_overcharge_weight += 1;
             }
         }
-        else if (player_front_armor == front_armor || player_front_armor == primary_gun_penetration)
+        if (player_front_armor == front_armor || player_front_armor == primary_gun_penetration)
         {
             ai_fire_weight += 1;
             ai_overcharge_weight += 1;
         }
-        else if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
+        if (player_front_armor < front_armor || player_front_armor < primary_gun_penetration)
         {
 
             ai_fortify_weight -= 2;
             ai_overcharge_weight += 2;
 
         }
-        else if (pilot_health < enemy_pilot_health_percentage)
+        if (pilot_health < enemy_pilot_health_percentage1)
         {
-            ai_repair_weight += 2;
+            ai_repair_weight += 1;
         }
-        else if (player_front_armor > front_armor || player_front_armor > primary_gun_penetration)
+        else
+        {
+            ai_repair_weight -= 1;
+        }
+        if (pilot_health < enemy_pilot_health_percentage2)
+        {
+            ai_repair_weight += 1;
+        }
+        if (player_front_armor > front_armor || player_front_armor > primary_gun_penetration)
         {
             ai_fortify_weight += 1;
             ai_overcharge_weight += 1;
@@ -707,36 +720,57 @@ public:
             switch (crit_gun_destroy_dice_result)
             {
             case(1):
-                if (player_primary_gun_destroyed == true) {
-                    cout << "The Enemy Hit " << BRIGHT_RED << player_primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                if (player_primary_gun_capable == true)
+                {
+                    if (player_primary_gun_destroyed == true) {
+                        cout << "The Enemy Hit " << BRIGHT_RED << player_primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    }
+                    else
+                    {
+                        player_primary_gun_capable = false;
+                        cout << player_primary_gun_name << " HAS BEEN HIT! " << RED << player_primary_gun_name << " DISABLED!" << RESET << endl;
+                        player_primary_gun_destroyed = true;
+                    }
                 }
                 else
                 {
-                    player_primary_gun_capable = false;
-                    cout << player_primary_gun_name << " HAS BEEN HIT! " << RED << player_primary_gun_name << " DISABLED!" << RESET << endl;
-                    player_primary_gun_destroyed = true;
+                    crit_gun_destroy();
                 }
                 break;
             case(2):
-                if (player_secondary_gun_destroyed == true) {
-                    cout << "The Enemy Hit " << BRIGHT_RED << player_secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                if (player_secondary_gun_capable == true)
+                {
+                    if (player_secondary_gun_destroyed == true) {
+                        cout << "The Enemy Hit " << BRIGHT_RED << player_secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    }
+                    else
+                    {
+                        player_secondary_gun_capable = false;
+                        cout << player_secondary_gun_name << " HAS BEEN HIT! " << RED << player_secondary_gun_name << " DISABLED!" << RESET << endl;
+                        player_secondary_gun_destroyed = true;
+                    }
                 }
                 else
                 {
-                    player_secondary_gun_capable = false;
-                    cout << player_secondary_gun_name << " HAS BEEN HIT! " << RED << player_secondary_gun_name << " DISABLED!" << RESET << endl;
-                    player_secondary_gun_destroyed = true;
+                    crit_gun_destroy();
                 }
                     break;
             case(3):
-                if (player_tertiary_gun_destroyed == true) {
-                    cout << "The Enemy Hit " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                if (player_tertiary_gun_capable == true)
+                {
+                    if (player_tertiary_gun_destroyed == true) {
+                        cout << "The Enemy Hit " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    }
+                    else
+                    {
+                        player_tertiary_gun_capable = false;
+                        cout << player_tertiary_gun_name << " HAS BEEN HIT! " << RED << player_tertiary_gun_name << " DISABLED!" << RESET << endl;
+                        player_tertiary_gun_destroyed = true;
+                    }
                 }
                 else
                 {
-                    player_tertiary_gun_capable = false;
-                    cout << player_tertiary_gun_name << " HAS BEEN HIT! " << RED << player_tertiary_gun_name << " DISABLED!" << RESET << endl;
-                    player_tertiary_gun_destroyed = true;
+                    crit_gun_destroy();
                 }
                 break;
             }
@@ -1273,10 +1307,75 @@ public:
         done_damage = 0;
         done_damage2 = 0;
         done_damage3 = 0;
-        distance_float = distance - max_distance;
+        distance_float = abs(distance - max_distance);
         player_primary_actual_penetration = player_primary_gun_penetration;
         player_secondary_actual_penetration = player_secondary_gun_penetration;
         player_tertiary_actual_penetration = player_tertiary_gun_penetration;
+    }
+
+    void player_multiplier_limiter() {
+        if (player_primary_penetration_distance_multiplier > 1)
+        {
+            player_primary_penetration_distance_multiplier = 1;
+        }
+        if (player_secondary_penetration_distance_multiplier > 1)
+        {
+            player_secondary_penetration_distance_multiplier = 1;
+        }
+        if (player_tertiary_penetration_distance_multiplier > 1)
+        {
+            player_tertiary_penetration_distance_multiplier = 1;
+        }
+        if (player_primary_penetration_distance_multiplier < 0.25)
+        {
+            player_primary_penetration_distance_multiplier = 0.25;
+        }
+        if (player_secondary_penetration_distance_multiplier < 0.25)
+        {
+            player_secondary_penetration_distance_multiplier = 0.25;
+        }
+        if (player_tertiary_penetration_distance_multiplier < 0.25)
+        {
+            player_tertiary_penetration_distance_multiplier = 0.25;
+        }
+        // Player Damage Distance Multiplier Limiters.
+        if (player_primary_damage_distance_multiplier < 0.25)
+        {
+            player_primary_damage_distance_multiplier = 0.25;
+        }
+        if (player_secondary_damage_distance_multiplier < 0.25)
+        {
+            player_secondary_damage_distance_multiplier = 0.25;
+        }
+        if (player_tertiary_damage_distance_multiplier < 0.25)
+        {
+            player_tertiary_damage_distance_multiplier = 0.25;
+        }
+        if (player_secondary_damage_distance_multiplier > 1)
+        {
+            player_secondary_damage_distance_multiplier = 1;
+        }
+        if (player_primary_damage_distance_multiplier > 1)
+        {
+            player_primary_damage_distance_multiplier = 1;
+        }
+        if (player_tertiary_damage_distance_multiplier > 1)
+        {
+            player_tertiary_damage_distance_multiplier = 1;
+        }
+        // Player Damage Multiplier Percentage Limiters.
+        if (player_primary_damage_multiplier_percentage > 0.25)
+        {
+            player_primary_damage_multiplier_percentage = 0.25;
+        }
+        if (player_secondary_damage_multiplier_percentage > 0.25)
+        {
+            player_secondary_damage_multiplier_percentage = 0.25;
+        }
+        if (player_tertiary_damage_multiplier_percentage > 0.25)
+        {
+            player_tertiary_damage_multiplier_percentage = 0.25;
+        }
     }
 
     void player_combat_calculator() { // Calculates Damage and Penetration.
@@ -1290,72 +1389,12 @@ public:
         player_tertiary_damage_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_damage));
         player_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - distance_float) / min_distance) * (PI / 2)) * player_unmodified_tertiary_gun_penetration));
         // Player Penetration Distance Multiplier Limiters.
-        if (player_primary_penetration_distance_multiplier > 1)
-        {
-            player_primary_penetration_distance_multiplier = 1;
-        }
-        else if (player_secondary_penetration_distance_multiplier > 1)
-        {
-            player_secondary_penetration_distance_multiplier = 1;
-        }
-        else if (player_tertiary_penetration_distance_multiplier > 1) 
-        {
-            player_tertiary_penetration_distance_multiplier = 1;
-        }
-        if (player_primary_penetration_distance_multiplier < 0.25)
-        {
-            player_primary_penetration_distance_multiplier = 0.25;
-        }
-        else if (player_secondary_penetration_distance_multiplier < 0.25)
-        {
-            player_secondary_penetration_distance_multiplier = 0.25;
-        }
-        else if (player_tertiary_penetration_distance_multiplier < 0.25) 
-        {
-            player_tertiary_penetration_distance_multiplier = 0.25;
-        }
-        // Player Damage Distance Multiplier Limiters.
-        if (player_primary_damage_distance_multiplier < 0.25)
-        {
-            player_primary_damage_distance_multiplier = 0.25;
-        }
-        else if (player_secondary_damage_distance_multiplier < 0.25)
-        {
-            player_secondary_damage_distance_multiplier = 0.25;
-        }
-        else if (player_tertiary_damage_distance_multiplier < 0.25)
-        {
-            player_tertiary_damage_distance_multiplier = 0.25;
-        }
-        if (player_secondary_damage_distance_multiplier > 1)
-        {
-            player_secondary_damage_distance_multiplier = 1;
-        }
-        else if (player_primary_damage_distance_multiplier > 1)
-        {
-            player_primary_damage_distance_multiplier = 1;
-        }
-        else if (player_tertiary_damage_distance_multiplier > 1)
-        {
-            player_tertiary_damage_distance_multiplier = 1;
-        }
         // Player Damage Multipliers.
-        player_primary_damage_multiplier_percentage = abs((front_armor - player_primary_gun_penetration) / (front_armor / 100) / 100);
-        player_secondary_damage_multiplier_percentage = abs((front_armor - player_secondary_gun_penetration) / (front_armor / 100) / 100);
-        player_tertiary_damage_multiplier_percentage = abs((front_armor - player_tertiary_gun_penetration) / (front_armor / 100) / 100);
+        player_primary_damage_multiplier_percentage = abs((front_armor - player_unmodified_primary_gun_penetration) / (front_armor / 100) / 100);
+        player_secondary_damage_multiplier_percentage = abs((front_armor - player_unmodified_secondary_gun_penetration) / (front_armor / 100) / 100);
+        player_tertiary_damage_multiplier_percentage = abs((front_armor - player_unmodified_tertiary_gun_penetration) / (front_armor / 100) / 100);
         //
-        if (player_primary_damage_multiplier_percentage > 0.5)
-        {
-            player_primary_damage_multiplier_percentage = 0.5;
-        }
-        if (player_secondary_damage_multiplier_percentage > 0.5)
-        {
-            player_secondary_damage_multiplier_percentage = 0.5;
-        }
-        if (player_tertiary_damage_multiplier_percentage > 0.5)
-        {
-            player_tertiary_damage_multiplier_percentage = 0.5;
-        }
+        player_multiplier_limiter();
         // Player Damage if Overpenetrated Multiplier.
         player_primary_damage_multiplier = (player_unmodified_primary_gun_damage * player_primary_damage_multiplier_percentage);
         player_secondary_damage_multiplier = (player_unmodified_secondary_gun_damage * player_secondary_damage_multiplier_percentage);
@@ -1403,7 +1442,7 @@ public:
             }
             else
             {
-                if (primary_actual_penetration >= front_armor)
+                if (player_primary_actual_penetration > front_armor)
                 {
                     player_primary_actual_damage += player_primary_damage_multiplier;
                     player_primary_actual_damage *= player_primary_damage_distance_multiplier;
@@ -1412,7 +1451,7 @@ public:
                     cout << "Target hit! " << BRIGHT_GREEN << player_primary_gun_name << " Shot Penetrated!" << RESET << " Damaged for: " << BRIGHT_GREEN << done_damage << RESET << endl;
                     done_damage = 0;
                 }
-                else if (primary_actual_penetration < front_armor)
+                else if (player_primary_actual_penetration < front_armor)
                 {
                     player_primary_actual_damage *= player_primary_damage_distance_multiplier;
                     done_damage += player_primary_actual_damage;
@@ -1421,10 +1460,6 @@ public:
                     done_damage = 0;
                 }
             }
-        }
-        else
-        {
-            cout << "We are " << RED << "Disarmed." << RESET << endl;
         }
     }
 
@@ -1444,7 +1479,7 @@ public:
             }
             else
             {
-                if (player_secondary_actual_penetration >= front_armor)
+                if (player_secondary_actual_penetration > front_armor)
                 {
                     player_secondary_actual_damage += player_secondary_damage_multiplier;
                     player_secondary_actual_damage *= player_secondary_damage_distance_multiplier;
@@ -1485,7 +1520,7 @@ public:
             }
             else
             {
-                if (player_tertiary_actual_penetration >= front_armor)
+                if (player_tertiary_actual_penetration > front_armor)
                 {
                     player_tertiary_actual_damage += player_tertiary_damage_multiplier;
                     player_tertiary_actual_damage *= player_tertiary_damage_distance_multiplier;
@@ -1546,6 +1581,71 @@ public:
         secondary_actual_penetration = secondary_gun_penetration;
         tertiary_actual_penetration = tertiary_gun_penetration;
     }
+    void enemy_multiplier_limiter() {
+        // Enemy Penetration Distance Multiplier Limiters.
+        if (enemy_primary_penetration_distance_multiplier > 1)
+        {
+            enemy_primary_penetration_distance_multiplier = 1;
+        }
+        if (enemy_secondary_penetration_distance_multiplier > 1)
+        {
+            enemy_secondary_penetration_distance_multiplier = 1;
+        }
+        if (enemy_tertiary_penetration_distance_multiplier > 1)
+        {
+            enemy_tertiary_penetration_distance_multiplier = 1;
+        }
+        if (enemy_primary_penetration_distance_multiplier < 0.25)
+        {
+            enemy_primary_penetration_distance_multiplier = 0.25;
+        }
+        if (enemy_secondary_penetration_distance_multiplier < 0.25)
+        {
+            enemy_secondary_penetration_distance_multiplier = 0.25;
+        }
+        if (enemy_tertiary_penetration_distance_multiplier < 0.25)
+        {
+            enemy_tertiary_penetration_distance_multiplier = 0.25;
+        }
+        // Enemy Damage Distance Multiplier Limiters.
+        if (enemy_primary_damage_distance_multiplier < 0.25)
+        {
+            enemy_primary_damage_distance_multiplier = 0.25;
+        }
+        if (enemy_secondary_damage_distance_multiplier < 0.25)
+        {
+            enemy_secondary_damage_distance_multiplier = 0.25;
+        }
+        if (enemy_tertiary_damage_distance_multiplier < 0.25)
+        {
+            enemy_tertiary_damage_distance_multiplier = 0.25;
+        }
+        if (enemy_secondary_damage_distance_multiplier > 1)
+        {
+            enemy_secondary_damage_distance_multiplier = 1;
+        }
+        if (enemy_primary_damage_distance_multiplier > 1)
+        {
+            enemy_primary_damage_distance_multiplier = 1;
+        }
+        if (enemy_tertiary_damage_distance_multiplier > 1)
+        {
+            enemy_tertiary_damage_distance_multiplier = 1;
+        }
+        // Enemy Damage Multiplier Percentage Limiter
+        if (enemy_primary_damage_multiplier_percentage > 0.25)
+        {
+            enemy_primary_damage_multiplier_percentage = 0.25;
+        }
+        if (enemy_secondary_damage_multiplier_percentage > 0.25)
+        {
+            enemy_secondary_damage_multiplier_percentage = 0.25;
+        }
+        if (enemy_tertiary_damage_multiplier_percentage > 0.25)
+        {
+            enemy_tertiary_damage_multiplier_percentage = 0.25;
+        }
+    }
 
     void enemy_combat_calculator() {  // Calculates Enemy Damage and Penetration.
         // Enemy Damage & Penetration Distance Multiplier Calculator.
@@ -1557,73 +1657,13 @@ public:
 
         enemy_tertiary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_damage));
         enemy_tertiary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_float) / min_distance) * (PI / 2)) * unmodified_tertiary_gun_penetration));
-        // Enemy Penetration Distance Multiplier Limiters.
-        if (enemy_primary_penetration_distance_multiplier > 1)
-        {
-            enemy_primary_penetration_distance_multiplier = 1;
-        }
-        else if (enemy_secondary_penetration_distance_multiplier > 1)
-        {
-            enemy_secondary_penetration_distance_multiplier = 1;
-        }
-        else if (enemy_tertiary_penetration_distance_multiplier > 1)
-        {
-            enemy_tertiary_penetration_distance_multiplier = 1;
-        }
-        if (enemy_primary_penetration_distance_multiplier < 0.25)
-        {
-            enemy_primary_penetration_distance_multiplier = 0.25;
-        }
-        else if (enemy_secondary_penetration_distance_multiplier < 0.25)
-        {
-            enemy_secondary_penetration_distance_multiplier = 0.25;
-        }
-        else if (enemy_tertiary_penetration_distance_multiplier < 0.25)
-        {
-            enemy_tertiary_penetration_distance_multiplier = 0.25;
-        }
-        // Enemy Damage Distance Multiplier Limiters.
-        if (enemy_primary_damage_distance_multiplier < 0.25)
-        {
-            enemy_primary_damage_distance_multiplier = 0.25;
-        }
-        else if (enemy_secondary_damage_distance_multiplier < 0.25)
-        {
-            enemy_secondary_damage_distance_multiplier = 0.25;
-        }
-        else if (enemy_tertiary_damage_distance_multiplier < 0.25)
-        {
-            enemy_tertiary_damage_distance_multiplier = 0.25;
-        }
-        if (enemy_secondary_damage_distance_multiplier > 1)
-        {
-            enemy_secondary_damage_distance_multiplier = 1;
-        }
-        else if (enemy_primary_damage_distance_multiplier > 1)
-        {
-            enemy_primary_damage_distance_multiplier = 1;
-        }
-        else if (enemy_tertiary_damage_distance_multiplier > 1)
-        {
-            enemy_tertiary_damage_distance_multiplier = 1;
-        }
         // Enemy Damage Multipliers.
         enemy_primary_damage_multiplier_percentage = abs((player_front_armor - primary_gun_penetration) / (player_front_armor / 100) / 100);
         enemy_secondary_damage_multiplier_percentage = abs((player_front_armor - secondary_gun_penetration) / (player_front_armor / 100) / 100);
         enemy_tertiary_damage_multiplier_percentage = abs((player_front_armor - tertiary_gun_penetration) / (player_front_armor / 100) / 100);
-        //
-        if (enemy_primary_damage_multiplier_percentage > 0.5)
-        {
-            enemy_primary_damage_multiplier_percentage = 0.5;
-        }
-        if (enemy_secondary_damage_multiplier_percentage > 0.5)
-        {
-            enemy_secondary_damage_multiplier_percentage = 0.5;
-        }
-        if (enemy_tertiary_damage_multiplier_percentage > 0.5)
-        {
-            enemy_tertiary_damage_multiplier_percentage = 0.5;
-        }
+
+        enemy_multiplier_limiter();
+
         // Enemy Damage if Overpenetrated Multiplier.
         enemy_primary_damage_multiplier = (unmodified_primary_gun_damage * enemy_primary_damage_multiplier_percentage);
         enemy_secondary_damage_multiplier = (unmodified_secondary_gun_damage * enemy_secondary_damage_multiplier_percentage);
@@ -1814,6 +1854,7 @@ public:
                     random_effects();
                 }
                 else if (!has_selected_mech){
+                    debug_values();
                     player_turn();
                     cout << "-------" << endl;
                 }

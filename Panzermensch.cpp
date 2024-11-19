@@ -180,7 +180,7 @@ public:
     int turn_count = 0;
     int turn_skip_chance_dice = 2;
     int turn_skip_chance_roll = 0;
-    int accuracy_modifier = 90;
+    int accuracy_modifier = 55;
     int movement_speed_modifier = 100;
     int accuracy_roll = 0;
     int ai_accuracy_roll = 0;
@@ -189,6 +189,8 @@ public:
     int dice_result = 0;
     int dice2 = 4;
     int dice3 = 4;
+    int dice4 = 6;
+    int dice5 = 3;
     int crit_dice = 12;
     int crit_choice_dice = 6;
     int crit_gun_destroy_dice = 3;
@@ -199,6 +201,8 @@ public:
     int ai_crit_modifier = 0;
     int dice2_result = 0;
     int dice3_result = 0;
+    int dice4_result = 0;
+    int dice5_result = 0;
     int ai_mech_dice = 4;
     double player_primary_damage_multiplier = 0;
     double player_secondary_damage_multiplier = 0;
@@ -295,6 +299,12 @@ public:
         cout << "---->>Player Actual Tertiary Gun Penetration: " << player_tertiary_actual_penetration << endl;
     }
 
+    void world_values_initiator() {
+        accuracy_modifier = 90;
+        player_crit_modifier = 0;
+        ai_crit_modifier = 0;
+    }
+
     void end_turn() {  // Ends Turn Of Current Person.
         is_player_turn = !is_player_turn;
     }
@@ -385,23 +395,53 @@ public:
         }
     }
 
+    void name_checker() {
+        if (player_primary_gun_capable==true && player_primary_gun_destroyed==false || player_secondary_gun_capable==true && player_secondary_gun_destroyed==false || player_tertiary_gun_capable==true && player_tertiary_gun_destroyed==false)
+        {
+            cout << "Firing " << BRIGHT_GREEN;
+
+            if (player_primary_gun_capable == true && player_primary_gun_destroyed == false)
+            {
+                cout << player_primary_gun_name;
+            }
+            if (player_secondary_gun_capable == true && player_secondary_gun_destroyed == false)
+            {
+                cout << ", " << player_secondary_gun_name;
+            }
+            if (player_tertiary_gun_capable == true && player_tertiary_gun_destroyed == false)
+            {
+                cout << ", " << player_tertiary_gun_name;
+            }
+
+            cout << RESET << endl;
+
+        }
+    }
+
     void weight_limiter() {    // Limits Weights to 10 So it doesn't increase to the point where No other option can be picked but the oversized option.
         if (ai_fire_weight > 10)
         {
-            ai_fire_weight = 10;
-            ai_fire_weight -= 3;
+            if (is_ai_overcharged==true)
+            {
+                ai_fire_weight = 10;
+            }
+            else
+            {
+                ai_fire_weight = 10;
+                ai_fire_weight -= 3;
+            }
         }
-        else if (ai_fortify_weight > 10)
+        if (ai_fortify_weight > 10)
         {
             ai_fortify_weight = 10;
             ai_fortify_weight -= 3;
         }
-        else if (ai_overcharge_weight > 10)
+        if (ai_overcharge_weight > 10)
         {
             ai_overcharge_weight = 10;
             ai_overcharge_weight -= 3;
         }
-        else if (ai_repair_weight > 10)
+        if (ai_repair_weight > 10)
         {
             ai_repair_weight = 10;
             ai_repair_weight -= 3;
@@ -414,7 +454,7 @@ public:
         double enemy_pilot_health_percentage2 = (unmodified_pilot_health * 0.50);
         double enemy_pilot_health_percentage3 = (unmodified_pilot_health * 0.25);
         double player_pilot_percentage = (player_unmodified_pilot_health * 0.14);
-        if (has_ai_overcharged_once)
+        if (is_ai_overcharged==true)
         {
             ai_fire_weight += 6;
         }
@@ -463,9 +503,6 @@ public:
             ai_fortify_weight += 1;
             ai_overcharge_weight += 1;
         }
-        else { //DEBUG
-            cout << "Weight Analysis is Faulty!" << endl;
-        }
         weight_limiter();
     }
 
@@ -480,8 +517,12 @@ public:
         //cout << ai_overcharge_chance << " OVERCHARGE CHANCE!" << endl;     // DEBUG
         ai_repair_chance = ((rand() % dice3) + ai_repair_weight);
         //cout << ai_repair_chance << " REPAIR CHANCE!" << endl;     // DEBUG
-
-        if (ai_fire_chance > ai_fortify_chance && ai_fire_chance > ai_overcharge_chance && ai_fire_chance > ai_repair_chance) {
+        if (is_ai_overcharged==true)
+        {
+            enemy_combat_damage();
+            unovercharge();
+        }
+        else if (ai_fire_chance > ai_fortify_chance && ai_fire_chance > ai_overcharge_chance && ai_fire_chance > ai_repair_chance) {
             cout << "They " << "Fire on Us!" << endl;
             ai_fire_weight -= 1;
             enemy_combat_damage();
@@ -496,12 +537,7 @@ public:
             ai_fortify_counter += 1;
             has_ai_fortified_once = !has_ai_fortified_once;
         }
-        else if (ai_overcharge_chance > ai_fire_chance && ai_overcharge_chance > ai_fortify_chance && ai_overcharge_chance > ai_repair_chance && is_overcharged)
-        {
-            enemy_combat_damage();
-            unovercharge();
-        }
-        else if (ai_overcharge_chance == ai_fire_chance || ai_overcharge_chance == ai_fortify_chance || ai_overcharge_chance == ai_repair_chance || is_overcharged)
+        else if (ai_overcharge_chance >= ai_fire_chance && is_ai_overcharged || ai_overcharge_chance >= ai_fortify_chance && is_ai_overcharged || ai_overcharge_chance > ai_repair_chance && is_ai_overcharged)
         {
             enemy_combat_damage();
             unovercharge();
@@ -559,19 +595,19 @@ public:
             break;
         case(2):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_2 << RESET << endl;
-            accuracy_modifier -= 40;
-            ai_accuracy_modifier -= 40;
+            accuracy_modifier -= 20;
+            ai_accuracy_modifier -= 20;
             movement_speed_modifier -= 50;
             break;
         case(3):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_3 << RESET << endl;
-            accuracy_modifier -= 20;
-            ai_accuracy_modifier -= 20;
+            accuracy_modifier -= 10;
+            ai_accuracy_modifier -= 10;
             movement_speed_modifier -= 25;
             break;
         case(4):
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_4 << RESET << endl;
-            accuracy_modifier -= 50;
+            accuracy_modifier -= 25;
             break;
         default:
             cout << "Terrain: " << BRIGHT_BLUE << terrain_modifier_id_1 << RESET << endl;
@@ -601,13 +637,18 @@ public:
         }
         else if (case_2_hit)
         {
-            player_primary_gun_damage -= (player_unmodified_primary_gun_damage * (1 - 0.12));
+            player_primary_gun_damage -= (player_unmodified_primary_gun_damage * (1 - 0.50));
+            player_secondary_gun_damage -= (player_unmodified_secondary_gun_damage * (1 - 0.50));
+            player_tertiary_gun_damage -= (player_unmodified_tertiary_gun_damage * (1 - 0.50));
+            primary_gun_damage -= (unmodified_primary_gun_damage * (1 - 0.50));
+            secondary_gun_damage -= (unmodified_secondary_gun_damage * (1 - 0.50));
+            tertiary_gun_damage -= (unmodified_tertiary_gun_damage * (1 - 0.50));
             //cout << "Random Effects 2 Is Active!" << endl;
         }
         else if (case_3_hit)
         {
-            front_armor -= (front_armor * (1 - 0.4));
-            player_front_armor -= (player_front_armor * (1 - 0.4));
+            front_armor -= (unmodified_front_armor * (1 - 0.4));
+            player_front_armor -= (player_unmodified_front_armor * (1 - 0.4));
             //cout << "Random Effects 3 Is Active!" << endl;
         }
         else if (case_4_hit)
@@ -630,7 +671,7 @@ public:
             case_1_hit = true;
             cout << RED << "Terrain Unstable!" << RESET << endl;
             cout << RED << "-35% Accuracy." << RESET << endl;
-            accuracy_modifier -= 35;
+            accuracy_modifier -= 5;
             break;
         case (2):
             case_2_hit = true;
@@ -643,24 +684,112 @@ public:
             cout << RED << "Night of a Bad Omen!" << RESET << endl;
             cout << RED << "-50% Accuracy!" << RESET << endl;
             cout << RED << "-80% Armor Effectiveness!" << RESET << endl;
-            accuracy_modifier -= 50;
+            accuracy_modifier -= 25;
             ai_accuracy_modifier -= 25;
             break;
         case (4):
             case_4_hit = true;
             cout << BRIGHT_RED << "Immense Fog." << RESET << endl;
             cout << RED << "-50% Accuracy!" << RESET << endl;
-            accuracy_modifier -= 50;
+            accuracy_modifier -= 25;
             ai_accuracy_modifier -= 25;
             break;
         case (5):
             cout << GREEN << "Night of a Good Omen!" << RESET << endl;
             cout << GREEN << "+50% Accuracy!" << RESET << endl;
             //cout << GREEN << "+50% Chance to Penetrate!" << RESET << endl;
-            accuracy_modifier += 50;
+            accuracy_modifier += 25;
             break;
         default:
             cout << BRIGHT_GREEN << "Everything seems Fine today." << RESET << endl;
+            break;
+        }
+    }
+
+    void repair_weapon(){
+        dice5_result = rand() % dice5;
+        if (dice5_result > 3)
+        {
+            dice5_result = 3;
+        }
+        if (player_primary_gun_destroyed==true || player_secondary_gun_destroyed==true || player_tertiary_gun_destroyed==true || ai_primary_gun_destroyed==true || ai_secondary_gun_destroyed==true || ai_tertiary_gun_destroyed==true)
+        {
+            switch (dice5_result)
+            {
+            case(1):
+                if (is_player_turn == true)
+                {
+                    player_primary_gun_destroyed = false;
+                    cout << BRIGHT_GREEN << "Our " << player_primary_gun_name << " Is Repaired!" << RESET << endl;
+                }
+                else if (is_player_turn == false)
+                {
+                    ai_primary_gun_destroyed = false;
+                    cout << RED << "Enemy " << primary_gun_name << " Is Restored!" << RESET << endl;
+                }
+                break;
+            case(2):
+                if (is_player_turn == true)
+                {
+                    player_secondary_gun_destroyed = false;
+                    cout << BRIGHT_GREEN << "Our " << player_secondary_gun_name << " Is Repaired!" << RESET << endl;
+                }
+                else if (is_player_turn == false)
+                {
+                    ai_secondary_gun_destroyed = false;
+                    cout << RED << "Enemy " << secondary_gun_name << " Is Restored!" << RESET << endl;
+                }
+                break;
+            case(3):
+                if (is_player_turn == true && player_tertiary_gun_destroyed == true)
+                {
+                    player_tertiary_gun_destroyed = false;
+                    cout << BRIGHT_GREEN << "Our " << player_tertiary_gun_name << " Is Repaired!" << RESET << endl;
+                }
+                else if (is_player_turn == false && ai_tertiary_gun_destroyed == true)
+                {
+                    ai_tertiary_gun_destroyed = false;
+                    cout << RED << "Enemy " << tertiary_gun_name << " Is Restored!" << RESET << endl;
+                }
+                else
+                {
+                    repair_weapon();
+                }
+                break;
+            }
+        }
+        else
+        {
+            //Do Nothing.
+        }
+    }
+
+
+    void repair_weapon_chance_roll() {
+        dice4_result = rand() % dice4;
+        if (dice4_result > 6)
+        {
+            dice4_result = 6;
+        }
+        switch (dice4_result)
+        {
+        case(1):
+
+            break;
+        case(2):
+
+            break;
+        case(3):
+
+            break;
+        case(4):
+
+            break;
+        case(5):
+
+            break;
+        case(6):
+            repair_weapon();
             break;
         }
     }
@@ -737,7 +866,6 @@ public:
                     }
                     else
                     {
-                        player_primary_gun_capable = false;
                         cout << player_primary_gun_name << " HAS BEEN HIT! " << RED << player_primary_gun_name << " DISABLED!" << RESET << endl;
                         player_primary_gun_destroyed = true;
                     }
@@ -755,7 +883,6 @@ public:
                     }
                     else
                     {
-                        player_secondary_gun_capable = false;
                         cout << player_secondary_gun_name << " HAS BEEN HIT! " << RED << player_secondary_gun_name << " DISABLED!" << RESET << endl;
                         player_secondary_gun_destroyed = true;
                     }
@@ -773,7 +900,6 @@ public:
                     }
                     else
                     {
-                        player_tertiary_gun_capable = false;
                         cout << player_tertiary_gun_name << " HAS BEEN HIT! " << RED << player_tertiary_gun_name << " DISABLED!" << RESET << endl;
                         player_tertiary_gun_destroyed = true;
                     }
@@ -795,7 +921,6 @@ public:
                 }
                 else
                 {
-                    primary_gun_capable = false;
                     cout << "Enemy " << BRIGHT_RED << primary_gun_name << RESET << " Has Been Hit! " << BRIGHT_GREEN << primary_gun_name << " DISABLED!" << RESET << endl;
                     ai_primary_gun_destroyed = true;
                 }
@@ -806,7 +931,6 @@ public:
                 }
                 else
                 {
-                    secondary_gun_capable = false;
                     cout << "Enemy " << BRIGHT_RED << secondary_gun_name << RESET << " Has Been Hit! " << secondary_gun_name << BRIGHT_GREEN << " DISABLED!" << RESET << endl;
                     ai_secondary_gun_destroyed = true;
                 }
@@ -817,7 +941,6 @@ public:
                 }
                 else
                 {
-                    tertiary_gun_capable = false;
                     cout << "Enemy " << BRIGHT_RED << tertiary_gun_name << RESET << " Has Been Hit! " << BRIGHT_GREEN << tertiary_gun_name << " DISABLED!" << RESET << endl;
                     ai_tertiary_gun_destroyed = true;
                 }
@@ -827,7 +950,20 @@ public:
     }
 
     void crit_dice_roll() {
-        crit_dice_result = rand() % crit_dice + (player_crit_modifier - ai_crit_modifier);
+        if (is_player_turn==true)
+        {
+            crit_dice_result = rand() % crit_dice + player_crit_modifier;
+        }
+        else if (is_player_turn==false)
+        {
+            crit_dice_result = rand() % crit_dice + ai_crit_modifier;
+        }
+        else
+        {
+            crit_dice_result = rand() % crit_dice;
+        }
+
+        
         if (crit_dice_result > 12)
         {
             crit_dice_result = 12;
@@ -953,6 +1089,7 @@ public:
             player_secondary_gun_name = mech_emperor::mech_emperor().secondary_gun;
             player_tertiary_gun_name = mech_emperor::mech_emperor().tertiary_gun;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_emperor::mech_emperor().mech_name << RESET << endl;
+            player_crit_modifier += 1;
             end_mech_selection();
         }
         else if (user_input == "Panzer")
@@ -1010,7 +1147,8 @@ public:
             player_secondary_gun_name = mech_artemis::mech_artemis().secondary_gun;
             player_tertiary_gun_name = mech_artemis::mech_artemis().tertiary_gun;
             accuracy_modifier += 45;
-            ai_accuracy_modifier -= 35;
+            ai_accuracy_modifier -= 45;
+            player_crit_modifier += 1;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -1041,6 +1179,8 @@ public:
             player_secondary_gun_name = mech_aegis::mech_aegis().secondary_gun;
             player_tertiary_gun_name = mech_aegis::mech_aegis().tertiary_gun;
             accuracy_modifier += 25;
+            player_crit_modifier += 4;
+            ai_crit_modifier -= 4;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_mech_selection();
         }
@@ -1107,6 +1247,7 @@ public:
             primary_gun_name = mech_emperor::mech_emperor().primary_gun;
             secondary_gun_name = mech_emperor::mech_emperor().secondary_gun;
             tertiary_gun_name = mech_emperor::mech_emperor().tertiary_gun;
+            ai_crit_modifier += 1;
             cout << "You Fight an " << BRIGHT_RED << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
@@ -1163,8 +1304,9 @@ public:
             secondary_gun_name = mech_artemis::mech_artemis().secondary_gun;
             tertiary_gun_name = mech_artemis::mech_artemis().tertiary_gun;
             enemy_mech_id = mech_artemis::mech_artemis().mech_id;
-            ai_accuracy_modifier += 45;
-            accuracy_modifier -= 35;
+            ai_accuracy_modifier += 55;
+            accuracy_modifier -= 55;
+            ai_crit_modifier += 1;
             cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
@@ -1195,6 +1337,7 @@ public:
             tertiary_gun_name = mech_aegis::mech_aegis().tertiary_gun;
             ai_accuracy_modifier += 25;
             accuracy_modifier -= 25;
+            ai_crit_modifier += 3;
             cout << "You Fight an " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
@@ -1241,7 +1384,7 @@ public:
 
         if (user_input == "Fire")
         {
-            cout << "Firing " << BRIGHT_GREEN << player_primary_gun_name << ", " << player_secondary_gun_name << ", " << player_tertiary_gun_name << RESET << endl;
+            name_checker();
             player_combat_damage();
             unovercharge();
             end_turn();
@@ -1291,6 +1434,7 @@ public:
             if (player_pilot_health < unmodified_pilot_health) {
                 player_pilot_health += (player_unmodified_pilot_health * 0.05);
                 cout << BRIGHT_GREEN << "Pilot Healed!" << RESET << endl;
+                repair_weapon_chance_roll();
             }
             else
             {
@@ -1302,6 +1446,11 @@ public:
             if (pilot_health < unmodified_pilot_health) {
                 pilot_health += (unmodified_pilot_health * 0.05);
                 cout << BRIGHT_RED << "Enemy Pilot Healed!" << RESET << endl;
+                repair_weapon_chance_roll();
+            }
+            else
+            {
+                pilot_health += 0;
             }
         }
     }
@@ -1479,7 +1628,7 @@ public:
 
     void player_primary_damage_calculator() {  // Calculates Damage for The First Gun, and Inflicts it.
         player_accuracy_roll();
-        if (player_primary_gun_capable)
+        if (player_primary_gun_capable==true && player_primary_gun_destroyed==false)
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
@@ -1516,7 +1665,7 @@ public:
 
     void player_secondary_damage_calculator() {  // Calculates Damage for Second Gun, and Inflicts it.
         player_accuracy_roll();
-        if (player_secondary_gun_capable)
+        if (player_secondary_gun_capable==true && player_secondary_gun_destroyed)
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
@@ -1557,7 +1706,7 @@ public:
 
     void player_tertiary_damage_calculator() {  // Calculates Damage for Third Gun, and Inflicts it.
         player_accuracy_roll();
-        if (player_tertiary_gun_capable)
+        if (player_tertiary_gun_capable==true && player_tertiary_gun_destroyed)
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
@@ -1748,7 +1897,7 @@ public:
 
     void enemy_primary_damage_calculator() {  // Calculates Damage for The First Gun, and Inflicts it.
         enemy_accuracy_roll();
-        if (primary_gun_capable)
+        if (primary_gun_capable==true && ai_primary_gun_destroyed==false)
         {
             if (ai_accuracy_roll < 40)
             {
@@ -1780,7 +1929,7 @@ public:
 
     void enemy_secondary_damage_calculator() {  // Calculates Damage for Second Gun, and Inflicts it.
         enemy_accuracy_roll();
-        if (secondary_gun_capable)
+        if (secondary_gun_capable == true && ai_secondary_gun_destroyed == false)
         {
             if (accuracy_roll < 40)
             {
@@ -1816,7 +1965,7 @@ public:
 
     void enemy_tertiary_damage_calculator() {  // Calculates Damage for Third Gun, and Inflicts it.
         enemy_accuracy_roll();
-        if (tertiary_gun_capable)
+        if (tertiary_gun_capable == true && ai_tertiary_gun_destroyed == false)
         {
             if (accuracy_roll < 40)
             {
@@ -1853,27 +2002,34 @@ public:
     void enemy_combat_damage() {       // AI Combat Operation, Damage Calculation and Infliction.
         enemy_combat_value_initializer();
         enemy_combat_calculator();
-        if (is_player_attacking == false)
+        if (ai_primary_gun_destroyed==true && ai_secondary_gun_destroyed==true && ai_tertiary_gun_destroyed==true)
         {
-            if (player_front_armor > -1) {
-                enemy_primary_damage_calculator();
-                enemy_secondary_damage_calculator();
-                enemy_tertiary_damage_calculator();
-                if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
-                {
-                    cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
-                    end_combat_turn();
-                }
-                else
-                {
-                    crit_roll();
-                    end_combat_turn();
-                }
-            }
+            cout << GREEN << "Enemy has No weapons." << endl;
         }
         else
         {
-            cout << "This means that Combat Function is NOT accessed." << endl;
+            if (is_player_attacking == false)
+            {
+                if (player_front_armor > -1) {
+                    enemy_primary_damage_calculator();
+                    enemy_secondary_damage_calculator();
+                    enemy_tertiary_damage_calculator();
+                    if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
+                    {
+                        cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
+                        end_combat_turn();
+                    }
+                    else
+                    {
+                        crit_roll();
+                        end_combat_turn();
+                    }
+                }
+            }
+            else
+            {
+                cout << "This means that Combat Function is NOT accessed." << endl;
+            }
         }
     }
 
@@ -1886,6 +2042,7 @@ public:
 
     void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
         cout << BRIGHT_RED << "Enemy Mech Encountered!" << RESET << endl;
+        world_values_initiator();
         diceroll();
         ai_mech_dice_roll();
         if (ai_has_selected_mech)

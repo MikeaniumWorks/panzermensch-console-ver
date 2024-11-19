@@ -203,7 +203,7 @@ public:
     int dice3_result = 0;
     int dice4_result = 0;
     int dice5_result = 0;
-    int ai_mech_dice = 4;
+    int ai_mech_dice = 6;
     double player_primary_damage_multiplier = 0;
     double player_secondary_damage_multiplier = 0;
     double player_tertiary_damage_multiplier = 0;
@@ -300,7 +300,8 @@ public:
     }
 
     void world_values_initiator() {
-        accuracy_modifier = 90;
+        accuracy_modifier = 70;
+        ai_accuracy_modifier = 70;
         player_crit_modifier = 0;
         ai_crit_modifier = 0;
     }
@@ -911,13 +912,13 @@ public:
                 break;
             }
         }
-        else if (is_player_attacking == true)
+        if (is_player_attacking == true)
         {
             switch (crit_gun_destroy_dice_result)
             {
             case(1):
                 if (ai_primary_gun_destroyed == true) {
-                    cout << "We Hit Enemy " << BRIGHT_RED << player_primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    cout << "We Hit Enemy " << BRIGHT_RED << primary_gun_name << RESET << " Again, But its already Disabled!" << endl;
                 }
                 else
                 {
@@ -927,7 +928,7 @@ public:
                 break;
             case(2):
                 if (ai_secondary_gun_destroyed == true) {
-                    cout << "We Hit Enemy " << BRIGHT_RED << player_secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    cout << "We Hit Enemy " << BRIGHT_RED << secondary_gun_name << RESET << " Again, But its already Disabled!" << endl;
                 }
                 else
                 {
@@ -937,7 +938,7 @@ public:
                 break;
             case(3):
                 if (ai_tertiary_gun_destroyed == true) {
-                    cout << "We Hit Enemy " << BRIGHT_RED << player_tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
+                    cout << "We Hit Enemy " << BRIGHT_RED << tertiary_gun_name << RESET << " Again, But its already Disabled!" << endl;
                 }
                 else
                 {
@@ -1011,12 +1012,12 @@ public:
             if (is_player_turn == true)
             {
                 cout << BRIGHT_GREEN << "We have Inflicted a Crit on the Enemy!" << RESET << endl;
-                ai_accuracy_modifier -= 10;
+                ai_accuracy_modifier -= 20;
             }
             else if (is_player_turn == false)
             {
                 cout << RED << "The Enemy Has Inflicted a Crit On us!" << RESET << endl;
-                accuracy_modifier -= 10;
+                accuracy_modifier -= 20;
             }
             crit_choice_roll();
             break;
@@ -1031,7 +1032,7 @@ public:
 
     void player_selecting_mech() {       // Player Mech Selection Function.
         cout << "Choose your Mech:" << endl;
-        cout << YELLOW << "Emperor" << RESET << " | " << BRIGHT_BLACK << "Panzer" << RESET << " | " << BLUE << "Artemis" << RESET << " | " << BRIGHT_CYAN << "Aegis" << RESET << " | " << BRIGHT_YELLOW << "Generic" << RESET << endl;
+        cout << YELLOW << "Emperor" << RESET << " | " << BRIGHT_BLACK << "Panzer" << RESET << " | " << BLUE << "Artemis" << RESET << " | " << BRIGHT_CYAN << "Aegis" << RESET << " | " << BRIGHT_RED << "Krieg" << RESET << " | " << BRIGHT_YELLOW << "Orion" << RESET << endl;
         getline(cin, user_input);
         if (user_input == "Generic")
         {
@@ -1060,6 +1061,9 @@ public:
             player_secondary_gun_name = mech_generic::mech_generic().secondary_gun;
             player_tertiary_gun_name = mech_generic::mech_generic().tertiary_gun;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_generic::mech_generic().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BRIGHT_YELLOW << mech_generic::mech_generic().mech_name << RESET << " " << mech_generic::mech_generic().mech_description << endl;
+            cout << "-------" << endl;
             end_mech_selection();
         }
         else if (user_input == "Emperor")
@@ -1089,6 +1093,9 @@ public:
             player_secondary_gun_name = mech_emperor::mech_emperor().secondary_gun;
             player_tertiary_gun_name = mech_emperor::mech_emperor().tertiary_gun;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_emperor::mech_emperor().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << YELLOW << mech_emperor::mech_emperor().mech_name << RESET << " " << mech_emperor::mech_emperor().mech_description << endl;
+            cout << "-------" << endl;
             player_crit_modifier += 1;
             end_mech_selection();
         }
@@ -1119,6 +1126,9 @@ public:
             player_secondary_gun_name = mech_panzer::mech_panzer().secondary_gun;
             player_tertiary_gun_name = mech_panzer::mech_panzer().tertiary_gun;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_panzer::mech_panzer().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BRIGHT_BLACK << mech_panzer::mech_panzer().mech_name << RESET << " " << mech_panzer::mech_panzer().mech_description << endl;
+            cout << "-------" << endl;
             end_mech_selection();
         }
         else if (user_input == "Artemis")
@@ -1150,6 +1160,9 @@ public:
             ai_accuracy_modifier -= 45;
             player_crit_modifier += 1;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_artemis::mech_artemis().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BLUE << mech_artemis::mech_artemis().mech_name << RESET << " " << mech_artemis::mech_artemis().mech_description << endl;
+            cout << "-------" << endl;
             end_mech_selection();
         }
         else if (user_input == "Aegis")
@@ -1179,9 +1192,12 @@ public:
             player_secondary_gun_name = mech_aegis::mech_aegis().secondary_gun;
             player_tertiary_gun_name = mech_aegis::mech_aegis().tertiary_gun;
             accuracy_modifier += 25;
-            player_crit_modifier += 4;
-            ai_crit_modifier -= 4;
+            player_crit_modifier += 3;
+            ai_crit_modifier -= 3;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_aegis::mech_aegis().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BRIGHT_CYAN << mech_aegis::mech_aegis().mech_name << RESET << " " << mech_aegis::mech_aegis().mech_description << endl;
+            cout << "-------" << endl;
             end_mech_selection();
         }
         else if (user_input == "Admin")
@@ -1211,6 +1227,75 @@ public:
             player_secondary_gun_name = mech_admin::mech_admin().secondary_gun;
             player_tertiary_gun_name = mech_admin::mech_admin().tertiary_gun;
             cout << "Welcome, Mr. 007- I mean " << BRIGHT_GREEN << mech_admin::mech_admin().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << RED << mech_admin::mech_admin().mech_name << RESET << " " << mech_admin::mech_admin().mech_description << endl;
+            cout << "-------" << endl;
+            end_mech_selection();
+        }
+        else if (user_input == "Krieg")
+        {
+            player_pilot_health += (mech_krieg::mech_krieg().pilot_health - 1);
+            player_unmodified_pilot_health += mech_krieg::mech_krieg().pilot_health;
+            player_front_armor += mech_krieg::mech_krieg().front_armor;
+            player_unmodified_front_armor += mech_krieg::mech_krieg().front_armor;
+            player_primary_gun_capable = mech_krieg::mech_krieg().primary_gun_capable;
+            player_primary_gun_damage += mech_krieg::mech_krieg().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_krieg::mech_krieg().primary_gun_damage;
+            player_primary_gun_penetration += mech_krieg::mech_krieg().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_krieg::mech_krieg().primary_gun_penetration;
+            player_secondary_gun_capable = mech_krieg::mech_krieg().secondary_gun_capable;
+            player_secondary_gun_damage += mech_krieg::mech_krieg().secondary_gun_damage;
+            player_unmodified_secondary_gun_damage += mech_krieg::mech_krieg().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_krieg::mech_krieg().secondary_gun_penetration;
+            player_unmodified_secondary_gun_penetration += mech_krieg::mech_krieg().secondary_gun_penetration;
+            player_tertiary_gun_capable = mech_krieg::mech_krieg().tertiary_gun_capable;
+            player_tertiary_gun_damage += mech_krieg::mech_krieg().tertiary_gun_damage;
+            player_unmodified_tertiary_gun_damage += mech_krieg::mech_krieg().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_krieg::mech_krieg().tertiary_gun_penetration;
+            player_unmodified_tertiary_gun_penetration += mech_krieg::mech_krieg().tertiary_gun_penetration;
+            player_melee_capable = mech_krieg::mech_krieg().melee_capable;
+            player_melee_damage += mech_krieg::mech_krieg().melee_damage;
+            player_primary_gun_name = mech_krieg::mech_krieg().primary_gun;
+            player_secondary_gun_name = mech_krieg::mech_krieg().secondary_gun;
+            player_tertiary_gun_name = mech_krieg::mech_krieg().tertiary_gun;
+            cout << "You Chose The Mech " << BRIGHT_GREEN << mech_krieg::mech_krieg().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BRIGHT_RED << mech_krieg::mech_krieg().mech_name << RESET << " " << mech_krieg::mech_krieg().mech_description << endl;
+            cout << "-------" << endl;
+            ai_crit_modifier -= 2;
+            end_mech_selection();
+        }
+        else if (user_input == "Orion")
+        {
+            player_pilot_health += (mech_orion::mech_orion().pilot_health - 1);
+            player_unmodified_pilot_health += mech_orion::mech_orion().pilot_health;
+            player_front_armor += mech_orion::mech_orion().front_armor;
+            player_unmodified_front_armor += mech_orion::mech_orion().front_armor;
+            player_primary_gun_capable = mech_orion::mech_orion().primary_gun_capable;
+            player_primary_gun_damage += mech_orion::mech_orion().primary_gun_damage;
+            player_unmodified_primary_gun_damage += mech_orion::mech_orion().primary_gun_damage;
+            player_primary_gun_penetration += mech_orion::mech_orion().primary_gun_penetration;
+            player_unmodified_primary_gun_penetration += mech_orion::mech_orion().primary_gun_penetration;
+            player_secondary_gun_capable = mech_orion::mech_orion().secondary_gun_capable;
+            player_secondary_gun_damage += mech_orion::mech_orion().secondary_gun_damage;
+            player_unmodified_secondary_gun_damage += mech_orion::mech_orion().secondary_gun_damage;
+            player_secondary_gun_penetration += mech_orion::mech_orion().secondary_gun_penetration;
+            player_unmodified_secondary_gun_penetration += mech_orion::mech_orion().secondary_gun_penetration;
+            player_tertiary_gun_capable = mech_orion::mech_orion().tertiary_gun_capable;
+            player_tertiary_gun_damage += mech_orion::mech_orion().tertiary_gun_damage;
+            player_unmodified_tertiary_gun_damage += mech_orion::mech_orion().tertiary_gun_damage;
+            player_tertiary_gun_penetration += mech_orion::mech_orion().tertiary_gun_penetration;
+            player_unmodified_tertiary_gun_penetration += mech_orion::mech_orion().tertiary_gun_penetration;
+            player_melee_capable = mech_orion::mech_orion().melee_capable;
+            player_melee_damage += mech_orion::mech_orion().melee_damage;
+            player_primary_gun_name = mech_orion::mech_orion().primary_gun;
+            player_secondary_gun_name = mech_orion::mech_orion().secondary_gun;
+            player_tertiary_gun_name = mech_orion::mech_orion().tertiary_gun;
+            cout << "You Chose The Mech " << BRIGHT_GREEN << mech_orion::mech_orion().mech_name << RESET << endl;
+            cout << "-------" << endl;
+            cout << BRIGHT_YELLOW << mech_orion::mech_orion().mech_name << RESET << " " << mech_orion::mech_orion().mech_description << endl;
+            cout << "-------" << endl;
+            player_crit_modifier += 3;
             end_mech_selection();
         }
         else
@@ -1248,7 +1333,7 @@ public:
             secondary_gun_name = mech_emperor::mech_emperor().secondary_gun;
             tertiary_gun_name = mech_emperor::mech_emperor().tertiary_gun;
             ai_crit_modifier += 1;
-            cout << "You Fight an " << BRIGHT_RED << mech_emperor::mech_emperor().mech_name << RESET << endl;
+            cout << "You Fight " << BRIGHT_RED << "The " << mech_emperor::mech_emperor().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(2): // Panzer
@@ -1276,7 +1361,7 @@ public:
             primary_gun_name = mech_panzer::mech_panzer().primary_gun;
             secondary_gun_name = mech_panzer::mech_panzer().secondary_gun;
             tertiary_gun_name = mech_panzer::mech_panzer().tertiary_gun;
-            cout << "You Fight a " << BRIGHT_RED << mech_panzer::mech_panzer().mech_name << RESET << endl;
+            cout << "You Fight " << BRIGHT_RED << mech_panzer::mech_panzer().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(3): // Artemis
@@ -1307,7 +1392,7 @@ public:
             ai_accuracy_modifier += 55;
             accuracy_modifier -= 55;
             ai_crit_modifier += 1;
-            cout << "You Fight an " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
+            cout << "You Fight " << BRIGHT_RED << mech_artemis::mech_artemis().mech_name << RESET << endl;
             end_ai_mech_selection();
             break;
         case(4): // Aegis
@@ -1338,7 +1423,64 @@ public:
             ai_accuracy_modifier += 25;
             accuracy_modifier -= 25;
             ai_crit_modifier += 3;
-            cout << "You Fight an " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
+            player_crit_modifier -= 3;
+            cout << "You Fight " << BRIGHT_RED << mech_aegis::mech_aegis().mech_name << RESET << endl;
+            end_ai_mech_selection();
+            break;
+        case(5): // Krieg
+            pilot_health += (mech_krieg::mech_krieg().pilot_health - 1);
+            unmodified_pilot_health += mech_krieg::mech_krieg().pilot_health;
+            front_armor += mech_krieg::mech_krieg().front_armor;
+            unmodified_front_armor += mech_krieg::mech_krieg().front_armor;
+            primary_gun_capable = mech_krieg::mech_krieg().primary_gun_capable;
+            primary_gun_damage += mech_krieg::mech_krieg().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_krieg::mech_krieg().primary_gun_damage;
+            primary_gun_penetration += mech_krieg::mech_krieg().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_krieg::mech_krieg().primary_gun_penetration;
+            secondary_gun_capable = mech_krieg::mech_krieg().secondary_gun_capable;
+            secondary_gun_damage += mech_krieg::mech_krieg().secondary_gun_damage;
+            unmodified_secondary_gun_damage += mech_krieg::mech_krieg().secondary_gun_damage;
+            secondary_gun_penetration += mech_krieg::mech_krieg().secondary_gun_penetration;
+            unmodified_secondary_gun_penetration += mech_krieg::mech_krieg().secondary_gun_penetration;
+            tertiary_gun_capable = mech_krieg::mech_krieg().tertiary_gun_capable;
+            tertiary_gun_damage += mech_krieg::mech_krieg().tertiary_gun_damage;
+            unmodified_tertiary_gun_damage += mech_krieg::mech_krieg().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_krieg::mech_krieg().tertiary_gun_penetration;
+            unmodified_tertiary_gun_penetration += mech_krieg::mech_krieg().tertiary_gun_penetration;
+            melee_capable = mech_krieg::mech_krieg().melee_capable;
+            melee_damage += mech_krieg::mech_krieg().melee_damage;
+            primary_gun_name = mech_krieg::mech_krieg().primary_gun;
+            secondary_gun_name = mech_krieg::mech_krieg().secondary_gun;
+            tertiary_gun_name = mech_krieg::mech_krieg().tertiary_gun;
+            cout << "You Fight " << BRIGHT_RED << "Krieg." << RESET << endl;
+            end_ai_mech_selection();
+            break;
+        case(6): // Orion
+            pilot_health += (mech_orion::mech_orion().pilot_health - 1);
+            unmodified_pilot_health += mech_orion::mech_orion().pilot_health;
+            front_armor += mech_orion::mech_orion().front_armor;
+            unmodified_front_armor += mech_orion::mech_orion().front_armor;
+            primary_gun_capable = mech_orion::mech_orion().primary_gun_capable;
+            primary_gun_damage += mech_orion::mech_orion().primary_gun_damage;
+            unmodified_primary_gun_damage += mech_orion::mech_orion().primary_gun_damage;
+            primary_gun_penetration += mech_orion::mech_orion().primary_gun_penetration;
+            unmodified_primary_gun_penetration += mech_orion::mech_orion().primary_gun_penetration;
+            secondary_gun_capable = mech_orion::mech_orion().secondary_gun_capable;
+            secondary_gun_damage += mech_orion::mech_orion().secondary_gun_damage;
+            unmodified_secondary_gun_damage += mech_orion::mech_orion().secondary_gun_damage;
+            secondary_gun_penetration += mech_orion::mech_orion().secondary_gun_penetration;
+            unmodified_secondary_gun_penetration += mech_orion::mech_orion().secondary_gun_penetration;
+            tertiary_gun_capable = mech_orion::mech_orion().tertiary_gun_capable;
+            tertiary_gun_damage += mech_orion::mech_orion().tertiary_gun_damage;
+            unmodified_tertiary_gun_damage += mech_orion::mech_orion().tertiary_gun_damage;
+            tertiary_gun_penetration += mech_orion::mech_orion().tertiary_gun_penetration;
+            unmodified_tertiary_gun_penetration += mech_orion::mech_orion().tertiary_gun_penetration;
+            melee_capable = mech_orion::mech_orion().melee_capable;
+            melee_damage += mech_orion::mech_orion().melee_damage;
+            primary_gun_name = mech_orion::mech_orion().primary_gun;
+            secondary_gun_name = mech_orion::mech_orion().secondary_gun;
+            tertiary_gun_name = mech_orion::mech_orion().tertiary_gun;
+            cout << "You Fight " << BRIGHT_RED << "Orion." << RESET << endl;
             end_ai_mech_selection();
             break;
         default: // Generic
@@ -1438,6 +1580,7 @@ public:
             }
             else
             {
+                repair_weapon_chance_roll();
                 cout << BRIGHT_CYAN << "You are Already at Full Health!" << RESET << endl;
             }
         }
@@ -1450,6 +1593,7 @@ public:
             }
             else
             {
+                repair_weapon_chance_roll();
                 pilot_health += 0;
             }
         }
@@ -1750,20 +1894,17 @@ public:
         player_combat_calculator();
 
         if (is_player_attacking == true) {
-            if (front_armor > -1) {
+            if (player_primary_gun_capable == false && player_secondary_gun_capable == false && player_tertiary_gun_capable == false)
+            {
+                cout << RED << "We Have No Weapons." << RESET << endl;
+                end_combat_turn();
+            }
+            else
+            {
                 player_primary_damage_calculator();
                 player_secondary_damage_calculator();
                 player_tertiary_damage_calculator();
-                if (player_primary_gun_capable == false && player_secondary_gun_capable == false && player_tertiary_gun_capable == false)
-                {
-                    cout << RED << "We Have No Weapons." << RESET << endl;
-                    end_combat_turn();
-                }
-                else
-                {
-                    crit_roll();
-                    end_combat_turn();
-                }
+                crit_roll();
                 end_combat_turn();
             }
         }
@@ -2010,20 +2151,18 @@ public:
         {
             if (is_player_attacking == false)
             {
-                if (player_front_armor > -1) {
+                if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
+                {
+                    cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
+                    end_combat_turn();
+                }
+                else
+                {
                     enemy_primary_damage_calculator();
                     enemy_secondary_damage_calculator();
                     enemy_tertiary_damage_calculator();
-                    if (primary_gun_capable == false && secondary_gun_capable == false && tertiary_gun_capable == false)
-                    {
-                        cout << BRIGHT_GREEN << "Enemy Has No Weapons." << RESET << endl;
-                        end_combat_turn();
-                    }
-                    else
-                    {
-                        crit_roll();
-                        end_combat_turn();
-                    }
+                    crit_roll();
+                    end_combat_turn();
                 }
             }
             else
@@ -2037,7 +2176,6 @@ public:
     void end_combat_turn() {          // Ends Combat Turn. So Far it is Unused, but I have a plan for it later.
         is_player_attacking = !is_player_attacking;
     }
-
 
 
     void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.

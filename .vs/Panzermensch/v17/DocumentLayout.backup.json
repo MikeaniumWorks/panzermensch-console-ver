@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -45,31 +45,27 @@
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Panzermensch.cpp",
               "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
               "RelativeDocumentMoniker": "Panzermensch.cpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
               "RelativeToolTip": "Panzermensch.cpp",
-              "ViewState": "AgIAAOYHAAAAAAAAAAAgwPAHAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJIFAAAAAAAAAAAewK4FAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-11-17T01:18:48.224Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "mechs.hpp",
               "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
               "RelativeDocumentMoniker": "mechs.hpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
               "RelativeToolTip": "mechs.hpp",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAwwHAAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAACIBAAAAAAAAAAAewDcBAABqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-11-17T01:18:49.437Z",
               "EditorCaption": ""

@@ -24,63 +24,65 @@ using std::string;
 
 class Mech {
 public:
-    int pilot_health;
-    int front_armor;
-    bool primary_gun_capable;
-    int primary_gun_damage;
-    int primary_gun_penetration;
-    string primary_gun;
-    bool secondary_gun_capable;
-    int secondary_gun_damage;
-    int secondary_gun_penetration;
-    string secondary_gun;
-    bool tertiary_gun_capable;
-    int tertiary_gun_damage;
-    int tertiary_gun_penetration;
-    string tertiary_gun;
-    bool melee_capable;
-    int melee_damage;
-    int melee_sharpness; // Basically Melee Penetration, It is added JUST IN CASE.
+    int pilot_health = 0;
+    int front_armor = 0;
+    bool primary_gun_capable = true;
+    int primary_gun_damage = 0;
+    int primary_gun_penetration = 0;
+    string primary_gun = "Primary";
+    bool secondary_gun_capable = false;
+    int secondary_gun_damage = 0;
+    int secondary_gun_penetration = 0;
+    string secondary_gun = "Secondary";
+    bool tertiary_gun_capable = false;
+    int tertiary_gun_damage = 0;
+    int tertiary_gun_penetration = 0;
+    string tertiary_gun = "Tertiary";
+    bool melee_capable = false;
+    int melee_damage = 0;
+    int melee_sharpness = 0; // Basically Melee Penetration, It is added JUST IN CASE.
 
-    string mech_name;
-    int mech_id;
-    int tier;
+    string mech_name = "Mech";
+    int mech_id = 0;
+    int tier = 0;
     
 
 };
 
-class mech_generic {
+class mech_generic : Mech{
 public:
-    int pilot_health;
-    int front_armor;
+    float pilot_health;
+    float front_armor;
     bool primary_gun_capable;
-    int primary_gun_damage;
-    int primary_gun_penetration;
+    float primary_gun_damage;
+    float primary_gun_penetration;
     string primary_gun;
     bool secondary_gun_capable;
-    int secondary_gun_damage;
-    int secondary_gun_penetration;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
     string secondary_gun;
     bool tertiary_gun_capable;
-    int tertiary_gun_damage;
-    int tertiary_gun_penetration;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
     string tertiary_gun;
     bool melee_capable;
-    int melee_damage;
-    int melee_sharpness;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
 
     string mech_name;
+    string mech_description;
     int mech_id;
     int tier;
 
-    mech_generic() : pilot_health(100), front_armor(100), primary_gun_capable(true), primary_gun_damage(100), primary_gun_penetration(100), primary_gun("Primary"),
+    mech_generic() : pilot_health(100000), front_armor(12500), primary_gun_capable(true), primary_gun_damage(20000), primary_gun_penetration(10000), primary_gun("Primary"),
         secondary_gun_capable(false), secondary_gun_damage(100), secondary_gun_penetration(100), secondary_gun("Secondary"), tertiary_gun_capable(false),
         tertiary_gun_damage(100), tertiary_gun_penetration(100), tertiary_gun("Tertiary"), melee_capable(false), melee_damage(100), melee_sharpness(100),
-        mech_name("Generic"), mech_id(0), tier(6) {};
+        melee_weapon("Sword"), mech_name("Generic"), mech_id(0), tier(6), mech_description(": Why would you even choose this?") {};
 
 };
 
-class emperor_mech : Mech {
+class mech_emperor : Mech{
 
     //     _______                                                     
     //    |_   __ \                                                     
@@ -91,27 +93,232 @@ class emperor_mech : Mech {
     //                          [__|     
 
 public:
-    int pilot_health = 1000;
-    int front_armor = 780;
+    float pilot_health = 0;
+    float front_armor = 0;
     bool primary_gun_capable = true;
-    int primary_gun_damage = 1260;
-    int primary_gun_penetration = 1200;
+    float primary_gun_damage = 0;
+    float primary_gun_penetration = 0;
     string primary_gun = "Godbreaker";
     bool secondary_gun_capable = true;
-    int secondary_gun_damage = 750;
-    int secondary_gun_penetration = 800;
+    float secondary_gun_damage = 0;
+    float secondary_gun_penetration = 0;
     string secondary_gun = "Aetheric Blaster";
     bool tertiary_gun_capable = true;
-    int tertiary_gun_damage = 21;
-    int tertiary_gun_penetration = 2000;
+    float tertiary_gun_damage = 0;
+    float tertiary_gun_penetration = 0;
     string tertiary_gun = "Godfire";
     bool melee_capable = true;
-    int melee_damage = 700;
-    int melee_sharpness = 2000;
+    float melee_damage = 0;
+    float melee_sharpness = 0;
+    string melee_weapon = "Godslayer";
 
-    string mech_name = "Emperor";
+    string mech_name = "EMPEROR";
+    string mech_description = "Description";
     int mech_id = 1;
     int tier = 1;
+
+    mech_emperor() : pilot_health(20000), front_armor(1800), primary_gun_capable(true), primary_gun_damage(1560), primary_gun_penetration(1800), primary_gun("Godbreaker"),
+        secondary_gun_capable(true), secondary_gun_damage(550), secondary_gun_penetration(800), secondary_gun("Godstorm"), tertiary_gun_capable(true),
+        tertiary_gun_damage(521), tertiary_gun_penetration(2000), tertiary_gun("Godfire"), melee_capable(false), melee_damage(1700), melee_sharpness(2000),
+        melee_weapon("Godslayer"), mech_name("Emperor"), mech_id(1), tier(1), mech_description(": The Emperor of All Humanity, Entombed in This Golden Walking Coffin. Little is known by our history on how he came to be in this, But what is known, He houses immense Psionic might, His Wrath is made manifest; For all shall Show him what passes for Fury amongst their misbegotten kind.") {};
+};
+
+class mech_panzer {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_panzer() : pilot_health(30000), front_armor(1300), primary_gun_capable(true), primary_gun_damage(2000), primary_gun_penetration(1350), primary_gun("Bulwark"),
+        secondary_gun_capable(true), secondary_gun_damage(230), secondary_gun_penetration(1000), secondary_gun("Steelstorm"), tertiary_gun_capable(true),
+        tertiary_gun_damage(1050), tertiary_gun_penetration(3000), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
+        melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1), mech_description(": Lord of All That is Iron and Steel. Panzer, Hardy, Petty, and is Resilience incarnate For; Panzer is a Warrior of Iron, Within and Without.") {};
+
+};
+
+class mech_artemis {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_artemis() : pilot_health(20000), front_armor(1800), primary_gun_capable(true), primary_gun_damage(1400), primary_gun_penetration(2500), primary_gun("Wrath of the Stars"),
+        secondary_gun_capable(true), secondary_gun_damage(670), secondary_gun_penetration(800), secondary_gun("Lance of Heaven"), tertiary_gun_capable(false),
+        tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(750), melee_sharpness(1600),
+        melee_weapon("Astral Claw"), mech_name("Artemis"), mech_id(3), tier(1), mech_description(": Knight of The Stars and The Void that inhabits, Fast as The Eye, Never seen, Never Certain, You can never catch her; All shall Beware the Knight of Void.") {};
+
+};
+
+class mech_aegis {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_aegis() : pilot_health(20000), front_armor(1800), primary_gun_capable(true), primary_gun_damage(2150), primary_gun_penetration(3000), primary_gun("Wrath of Light"),
+        secondary_gun_capable(false), secondary_gun_damage(0), secondary_gun_penetration(0), secondary_gun("None"), tertiary_gun_capable(false),
+        tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(1000), melee_sharpness(1600),
+        melee_weapon("Lightblade"), mech_name("Aegis"), mech_id(4), tier(1), mech_description(": Wrath of Light, Lord of all that is Radiant, Bar the Emperor of Course. Some say he is a God wrapped inside a Mech, Some Say its a Mech entombing a God, None know Anything; He may not even be a God.") {};
+
+};
+
+class mech_admin {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_admin() : pilot_health(200000), front_armor(5000), primary_gun_capable(true), primary_gun_damage(15000), primary_gun_penetration(15000), primary_gun("B.F.G"),
+        secondary_gun_capable(true), secondary_gun_damage(50000), secondary_gun_penetration(5000), secondary_gun("Arserailer"), tertiary_gun_capable(true),
+        tertiary_gun_damage(200000), tertiary_gun_penetration(10), tertiary_gun("Helltickler"), melee_capable(true), melee_damage(100000), melee_sharpness(1),
+        melee_weapon("Banhammer"), mech_name("Admin"), mech_id(5), tier(1), mech_description(": Administrator of all, Creator of this Realm. Some say his real name is Mikeanium, No one knows whether it is true or not; They bore a dozen names throughout their existence.") {};
+
+};
+
+class mech_krieg {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_krieg() : pilot_health(20000), front_armor(5000), primary_gun_capable(true), primary_gun_damage(2312), primary_gun_penetration(1500), primary_gun("Warbearer"),
+        secondary_gun_capable(true), secondary_gun_damage(5253), secondary_gun_penetration(750), secondary_gun("Hellsallen"), tertiary_gun_capable(true),
+        tertiary_gun_damage(2112), tertiary_gun_penetration(10), tertiary_gun("Verdun"), melee_capable(true), melee_damage(6000), melee_sharpness(1),
+        melee_weapon("Warhammer"), mech_name("Krieg"), mech_id(6), tier(1), mech_description(": Embodiement of All that is War. Unyielding, Unrelenting, and Mighty. Legends and Myths tattle about him defeating Ares in Melee combat, Though no one knows; War is uncertain, and never changes.") {};
+
+};
+
+class mech_orion {
+public:
+    float pilot_health;
+    float front_armor;
+    bool primary_gun_capable;
+    float primary_gun_damage;
+    float primary_gun_penetration;
+    string primary_gun;
+    bool secondary_gun_capable;
+    float secondary_gun_damage;
+    float secondary_gun_penetration;
+    string secondary_gun;
+    bool tertiary_gun_capable;
+    float tertiary_gun_damage;
+    float tertiary_gun_penetration;
+    string tertiary_gun;
+    bool melee_capable;
+    float melee_damage;
+    float melee_sharpness;
+    string melee_weapon;
+
+    string mech_name;
+    string mech_description;
+    int mech_id;
+    int tier;
+
+    mech_orion() : pilot_health(18000), front_armor(2500), primary_gun_capable(true), primary_gun_damage(3165), primary_gun_penetration(1500), primary_gun("Lance of Hyguard"),
+        secondary_gun_capable(true), secondary_gun_damage(1241), secondary_gun_penetration(2600), secondary_gun("Aquilon spear"), tertiary_gun_capable(false),
+        tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(0), melee_sharpness(0),
+        melee_weapon("None"), mech_name("Orion"), mech_id(7), tier(1), mech_description(": A Riddle, Wrapped in a Cipher, Wrapped in an Enigma. Artemis's Greatest Rival, The only one to ever hit her; Champion of A Hundred Pantheons.") {};
+
 };
 
 int stats() {

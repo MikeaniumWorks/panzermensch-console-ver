@@ -17,8 +17,8 @@
 //#include <sqltypes.h>
 //#include <sql.h>
 //#include <json/value.h>
-//#include "mechs.cpp"
-#include "mechs.hpp"
+#include "mechs.cpp"
+//#include "mechs.hpp"
 //#include "vehicles.hpp"
 
 using namespace std;
@@ -287,6 +287,7 @@ public:
         side_armor_health(0), rear_armor(0), rear_armor_health(0),
         pilot_health(1), veterancy(0) {}
 
+    // Tells me the Values of Everything when Debug is on.
     void debug_values() {  // Debug, Duh.
         cout << "---->>Enemy Front Armor: " << front_armor << endl;
         cout << "---->>Player Front Armor: " << player_front_armor << endl;
@@ -299,6 +300,7 @@ public:
         cout << "---->>Player Actual Tertiary Gun Penetration: " << player_tertiary_actual_penetration << endl;
     }
 
+    // Initializes All World Values to prevent wrong calculation.
     void world_values_initiator() {
         accuracy_modifier = 70;
         ai_accuracy_modifier = 70;
@@ -350,7 +352,8 @@ public:
         is_ai_overcharged = false;
     }
 
-    void unfortify() {   // Checks if Person is Fortified, If more than one turn, It removes the Modifiers so they aren't permanent.
+    // Checks if Person is Fortified and Removes the Fortify Modifier so it doesn't apply for longer than a turn.
+    void unfortify() {   
         if (is_player_turn && is_fortified)
         {
             player_front_armor -= (player_unmodified_front_armor * 0.15);
@@ -367,7 +370,8 @@ public:
         }
     }
 
-    void unovercharge() { // Checks if Person Has already been Overcharged, If they are, It Removes the Modifiers So they can't fire Endlessly with the same power as being Overcharged.
+    // Checks if Person Has already been Overcharged, To prevent Overcharge from applying more than one turn.
+    void unovercharge() { 
         if (is_player_turn && is_overcharged)
         {
             player_primary_gun_damage /= 2;
@@ -396,6 +400,7 @@ public:
         }
     }
 
+    // Exists to Output the right name when the player fires a gun.
     void name_checker() {
         if (player_primary_gun_capable==true && player_primary_gun_destroyed==false || player_secondary_gun_capable==true && player_secondary_gun_destroyed==false || player_tertiary_gun_capable==true && player_tertiary_gun_destroyed==false)
         {
@@ -419,7 +424,8 @@ public:
         }
     }
 
-    void weight_limiter() {    // Limits Weights to 10 So it doesn't increase to the point where No other option can be picked but the oversized option.
+    // Limits Weights to 10 So it doesn't increase to the point where No other option can be picked but the oversized option.
+    void weight_limiter() {    
         if (ai_fire_weight > 10)
         {
             if (is_ai_overcharged==true)
@@ -449,7 +455,8 @@ public:
         }
     }
 
-    void ai_weight_analysis() {  // Analyzes the Weight of all Options based on the Situation.
+    // Adds Weight to specific Decision (i.e Fire, Repair, Overcharge, Etc.) based on the Specific Situation, Health, Armor, Gun and Etc.
+    void ai_weight_analysis() {  
         double enemy_pilot_percentage = (unmodified_pilot_health * 0.14);
         double enemy_pilot_health_percentage1 = (unmodified_pilot_health * 0.85);
         double enemy_pilot_health_percentage2 = (unmodified_pilot_health * 0.50);
@@ -507,6 +514,7 @@ public:
         weight_limiter();
     }
 
+    // Basically the AI Brain, Turns The Weight to Chances, and Chances to Decisions.
     void ai_decision_making() { // The AI Brain, Applies Weight into Chances and Picks Decisions based on the Chance.
         //ai_weight_analysis();
 
@@ -563,7 +571,8 @@ public:
         }
     }
 
-    void turn_skip_chance() {     // Still Unused Ability/Function/Effect made to roll a Dice to see if Turns would get Skipped.
+    // Still Unused Ability/Function/Effect made to roll a Dice to see if Turns would get Skipped.
+    void turn_skip_chance() {     
         turn_skip_chance_roll = (rand() % turn_skip_chance_dice) + 0;
         switch (turn_skip_chance_roll)
         {
@@ -580,12 +589,13 @@ public:
         }
     }
 
-
-    void terrain_roll() {   // Rolls Dice for Terrain Choice.
+    // Dice roller to choose Terrain.
+    void terrain_roll() {   
         dice2_result = (rand() % dice2) + 0;
     }
 
-    void terrain_modifier() {    // Terrain Assigner, Also Adds the Modifiers of the Terrain.
+    // Terrain Setter, To choose which Terrain is the fight gonna happen on.
+    void terrain_modifier() {    
         is_terrain_on = true;
         terrain_roll();
         int terrain_roll = dice2_result;
@@ -616,22 +626,26 @@ public:
         }
     }
 
-    void diceroll() {      // Dice Roll meant for Day Modifier Choice.
+    // Dice Roller meant for Day Modifier Choice.
+    void diceroll() {      
         dice_result = (rand() % dice) + 1;
     }
 
-    void ai_mech_dice_roll() {   // Dice Roll for AI Mech Choosing
+    // Dice Roll for AI Mech Choosing
+    void ai_mech_dice_roll() {   
         ai_mech_roll = (rand() % ai_mech_dice) + 1;
     }
 
-    void modifier_checker() {       // Supposed to check modifiers, So if its Terrain X, it Applies its Values and makes sure it is applied.
+    // UNUSED. Supposed to check modifiers, So if its Terrain X, it Applies its Values and makes sure it is applied.
+    void modifier_checker() {       
         if (is_terrain_on)
         {
             terrain_modifier();
         }
     }
 
-    void random_effects() {       // Supposed to be The Day Modifier Assignor, To Actually Apply the Modifiers.
+    // Supposed to be The Day Modifier Setter, To Actually Apply the Modifiers.
+    void random_effects() {       
         if (case_1_hit)
         {
             //Nothing.
@@ -662,6 +676,7 @@ public:
         }
     }
 
+    // Chooses the Random Effects based on the Dice Roll.
     void random_effects_choice() {        // Day Modifier Roller
 
         int effect_roll = dice_result;
@@ -707,6 +722,7 @@ public:
         }
     }
 
+    // Weapon Repair Function, To Repair Weapon if Destroyed, Also If Chance to Repair weapon after crit destroys it is met.
     void repair_weapon(){
         dice5_result = rand() % dice5;
         if (dice5_result > 3)
@@ -765,7 +781,7 @@ public:
         }
     }
 
-
+    // Dice Roller and Chance Switch to repair gun IF Repaired yourself.
     void repair_weapon_chance_roll() {
         dice4_result = rand() % dice4;
         if (dice4_result > 6)
@@ -795,6 +811,7 @@ public:
         }
     }
 
+    // Dice roller for which Crit to be chosen.
     void crit_choice_dice_roll() {
         crit_choice_dice_result = rand() % crit_choice_dice;
         if (crit_choice_dice_result > 6)
@@ -803,6 +820,7 @@ public:
         }
     }
 
+    // Switch for Which Crit chosen. Currently just set to Gun Destroy.
     void crit_choice_roll() {
         crit_choice_dice_roll();
         switch (crit_choice_dice_result)
@@ -834,6 +852,7 @@ public:
         }
     }
 
+    // Has yet to be thought of. Is supposed to remove front armor for a turn or two.
     void crit_vulnerable() {
         if (is_player_attacking == true)
         {
@@ -849,10 +868,12 @@ public:
         }
     }
 
+    // The Dice roller that Determines which Gun Dies.
     void crit_gun_destroy_dice_roll() {
         crit_gun_destroy_dice_result = rand() % crit_gun_destroy_dice;
     }
 
+    // Switch for Which Gun of which Mech of Which Person.
     void crit_gun_destroy() {
         crit_gun_destroy_dice_roll();
         if (is_player_attacking == false)
@@ -950,6 +971,7 @@ public:
         }
     }
 
+    // Rolls the Dice for Crits, Has two Ifs for Player and AI Crit Modifiers (For Special Mechs.)
     void crit_dice_roll() {
         if (is_player_turn==true)
         {
@@ -971,6 +993,7 @@ public:
         }
     }
 
+    // Switch Roll for Crits, If Dice is right, Hits a Crit.
     void crit_roll() {
         crit_dice_roll();
         switch (crit_dice_result)
@@ -1026,11 +1049,13 @@ public:
         }
     }
 
+    //.. Well it randomizes Distance...
     void randomize_distance() {       // Randomizes Distance.
         distance = rand() % (max_distance - min_distance + 1) + min_distance;
     }
 
-    void player_selecting_mech() {       // Player Mech Selection Function.
+    // Player Mech Selection Function, to allow the Player to Select their prefered mech.
+    void player_selecting_mech() {       
         cout << "Choose your Mech:" << endl;
         cout << YELLOW << "Emperor" << RESET << " | " << BRIGHT_BLACK << "Panzer" << RESET << " | " << BLUE << "Artemis" << RESET << " | " << BRIGHT_CYAN << "Aegis" << RESET << " | " << BRIGHT_RED << "Krieg" << RESET << " | " << BRIGHT_YELLOW << "Orion" << RESET << endl;
         getline(cin, user_input);
@@ -1304,7 +1329,8 @@ public:
         }
     }
 
-    void ai_mech_selection() {     // AI Mech Selection Function.
+    // AI Mech Selection Function, rolls a dice to select AI mech to fight Player.
+    void ai_mech_selection() {     
         switch (ai_mech_roll)
         {
         case(1): // Emperor
@@ -1514,7 +1540,8 @@ public:
         }
     }
 
-    void player_turn() {      // Player Turn Function.
+    // Player Turn function, Contains all Elements for Player Interface.
+    void player_turn() {   
 
         unfortify();
         is_player_attacking = true;
@@ -1554,7 +1581,8 @@ public:
         }
     }
 
-    void enemy_turn() {           // Enemy Turn Function.
+    // Enemy Turn function, Initializer to all Enemy Turn things.
+    void enemy_turn() {         
         is_player_attacking = false;
         if (pilot_health > 0) {
             unfortify();
@@ -1569,8 +1597,8 @@ public:
         }
     }
 
-
-    void repair_action() {  // Repair Function
+    // Repairs Mech, Whether AI or Player, To keep the game continuing for long.
+    void repair_action() {  
         if (is_player_turn)
         {
             if (player_pilot_health < unmodified_pilot_health) {
@@ -1599,7 +1627,8 @@ public:
         }
     }
 
-    void fortify_action() {    // Fortify Function
+    // Fortifies Player Mech, To reduce penetration multiplier and Incoming Damage.
+    void fortify_action() {    
         if (is_player_turn && !is_fortified)
         {
             player_front_armor += (player_front_armor * 0.50);
@@ -1607,7 +1636,9 @@ public:
             fortify_switch_on();
         }
     }
-    void ai_fortify_action() {     // AI Fortify Function
+
+    // Same as the Player Fortify Function, But for AI.
+    void ai_fortify_action() {     
         if (!is_player_turn && !is_fortified)
         {
             front_armor += (front_armor * 0.50);
@@ -1615,7 +1646,9 @@ public:
             ai_fortify_switch_on();
         }
     }
-    void overcharge_action() {  // Overcharge Function
+
+    // Overcharges Player Guns, To Increase damage and Penetration, Direct Counter to Fortify.
+    void overcharge_action() {  
         if (is_player_turn && !is_overcharged)
         {
             player_primary_gun_damage *= 2;
@@ -1629,7 +1662,9 @@ public:
             overcharge_switch_on();
         }
     }
-    void ai_overcharge_action() {  // AI Overcharge Function
+
+    // Same as Player Overcharge, But for AI. Seperated for easier readibility.
+    void ai_overcharge_action() {  
         if (!is_player_turn && !is_ai_overcharged)
         {
             primary_gun_damage *= 2;
@@ -1644,7 +1679,8 @@ public:
         }
     }
 
-    void player_combat_value_initializer() { // Initializes Player Stats Values
+    // Initializes All Player combat stat values, So its easier to Calculate, and Less prone to bugs.
+    void player_combat_value_initializer() { 
         player_primary_actual_damage = player_primary_gun_damage;
         player_secondary_actual_damage = player_secondary_gun_damage;
         player_tertiary_actual_damage = player_tertiary_gun_damage;
@@ -1657,6 +1693,7 @@ public:
         player_tertiary_actual_penetration = player_tertiary_gun_penetration;
     }
 
+    // Limiter of Multipliers so it doesn't either be too low, or too high.
     void player_multiplier_limiter() {
         if (player_primary_penetration_distance_multiplier > 1)
         {
@@ -1722,7 +1759,8 @@ public:
         }
     }
 
-    void player_combat_calculator() { // Calculates Damage and Penetration.
+    // Calculates ALL Damage from the Player, Including but not limited to Distance Multipliers, Damage and Penetration Multipliers.
+    void player_combat_calculator() {
         // Player Damage & Penetration Distance Multiplier Calculator.
         player_primary_damage_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_damage));
         player_primary_penetration_distance_multiplier = abs(sin((((min_distance - distance_double) / min_distance) * (PI / 2)) * player_unmodified_primary_gun_penetration));
@@ -1754,7 +1792,8 @@ public:
         //cout << "PRIMARY PEN Distance Multiplier =========>" << player_primary_penetration_distance_multiplier << endl;
     }
 
-    void player_accuracy_roll() {   // Rolls Player Accuracy.
+    // Rolls The Dice for Player accuracy for each gun.
+    void player_accuracy_roll() { 
         if (accuracy_modifier < 35) {
             accuracy_modifier = 35;
         }
@@ -1770,7 +1809,8 @@ public:
         //cout << accuracy_roll << endl;
     }
 
-    void player_primary_damage_calculator() {  // Calculates Damage for The First Gun, and Inflicts it.
+    // Does the Damage for the Player Primary Gun.
+    void player_primary_damage_calculator() { 
         player_accuracy_roll();
         if (player_primary_gun_capable==true && player_primary_gun_destroyed==false)
         {
@@ -1807,7 +1847,8 @@ public:
         }
     }
 
-    void player_secondary_damage_calculator() {  // Calculates Damage for Second Gun, and Inflicts it.
+    // Does the Damage for the Player Secondary Gun.
+    void player_secondary_damage_calculator() { 
         player_accuracy_roll();
         if (player_secondary_gun_capable==true && player_secondary_gun_destroyed)
         {
@@ -1848,7 +1889,8 @@ public:
         }
     }
 
-    void player_tertiary_damage_calculator() {  // Calculates Damage for Third Gun, and Inflicts it.
+    // Does the Damage for the Player Tertiary Gun.
+    void player_tertiary_damage_calculator() { 
         player_accuracy_roll();
         if (player_tertiary_gun_capable==true && player_tertiary_gun_destroyed)
         {
@@ -1889,7 +1931,8 @@ public:
         }
     }
 
-    void player_combat_damage() {          // Combat Operation, Damage Calculation and Infliction.
+    // The Interface that Does each player combat function one by one, until It reaches the end of the Combat Turn.
+    void player_combat_damage() {
         player_combat_value_initializer();
         player_combat_calculator();
 
@@ -1910,7 +1953,8 @@ public:
         }
     }
 
-    void enemy_combat_value_initializer() {  // Enemy Combat Stat Initializer.
+    // Same as player Value Initializer, but for AI.
+    void enemy_combat_value_initializer() { 
         primary_actual_damage = primary_gun_damage;
         secondary_actual_damage = secondary_gun_damage;
         tertiary_actual_damage = tertiary_gun_damage;
@@ -1922,6 +1966,8 @@ public:
         secondary_actual_penetration = secondary_gun_penetration;
         tertiary_actual_penetration = tertiary_gun_penetration;
     }
+
+    // Same as Player Limiter, For AI.
     void enemy_multiplier_limiter() {
         // Enemy Penetration Distance Multiplier Limiters.
         if (enemy_primary_penetration_distance_multiplier > 1)
@@ -1988,7 +2034,8 @@ public:
         }
     }
 
-    void enemy_combat_calculator() {  // Calculates Enemy Damage and Penetration.
+    // Same as Player Calculator, but for AI.
+    void enemy_combat_calculator() {
         // Enemy Damage & Penetration Distance Multiplier Calculator.
         enemy_primary_damage_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_primary_gun_damage));
         enemy_primary_penetration_distance_multiplier = abs(sin((((min_distance - enemy_distance_double) / min_distance) * (PI / 2)) * unmodified_primary_gun_penetration));
@@ -2020,7 +2067,8 @@ public:
         //cout << "PRIMARY PEN Distance Multiplier =========>" << enemy_primary_penetration_distance_multiplier << endl;
     }
 
-    void enemy_accuracy_roll() { // Calculates Enemy Accuracy.
+    // Rolls Accuracy Dice for Enemy.
+    void enemy_accuracy_roll() {
         if (ai_accuracy_modifier < 35) {
             ai_accuracy_modifier = 35;
         }
@@ -2036,7 +2084,8 @@ public:
         //cout << accuracy_roll << endl;
     }
 
-    void enemy_primary_damage_calculator() {  // Calculates Damage for The First Gun, and Inflicts it.
+    // Does the Damage for the Enemy Primary Gun.
+    void enemy_primary_damage_calculator() {  
         enemy_accuracy_roll();
         if (primary_gun_capable==true && ai_primary_gun_destroyed==false)
         {
@@ -2068,7 +2117,8 @@ public:
         }
     }
 
-    void enemy_secondary_damage_calculator() {  // Calculates Damage for Second Gun, and Inflicts it.
+    // Does the Damage for the Enemy Secondary Gun.
+    void enemy_secondary_damage_calculator() {  
         enemy_accuracy_roll();
         if (secondary_gun_capable == true && ai_secondary_gun_destroyed == false)
         {
@@ -2104,7 +2154,8 @@ public:
         }
     }
 
-    void enemy_tertiary_damage_calculator() {  // Calculates Damage for Third Gun, and Inflicts it.
+    // Does the Damage for the Enemy Tertiary Gun.
+    void enemy_tertiary_damage_calculator() {  
         enemy_accuracy_roll();
         if (tertiary_gun_capable == true && ai_tertiary_gun_destroyed == false)
         {
@@ -2140,7 +2191,8 @@ public:
         }
     }
 
-    void enemy_combat_damage() {       // AI Combat Operation, Damage Calculation and Infliction.
+    // The AI Interface for Combat Functions, until It reaches the end of the Combat Turn.
+    void enemy_combat_damage() {       
         enemy_combat_value_initializer();
         enemy_combat_calculator();
         if (ai_primary_gun_destroyed==true && ai_secondary_gun_destroyed==true && ai_tertiary_gun_destroyed==true)
@@ -2172,13 +2224,13 @@ public:
         }
     }
 
-
-    void end_combat_turn() {          // Ends Combat Turn. So Far it is Unused, but I have a plan for it later.
+    // Ends Combat Turn.
+    void end_combat_turn() {
         is_player_attacking = !is_player_attacking;
     }
 
-
-    void mech_encounter() {                // The Ignition, Basically the First Function that Initiates everything.
+    // The Main Method, The Interface that Initiates Everything.
+    void mech_encounter() {                
         cout << BRIGHT_RED << "Enemy Mech Encountered!" << RESET << endl;
         world_values_initiator();
         diceroll();

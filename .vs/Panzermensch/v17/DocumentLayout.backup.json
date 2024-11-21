@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:Panzermensch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4394589B-38BC-4E11-BEC4-96EE1DBFC877}|Panzermensch.vcxproj|solutionrelative:mechs.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,25 +51,38 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "mechs.cpp",
+              "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp",
+              "RelativeDocumentMoniker": "mechs.cpp",
+              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.cpp*",
+              "RelativeToolTip": "mechs.cpp*",
+              "ViewState": "AgIAACsAAAAAAAAAAAAuwEgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-11-21T14:38:35.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "Panzermensch.cpp",
               "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
               "RelativeDocumentMoniker": "Panzermensch.cpp",
-              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp",
-              "RelativeToolTip": "Panzermensch.cpp",
-              "ViewState": "AgIAAJIFAAAAAAAAAAAewK4FAABMAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\Panzermensch.cpp*",
+              "RelativeToolTip": "Panzermensch.cpp*",
+              "ViewState": "AgIAAA8BAAAAAAAAAAAwwCMBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-11-17T01:18:48.224Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "mechs.hpp",
               "DocumentMoniker": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
               "RelativeDocumentMoniker": "mechs.hpp",
               "ToolTip": "C:\\Users\\ltmik\\source\\repos\\panzermensch-console-ver\\mechs.hpp",
               "RelativeToolTip": "mechs.hpp",
-              "ViewState": "AgIAACIBAAAAAAAAAAAewDcBAABqAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAewC4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-11-17T01:18:49.437Z",
               "EditorCaption": ""

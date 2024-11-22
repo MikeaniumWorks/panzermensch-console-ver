@@ -17,15 +17,18 @@
 //#include <sqltypes.h>
 //#include <sql.h>
 //#include <json/value.h>
-#include "mechs.cpp"
-//#include "mechs.hpp"
+//#include "mechs.cpp"
+#include "mechs.hpp"
 //#include "vehicles.hpp"
 
-using namespace std;
+using std::string;
+using std::cout;
+using std::endl;
+using std::abs;
+using std::getline;
+using std::sin;
+using std::cin;
 //using namespace rapidjson;
-namespace lightwind {
-    string ironman = "if you see this, it worked";
-}
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"
@@ -81,6 +84,7 @@ public:
     string player_primary_gun_name = "Gun";
     string player_secondary_gun_name = "Gun2";
     string player_tertiary_gun_name = "Gun3";
+    int player_mech_id = 0;
     bool  player_primary_gun_capable = true;
     double player_primary_gun_damage = 0;
     double player_primary_actual_damage = 0;
@@ -118,6 +122,7 @@ public:
     bool player_primary_gun_destroyed = false;
     bool player_secondary_gun_destroyed = false;
     bool player_tertiary_gun_destroyed = false;
+    bool player_ability_on = false;
 
     // Enemy Stats
     string enemy_mech = "Enemy";
@@ -1049,9 +1054,58 @@ public:
         }
     }
 
-    //.. Well it randomizes Distance...
+    //.. Well it randomizes Distance... For Mathematical Calculation of Damage, Distance lowers damage and penetration.
     void randomize_distance() {       // Randomizes Distance.
         distance = rand() % (max_distance - min_distance + 1) + min_distance;
+    }
+
+    //
+    void player_mech_abilities() {
+        if (player_mech_id == 0)
+        {
+            mech_generic::mech_generic().generic_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 1)
+        {
+            mech_emperor::mech_emperor().emperor_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 2)
+        {
+            mech_panzer::mech_panzer().panzer_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 3)
+        {
+            mech_artemis::mech_artemis().artemis_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 4)
+        {
+            mech_aegis::mech_aegis().aegis_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 5)
+        {
+            mech_admin::mech_admin().admin_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 6)
+        {
+            mech_krieg::mech_krieg().krieg_ability();
+            player_ability_on = !player_ability_on;
+        }
+        else if (player_mech_id == 7)
+        {
+            mech_orion::mech_orion().orion_ability();
+            player_ability_on = !player_ability_on;
+        }
+    }
+
+    //
+    void ai_mech_abilities() {
+
     }
 
     // Player Mech Selection Function, to allow the Player to Select their prefered mech.
@@ -1085,6 +1139,7 @@ public:
             player_primary_gun_name = mech_generic::mech_generic().primary_gun;
             player_secondary_gun_name = mech_generic::mech_generic().secondary_gun;
             player_tertiary_gun_name = mech_generic::mech_generic().tertiary_gun;
+            player_mech_id = mech_generic::mech_generic().mech_id;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_generic::mech_generic().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << BRIGHT_YELLOW << mech_generic::mech_generic().mech_name << RESET << " " << mech_generic::mech_generic().mech_description << endl;
@@ -1117,6 +1172,7 @@ public:
             player_primary_gun_name = mech_emperor::mech_emperor().primary_gun;
             player_secondary_gun_name = mech_emperor::mech_emperor().secondary_gun;
             player_tertiary_gun_name = mech_emperor::mech_emperor().tertiary_gun;
+            player_mech_id = mech_emperor::mech_emperor().mech_id;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_emperor::mech_emperor().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << YELLOW << mech_emperor::mech_emperor().mech_name << RESET << " " << mech_emperor::mech_emperor().mech_description << endl;
@@ -1150,6 +1206,7 @@ public:
             player_primary_gun_name = mech_panzer::mech_panzer().primary_gun;
             player_secondary_gun_name = mech_panzer::mech_panzer().secondary_gun;
             player_tertiary_gun_name = mech_panzer::mech_panzer().tertiary_gun;
+            player_mech_id = mech_panzer::mech_panzer().mech_id;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_panzer::mech_panzer().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << BRIGHT_BLACK << mech_panzer::mech_panzer().mech_name << RESET << " " << mech_panzer::mech_panzer().mech_description << endl;
@@ -1181,6 +1238,7 @@ public:
             player_primary_gun_name = mech_artemis::mech_artemis().primary_gun;
             player_secondary_gun_name = mech_artemis::mech_artemis().secondary_gun;
             player_tertiary_gun_name = mech_artemis::mech_artemis().tertiary_gun;
+            player_mech_id = mech_artemis::mech_artemis().mech_id;
             accuracy_modifier += 45;
             ai_accuracy_modifier -= 45;
             player_crit_modifier += 1;
@@ -1216,6 +1274,7 @@ public:
             player_primary_gun_name = mech_aegis::mech_aegis().primary_gun;
             player_secondary_gun_name = mech_aegis::mech_aegis().secondary_gun;
             player_tertiary_gun_name = mech_aegis::mech_aegis().tertiary_gun;
+            player_mech_id = mech_aegis::mech_aegis().mech_id;
             accuracy_modifier += 25;
             player_crit_modifier += 3;
             ai_crit_modifier -= 3;
@@ -1251,6 +1310,7 @@ public:
             player_primary_gun_name = mech_admin::mech_admin().primary_gun;
             player_secondary_gun_name = mech_admin::mech_admin().secondary_gun;
             player_tertiary_gun_name = mech_admin::mech_admin().tertiary_gun;
+            player_mech_id = mech_admin::mech_admin().mech_id;
             cout << "Welcome, Mr. 007- I mean " << BRIGHT_GREEN << mech_admin::mech_admin().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << RED << mech_admin::mech_admin().mech_name << RESET << " " << mech_admin::mech_admin().mech_description << endl;
@@ -1283,6 +1343,7 @@ public:
             player_primary_gun_name = mech_krieg::mech_krieg().primary_gun;
             player_secondary_gun_name = mech_krieg::mech_krieg().secondary_gun;
             player_tertiary_gun_name = mech_krieg::mech_krieg().tertiary_gun;
+            player_mech_id = mech_krieg::mech_krieg().mech_id;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_krieg::mech_krieg().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << BRIGHT_RED << mech_krieg::mech_krieg().mech_name << RESET << " " << mech_krieg::mech_krieg().mech_description << endl;
@@ -1316,6 +1377,7 @@ public:
             player_primary_gun_name = mech_orion::mech_orion().primary_gun;
             player_secondary_gun_name = mech_orion::mech_orion().secondary_gun;
             player_tertiary_gun_name = mech_orion::mech_orion().tertiary_gun;
+            player_mech_id = mech_orion::mech_orion().mech_id;
             cout << "You Chose The Mech " << BRIGHT_GREEN << mech_orion::mech_orion().mech_name << RESET << endl;
             cout << "-------" << endl;
             cout << BRIGHT_YELLOW << mech_orion::mech_orion().mech_name << RESET << " " << mech_orion::mech_orion().mech_description << endl;
@@ -1547,7 +1609,7 @@ public:
         is_player_attacking = true;
         cout << BRIGHT_BLUE << "Your Turn! " << RESET << "Your Health: " << BRIGHT_GREEN << player_pilot_health << RESET << endl;
         cout << "Your Actions: " << endl;
-        cout << BRIGHT_YELLOW << "Fire" << RESET << " | " << BRIGHT_YELLOW << "Repair" << RESET << " | " << BRIGHT_YELLOW << "Fortify" << RESET << " | " << BRIGHT_YELLOW << "Overcharge" << RESET << endl;
+        cout << BRIGHT_YELLOW << "Fire" << RESET << " | " << BRIGHT_YELLOW << "Repair" << RESET << " | " << BRIGHT_YELLOW << "Fortify" << RESET << " | " << BRIGHT_YELLOW << "Overcharge" << RESET << " | " << YELLOW << "ABILITY!" << RESET << endl;
         string user_input;
         getline(cin, user_input);
 
@@ -1572,6 +1634,11 @@ public:
         {
             overcharge_action();
             end_turn();
+        }
+        else if (user_input == "Ability")
+        {
+            player_mech_abilities();
+            player_turn();
         }
         else
         {

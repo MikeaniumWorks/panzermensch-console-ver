@@ -1,3 +1,9 @@
-﻿  mechs.cpp
-Panzermensch.obj : error LNK2005: "int __cdecl stats(void)" (?stats@@YAHXZ) already defined in mechs.obj
-C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe : fatal error LNK1169: one or more multiply defined symbols found
+﻿  Panzermensch.cpp
+  Generating code
+  9 of 209 functions ( 4.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    30 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

@@ -1070,6 +1070,7 @@ public:
         {
             mech_emperor::mech_emperor().emperor_ability();
             player_ability_on = !player_ability_on;
+            
         }
         else if (player_mech_id == 2)
         {

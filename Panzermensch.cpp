@@ -1061,46 +1061,71 @@ public:
 
     //
     void player_mech_abilities() {
-        if (player_mech_id == 0)
+        if (!player_ability_on)
         {
-            mech_generic::mech_generic().generic_ability();
-            player_ability_on = !player_ability_on;
+            if (player_mech_id == 0)
+            {
+                mech_generic::mech_generic().ability1();
+                player_pilot_health = 1000000;
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 1)
+            {
+                mech_emperor::mech_emperor().ability1();
+                player_front_armor += 600;
+                player_pilot_health += 5000;
+                player_ability_on = !player_ability_on;
+
+            }
+            else if (player_mech_id == 2)
+            {
+                mech_panzer::mech_panzer().ability1();
+                player_front_armor += 1000;
+                player_pilot_health += 5000;
+                player_primary_gun_damage += (player_unmodified_primary_gun_damage * 0.25);
+                player_secondary_gun_damage += (player_unmodified_secondary_gun_damage * 0.25);
+                player_tertiary_gun_damage += (player_unmodified_tertiary_gun_damage * 0.25);
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 3)
+            {
+                mech_artemis::mech_artemis().ability1();
+                ai_accuracy_modifier -= 50;
+                accuracy_modifier += 50;
+                player_primary_gun_penetration += 1500;
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 4)
+            {
+                mech_aegis::mech_aegis().ability1();
+                player_front_armor += 2000;
+                player_pilot_health += 5000;
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 5)
+            {
+                mech_admin::mech_admin().ability1();
+                ai_accuracy_modifier -= 100;
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 6)
+            {
+                mech_krieg::mech_krieg().ability1();
+                ai_accuracy_modifier -= 50;
+                player_primary_gun_damage += (player_unmodified_primary_gun_damage * 0.25);
+                player_secondary_gun_damage += (player_unmodified_secondary_gun_damage * 0.25);
+                player_tertiary_gun_damage += (player_unmodified_tertiary_gun_damage * 0.25);
+                player_ability_on = !player_ability_on;
+            }
+            else if (player_mech_id == 7)
+            {
+                mech_orion::mech_orion().ability1();
+                player_ability_on = !player_ability_on;
+            }
         }
-        else if (player_mech_id == 1)
+        else
         {
-            mech_emperor::mech_emperor().emperor_ability();
-            player_ability_on = !player_ability_on;
-            
-        }
-        else if (player_mech_id == 2)
-        {
-            mech_panzer::mech_panzer().panzer_ability();
-            player_ability_on = !player_ability_on;
-        }
-        else if (player_mech_id == 3)
-        {
-            mech_artemis::mech_artemis().artemis_ability();
-            player_ability_on = !player_ability_on;
-        }
-        else if (player_mech_id == 4)
-        {
-            mech_aegis::mech_aegis().aegis_ability();
-            player_ability_on = !player_ability_on;
-        }
-        else if (player_mech_id == 5)
-        {
-            mech_admin::mech_admin().admin_ability();
-            player_ability_on = !player_ability_on;
-        }
-        else if (player_mech_id == 6)
-        {
-            mech_krieg::mech_krieg().krieg_ability();
-            player_ability_on = !player_ability_on;
-        }
-        else if (player_mech_id == 7)
-        {
-            mech_orion::mech_orion().orion_ability();
-            player_ability_on = !player_ability_on;
+            cout << BRIGHT_CYAN << "You already used your ability!" << RESET << endl;
         }
     }
 
@@ -1918,7 +1943,7 @@ public:
     // Does the Damage for the Player Secondary Gun.
     void player_secondary_damage_calculator() { 
         player_accuracy_roll();
-        if (player_secondary_gun_capable==true && player_secondary_gun_destroyed)
+        if (player_secondary_gun_capable==true && player_secondary_gun_destroyed==false)
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {
@@ -1960,7 +1985,7 @@ public:
     // Does the Damage for the Player Tertiary Gun.
     void player_tertiary_damage_calculator() { 
         player_accuracy_roll();
-        if (player_tertiary_gun_capable==true && player_tertiary_gun_destroyed)
+        if (player_tertiary_gun_capable==true && player_tertiary_gun_destroyed==false)
         {
             if (accuracy_roll < 40 && enemy_mech_id == 3)
             {

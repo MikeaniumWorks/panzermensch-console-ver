@@ -1,8 +1,8 @@
 ﻿  Panzermensch.cpp
   Generating code
-  9 of 209 functions ( 4.3%) were compiled, the rest were copied from previous compilation.
+  2 of 209 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    30 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Panzermensch.vcxproj -> C:\Users\ltmik\source\repos\panzermensch-console-ver\x64\Release\Panzermensch.exe
   'pwsh.exe' is not recognized as an internal or external command,

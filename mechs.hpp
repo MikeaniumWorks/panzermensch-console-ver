@@ -101,8 +101,9 @@ public:
         tertiary_gun_damage(100), tertiary_gun_penetration(100), tertiary_gun("Tertiary"), melee_capable(false), melee_damage(100), melee_sharpness(100),
         melee_weapon("Sword"), mech_name("Generic"), mech_id(0), tier(6), mech_description(": Why would you even choose this?") {};
 
-    void generic_ability() {
+    void ability1() {
         std::cout << "Generic Ability Is Accessed!" << std::endl;
+
     }
 };
 
@@ -146,7 +147,7 @@ public:
         tertiary_gun_damage(521), tertiary_gun_penetration(2000), tertiary_gun("Godfire"), melee_capable(false), melee_damage(1700), melee_sharpness(2000),
         melee_weapon("Godslayer"), mech_name("Emperor"), mech_id(1), tier(1), mech_description(": The Emperor of All Humanity, Entombed in This Golden Walking Coffin. Little is known by our history on how he came to be in this, But what is known, He houses immense Psionic might, His Wrath is made manifest; For all shall Show him what passes for Fury amongst their misbegotten kind.") {};
 
-    void emperor_ability() {
+    void ability1() {
         std::cout << YELLOW << "ALL SHALL FACE THE WRATH OF HUMANITY!" << RESET << std::endl;
     }
 
@@ -183,7 +184,7 @@ public:
         tertiary_gun_damage(1050), tertiary_gun_penetration(3000), tertiary_gun("Kriegrakete"), melee_capable(false), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Panzer"), mech_id(2), tier(1), mech_description(": Lord of All That is Iron and Steel. Panzer, Hardy, Petty, and is Resilience incarnate For; Panzer is a Warrior of Iron, Within and Without.") {};
 
-    void panzer_ability() {
+    void ability1() {
         std::cout << RED << "BULWARK STANDS!" << RESET << std::endl;
     }
 };
@@ -219,7 +220,7 @@ public:
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(750), melee_sharpness(1600),
         melee_weapon("Astral Claw"), mech_name("Artemis"), mech_id(3), tier(1), mech_description(": Knight of The Stars and The Void that inhabits, Fast as The Eye, Never seen, Never Certain, You can never catch her; All shall Beware the Knight of Void.") {};
 
-    void artemis_ability() {
+    void ability1() {
         std::cout << BLUE << "Artemis Lance Active!" << RESET << std::endl;
     }
 
@@ -256,7 +257,7 @@ public:
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(1000), melee_sharpness(1600),
         melee_weapon("Lightblade"), mech_name("Aegis"), mech_id(4), tier(1), mech_description(": Wrath of Light, Lord of all that is Radiant, Bar the Emperor of Course. Some say he is a God wrapped inside a Mech, Some Say its a Mech entombing a God, None know Anything; He may not even be a God.") {};
 
-    void aegis_ability() {
+    void ability1() {
         std::cout << BRIGHT_WHITE << "YOUR DARKNESS SHALL BE BANISHED!" << RESET << std::endl;
     }
 
@@ -293,7 +294,7 @@ public:
         tertiary_gun_damage(200000), tertiary_gun_penetration(10), tertiary_gun("Helltickler"), melee_capable(true), melee_damage(100000), melee_sharpness(1),
         melee_weapon("Banhammer"), mech_name("Admin"), mech_id(5), tier(1), mech_description(": Administrator of all, Creator of this Realm. Some say his real name is Mikeanium, No one knows whether it is true or not; They bore a dozen names throughout their existence.") {};
 
-    void admin_ability() {
+    void ability1() {
         std::cout << RED << "BANHAMMER ACTIVE!" << RESET << std::endl;
     }
 
@@ -330,7 +331,7 @@ public:
         tertiary_gun_damage(2112), tertiary_gun_penetration(10), tertiary_gun("Verdun"), melee_capable(true), melee_damage(6000), melee_sharpness(1),
         melee_weapon("Warhammer"), mech_name("Krieg"), mech_id(6), tier(1), mech_description(": Embodiement of All that is War. Unyielding, Unrelenting, and Mighty. Legends and Myths tattle about him defeating Ares in Melee combat, Though no one knows; War is uncertain, and never changes.") {};
 
-    void krieg_ability() {
+    void ability1() {
         std::cout << RED << "ONTO WAR!" << RESET << std::endl;
     }
 
@@ -367,7 +368,7 @@ public:
         tertiary_gun_damage(0), tertiary_gun_penetration(0), tertiary_gun("None"), melee_capable(true), melee_damage(0), melee_sharpness(0),
         melee_weapon("None"), mech_name("Orion"), mech_id(7), tier(1), mech_description(": A Riddle, Wrapped in a Cipher, Wrapped in an Enigma. Artemis's Greatest Rival, The only one to ever hit her; Champion of A Hundred Pantheons.") {};
 
-    void orion_ability() {
+    void ability1() {
         std::cout << CYAN << "FOR THE HEAVENS!" << RESET << std::endl;
     }
 
